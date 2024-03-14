@@ -5,6 +5,8 @@ import QueryClientProvider from "./QueryClientProvider";
 import NavBar from "./NavBar";
 import { fonts } from "./fonts";
 import { Providers } from "./Providers";
+import { ColorModeScript } from "@chakra-ui/react";
+import theme from "./theme";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -22,6 +24,7 @@ export default function RootLayout({
     <html lang="en" className={fonts.rubik.variable}>
       <body className={inter.className}>
         <Providers>
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <QueryClientProvider>
             <NavBar />
             <main>{children}</main>

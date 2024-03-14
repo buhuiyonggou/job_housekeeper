@@ -11,17 +11,21 @@ import { MdWork } from "react-icons/md";
 import classnames from "classnames";
 import { Container, Flex } from "@chakra-ui/react";
 import "./globals.css";
+import ColorModeSwitch from "./components/ColorModeSwitch";
 
 const NavBar = () => {
   return (
     <nav className="border-b mb-5 px-5 py-5">
-      <Container>
-        <Flex justify="between">
-          <Flex align="center" gap="3">
-            <NavLinks />
+      <Flex justify="between">
+        <Container maxW="container.xl">
+          <Flex justify="between">
+            <Flex align="center" gap="3">
+              <NavLinks />
+            </Flex>
           </Flex>
-        </Flex>
-      </Container>
+        </Container>
+        <ColorModeSwitch />
+      </Flex>
     </nav>
   );
 };
