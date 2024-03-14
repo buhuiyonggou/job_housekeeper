@@ -20,6 +20,10 @@ const theme = extendTheme({
       900: "#111",
     },
   },
+  fonts: {
+    heading: "var(--font-rubik)",
+    body: "var(--font-rubik)",
+  },
 });
 
 export default theme;

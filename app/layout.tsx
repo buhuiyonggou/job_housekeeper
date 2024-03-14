@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import QueryClientProvider from "./QueryClientProvider";
 import NavBar from "./NavBar";
+import { fonts } from "./fonts";
 import { Providers } from "./Providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -18,14 +19,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={fonts.rubik.variable}>
       <body className={inter.className}>
-        <QueryClientProvider>
-          <Providers>
+        <Providers>
+          <QueryClientProvider>
             <NavBar />
             <main>{children}</main>
-          </Providers>
-        </QueryClientProvider>
+          </QueryClientProvider>
+        </Providers>
       </body>
     </html>
   );

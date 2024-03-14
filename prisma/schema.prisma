@@ -58,7 +58,6 @@ enum Status {
   Interview
   Offer
   Rejected
-  Hired
 }
 
 enum Category {
