@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id       Int           @id @default(autoincrement())
+  email    String        @unique
+  name     String?
+  password String
+  posts    Application[]
+}
+
+model Application {
+  application_id   String   @id @default(uuid())
+  company          String
+  category         Category
+  job_title        String
+  position_number  String?
+  type             Type
+  term             Term
+  year             Int
+  location         String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           Int
+  application_date DateTime @default(now())
+  Status           Status   @default(Applied)
+
+  @@index([userId])
+}
+
+enum Term {
+  Fall
+  Winter
+  Spring
+  Summer
+}
+
+enum Type {
+  Full_Time
+  Part_Time
+  Internship
+  Contract
+  Temporary
+  Freelance
+}
+
+enum Status {
+  Applied
+  Interview
+  Offer
+  Rejected
+  Hired
+}
+
+enum Category {
+  Software
+  Hardware
+  Accounting
+  Accounting_Service
+  Finance
+  Risk_Management
+  Marketing
+  Sales
+  Human_Resources
+  Customer_Service
+  Legal
+  Education
+  Engineering
+  Healthcare
+  Art_and_Design
+  Data_Science
+  Product_Management
+  Operations
+  Supply_Chain
+  Manufacturing
+  Quality_Assurance
+  Research_and_Development
+  IT_Support
+  Public_Relations
+  Real_Estate
+  Construction
+  Consulting
+  Environmental
+  Agriculture
+  Hospitality
+  Tourism
+  Transportation
+  Logistics
+  Media_and_Communications
+  Non_Profit
+  Government
+  Security
+  Other
+}
