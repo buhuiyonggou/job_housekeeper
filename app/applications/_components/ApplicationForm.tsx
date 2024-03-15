@@ -29,7 +29,6 @@ type ApplicationFormData = z.infer<typeof applicationSchema>;
 const ApplicationForm = ({ application }: { application?: Application }) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [applicationData, setApplicationData] = useState<Application>();
   const [error, setError] = useState("");
   const {
     register,
@@ -38,23 +37,23 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
     reset,
     formState: { errors },
   } = useForm<ApplicationFormData>({
-    resolver: zodResolver(applicationSchema),
+    // resolver: zodResolver(applicationSchema),
   });
 
   const onSubmit: SubmitHandler<ApplicationFormData> = async (data) => {
     try {
       console.log("submit data: ", data);
-      setIsSubmitting(true);
-      // check if issue exists
-      if (application) {
-        await axios.patch(
-          `/api/applications/${application.application_id}`,
-          data
-        );
-      } else {
-        await axios.post("/api/applications", data);
-      }
-      router.push("/applications/list");
+      // setIsSubmitting(true);
+      // // check if issue exists
+      // if (application) {
+      //   await axios.patch(
+      //     `/api/applications/${application.application_id}`,
+      //     data
+      //   );
+      // } else {
+      //   await axios.post("/api/applications", data);
+      // }
+      // router.push("/applications/list");
       router.refresh();
     } catch (error) {
       setIsSubmitting(false);
@@ -94,6 +93,7 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
             justifyContent="space-around"
             gap="8"
             width="100%"
+            mb="3"
           >
             <ErrorMessage>{errors.company?.message}</ErrorMessage>
             <Input placeholder="company name" {...register("company")} />
@@ -113,7 +113,7 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
             />
           </Box>
 
-          <Box width="65%">
+          <Box width="100%" mb="3">
             <ErrorMessage>{errors.job_title?.message}</ErrorMessage>
             <Textarea placeholder="job_title" {...register("job_title")} />
           </Box>
@@ -124,6 +124,7 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
             justifyContent="space-around"
             gap="8"
             width="100%"
+            mb="3"
           >
             <ErrorMessage>{errors.position_number?.message}</ErrorMessage>
             <Input
@@ -135,7 +136,7 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
             <Input placeholder="Location" {...register("location")} />
           </Box>
 
-          <SimpleGrid columns={3} gap={5} width="100%">
+          <SimpleGrid columns={3} gap={5} width="100%" mb="3">
             <ErrorMessage>{errors.type?.message}</ErrorMessage>
             <Controller
               name="type"
@@ -199,7 +200,12 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
             Reset <MdCancel size="24px" />
           </Button>
 
-          <Button disabled={isSubmitting} colorScheme="teal" size="md">
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            colorScheme="teal"
+            size="md"
+          >
             {application ? "Update" : "Submit"}
             {isSubmitting && <Spinner />}
           </Button>

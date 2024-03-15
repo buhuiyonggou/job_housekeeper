@@ -19,7 +19,7 @@ const DateSelector = ({ onDateChange, selectedYear }: Props) => {
   };
 
   return (
-    <FormControl as="fieldset" className="flex items-center justify-center">
+    <FormControl as="fieldset" className="flex items-center justify-start">
       <FormLabel htmlFor="year" className="mt-2">
         Year:
       </FormLabel>
@@ -29,7 +29,7 @@ const DateSelector = ({ onDateChange, selectedYear }: Props) => {
         showYearPicker
         dateFormat="yyyy"
         placeholderText="Select year"
-        className="border-2 border-gray-300 rounded-md text-center w-24 h-8 align-center"
+        className="border-2 border-gray-300 rounded-md text-center w-32 h-8 align-center"
       />
     </FormControl>
   );

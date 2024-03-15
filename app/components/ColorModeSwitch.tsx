@@ -23,7 +23,7 @@ const ColorModeSwitch = () => {
           aria-label="toggle theme"
           rounded="full"
           size="md"
-          right={4}
+          right="4"
           onClick={toggleColorMode}
           icon={colorMode === "dark" ? <FaSun /> : <FaMoon />}
         />

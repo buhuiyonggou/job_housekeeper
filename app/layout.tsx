@@ -24,7 +24,6 @@ export default function RootLayout({
     <html lang="en" className={fonts.rubik.variable}>
       <body className={inter.className}>
         <Providers>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <QueryClientProvider>
             <NavBar />
             <main className="p-4">{children}</main>
