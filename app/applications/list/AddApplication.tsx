@@ -1,9 +1,9 @@
-import { Button, Link } from "@radix-ui/themes";
+import { Button, ButtonGroup, Link } from "@chakra-ui/react";
 import React from "react";
 
 const AddApplication = () => {
   return (
-    <Button variant="soft" size="3">
+    <Button colorScheme="teal" size="md">
       <Link href="/applications/new">Add Application</Link>
     </Button>
   );

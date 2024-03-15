@@ -27,7 +27,7 @@ export default function RootLayout({
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <QueryClientProvider>
             <NavBar />
-            <main>{children}</main>
+            <main className="p-4">{children}</main>
           </QueryClientProvider>
         </Providers>
       </body>
