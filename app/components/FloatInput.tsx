@@ -40,7 +40,9 @@ const FloatInput = ({
       isInvalid={!!error}
     >
       <InputArea placeholder={placeholder} {...register(id, validationRules)} />
-      <FormLabel htmlFor={id}>{label}</FormLabel>
+      <FormLabel htmlFor={id}>
+        {label}
+      </FormLabel>
       <FormHelperText>{helperText}</FormHelperText>
       <FormErrorMessage>{error?.message}</FormErrorMessage>
     </FormControl>

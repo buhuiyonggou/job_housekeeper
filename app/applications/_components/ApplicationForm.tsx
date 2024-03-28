@@ -18,13 +18,13 @@ import { applicationSchema } from "../../ValidationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { MdCancel } from "react-icons/md";
-import ErrorMessage from "../../components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
 import { Application, Term } from "@prisma/client";
 import Selector from "@/app/components/Selector";
 import { Category } from "@prisma/client";
 import DateSelector from "@/app/components/DateSelector";
 import FloatInput from "@/app/components/FloatInput";
+import { useColorModeValue } from '@chakra-ui/react';
 
 type ApplicationFormData = z.infer<typeof applicationSchema>;
 
@@ -226,7 +226,7 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
                 render={({ field }) => (
                   <Selector
                     type="Term"
-                    items={Category}
+                    items={Term}
                     onValueChange={(value) => {
                       if (value !== "") {
                         field.onChange(value);
