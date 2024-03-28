@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FormControl, FormLabel } from "@chakra-ui/react";
+import { FormControl, FormErrorMessage, FormHelperText, FormLabel } from "@chakra-ui/react";
 
 interface Props {
   onDateChange: (year: number) => void;
@@ -19,10 +19,6 @@ const DateSelector = ({ onDateChange, selectedYear }: Props) => {
   };
 
   return (
-    <FormControl as="fieldset" className="flex items-center justify-start">
-      <FormLabel htmlFor="year" className="mt-2">
-        Year:
-      </FormLabel>
       <DatePicker
         selected={selectedDate}
         onChange={handleDateChange}
@@ -31,7 +27,6 @@ const DateSelector = ({ onDateChange, selectedYear }: Props) => {
         placeholderText="Select year"
         className="border-2 border-gray-300 rounded-md text-center w-32 h-8 align-center"
       />
-    </FormControl>
   );
 };
 

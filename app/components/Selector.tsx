@@ -8,14 +8,17 @@ interface Props {
   onValueChange: (value: string) => void;
 }
 
-const Selector = ({ type, items, defaultValue, onValueChange }: Props) => {
+const Selector = ({ type, items, onValueChange }: Props) => {
   return (
     <Stack spacing={3}>
       <Select
-        placeholder={`Select ${type}`}
-        defaultValue={defaultValue}
+        defaultValue=""
+        isRequired
         onChange={(e) => onValueChange(e.target.value)}
       >
+        <option value="" disabled style={{ color: 'red' }}>
+          Select {type} 
+        </option>
         {Object.entries(items).map(([value, name]) => (
           <option key={value} value={value}>
             {name}

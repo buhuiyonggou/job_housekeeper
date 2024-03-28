@@ -24,7 +24,9 @@ model Application {
   company          String
   category         Category
   job_title        String
-  position_number  String?
+  job_info         String?
+  tracking_link    String?
+  position_code  String?
   type             Type
   term             Term
   year             Int
