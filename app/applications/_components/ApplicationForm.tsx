@@ -6,6 +6,8 @@ import {
   FormControl,
   FormErrorMessage,
   FormHelperText,
+  FormLabel,
+  Input,
   SimpleGrid,
 } from "@chakra-ui/react";
 import { Callout } from "@radix-ui/themes";
@@ -19,12 +21,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { MdCancel } from "react-icons/md";
 import Spinner from "@/app/components/Spinner";
-import { Application, Term } from "@prisma/client";
+import { Application, Term, Type } from "@prisma/client";
 import Selector from "@/app/components/Selector";
 import { Category } from "@prisma/client";
 import DateSelector from "@/app/components/DateSelector";
 import FloatInput from "@/app/components/FloatInput";
-import { useColorModeValue } from '@chakra-ui/react';
 
 type ApplicationFormData = z.infer<typeof applicationSchema>;
 
@@ -39,12 +40,12 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
     reset,
     formState: { errors },
   } = useForm<ApplicationFormData>({
-    resolver: zodResolver(applicationSchema),
+    // resolver: zodResolver(applicationSchema),
   });
 
   const onSubmit: SubmitHandler<ApplicationFormData> = async (data) => {
+    console.log("submit data: ", data);
     try {
-      console.log("submit data: ", data);
       // setIsSubmitting(true);
       // // check if issue exists
       // if (application) {
@@ -129,7 +130,7 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
               />
               <FormHelperText>Select the category of job</FormHelperText>
               <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
-            </FormControl>
+            </FormControl> 
           </Box>
 
           <FloatInput
@@ -139,16 +140,16 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
             register={register}
             validationRules={{ required: "Job Title is required" }}
             error={errors.job_title}
-          />
+          /> 
 
-          <FloatInput
+           <FloatInput
             id="job_info"
             label="Job Info"
             inputAs="textarea"
             helperText="Enter the job description, skill requirment, etc"
             register={register}
             error={errors.job_info}
-          />
+          /> 
 
           <FloatInput
             id="track_link"
@@ -156,25 +157,25 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
             helperText="Enter the job tracking link"
             register={register}
             error={errors.track_link}
-          />
+          /> 
 
-          <Box
+           <Box
             display="flex"
             alignItems="center"
             justifyContent="space-around"
             gap="8"
             width="100%"
             mb="3"
-          >
-            <FloatInput
+          > 
+           <FloatInput
               id="position_code"
               label="Position Code"
               helperText="Enter the position/job code"
               register={register}
               error={errors.position_code}
-            />
+            /> 
 
-            <FloatInput
+          <FloatInput
               id="location"
               label="Location"
               helperText="Enter location of the job"
@@ -182,11 +183,10 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
               validationRules={{ required: "Location is required" }}
               error={errors.location}
             />
-          </Box>
+          </Box> 
 
-          <SimpleGrid columns={3} gap={5} width="100%" mb="3" 
-          >
-            <FormControl
+          <SimpleGrid columns={3} gap={5} width="100%" mb="3"> 
+          <FormControl
               variant="floating"
               id="type"
               isRequired
@@ -199,7 +199,7 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
                 render={({ field }) => (
                   <Selector
                     type="Type"
-                    items={Category}
+                    items={Type}
                     onValueChange={(value) => {
                       if (value !== "") {
                         field.onChange(value);
@@ -211,8 +211,8 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
               />
               <FormHelperText>Select the type of job</FormHelperText>
               <FormErrorMessage>{errors.type?.message}</FormErrorMessage>
-            </FormControl>
-
+            </FormControl> 
+          
             <FormControl
               variant="floating"
               id="term"
@@ -238,14 +238,15 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
               />
               <FormHelperText>Select your job term</FormHelperText>
               <FormErrorMessage>{errors.term?.message}</FormErrorMessage>
-            </FormControl>
-            
-            <FormControl
+            </FormControl> 
+
+          <FormControl
               variant="floating"
               id="year"
-              isRequired
               isInvalid={errors.year ? true : false}
-              as="fieldset" className="flex flex-col items-center justify-center"
+              as="fieldset"
+              isRequired
+              className="flex flex-col items-center justify-center"
             >
               <Controller
                 name="year"
@@ -261,9 +262,9 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
                   />
                 )}
               />
-                                  <FormHelperText>Select the year</FormHelperText>
+              <FormHelperText>Select the year</FormHelperText>
               <FormErrorMessage>{errors.year?.message}</FormErrorMessage>
-               </FormControl>
+            </FormControl> 
           </SimpleGrid>
         </Flex>
 

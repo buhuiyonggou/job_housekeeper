@@ -16,7 +16,7 @@ model User {
   email    String        @unique
   name     String?
   password String
-  posts    Application[]
+  // posts    Application[]
 }
 
 model Application {
@@ -31,12 +31,12 @@ model Application {
   term             Term
   year             Int
   location         String
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId           Int
+  // user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // userId           Int
   application_date DateTime @default(now())
   Status           Status   @default(Applied)
 
-  @@index([userId])
+  // @@index([userId])
 }
 
 enum Term {
