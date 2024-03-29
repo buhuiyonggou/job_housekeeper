@@ -25,7 +25,7 @@ model Application {
   category         Category
   job_title        String
   job_info         String?
-  tracking_link    String?
+  track_link    String?
   position_code  String?
   type             Type
   term             Term

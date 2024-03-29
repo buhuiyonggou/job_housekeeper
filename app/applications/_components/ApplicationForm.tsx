@@ -44,19 +44,19 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
   });
 
   const onSubmit: SubmitHandler<ApplicationFormData> = async (data) => {
-    console.log("submit data: ", data);
+    // console.log("submit data: ", data);
     try {
-      // setIsSubmitting(true);
-      // // check if issue exists
-      // if (application) {
-      //   await axios.patch(
-      //     `/api/applications/${application.application_id}`,
-      //     data
-      //   );
-      // } else {
-      //   await axios.post("/api/applications", data);
-      // }
-      // router.push("/applications/list");
+      setIsSubmitting(true);
+      // check if application exists
+      if (application) {
+        await axios.patch(
+          `/api/applications/${application.application_id}`,
+          data
+        );
+      } else {
+        await axios.post("/api/applications", data);
+      }
+      router.push("/applications/list");
       router.refresh();
     } catch (error) {
       setIsSubmitting(false);
@@ -154,7 +154,7 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
           <FloatInput
             id="track_link"
             label="Track Link"
-            helperText="Enter the job tracking link"
+            helperText="Enter the job track link"
             register={register}
             error={errors.track_link}
           /> 
