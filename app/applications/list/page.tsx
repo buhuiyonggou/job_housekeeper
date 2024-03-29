@@ -1,8 +1,19 @@
 import { Flex, Spacer } from "@chakra-ui/react";
 import React from "react";
 import AddApplication from "./AddApplication";
+import { Application, Status } from "@prisma/client";
 
-const Applications = () => {
+interface searchParamsProps {
+  status: Status;
+  orderBy: keyof Application;
+  page: string;
+}
+
+interface Props {
+  searchParams: searchParamsProps;
+}
+
+const Applications = async ( {searchParams} : Props) => {
   return (
     <Flex direction="row" gap="3">
       {/* <Selector /> */}

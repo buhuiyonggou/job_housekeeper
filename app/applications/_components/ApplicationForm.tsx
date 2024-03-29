@@ -6,8 +6,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormHelperText,
-  FormLabel,
-  Input,
   SimpleGrid,
 } from "@chakra-ui/react";
 import { Callout } from "@radix-ui/themes";
@@ -18,6 +16,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { applicationSchema } from "../../ValidationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import SimpleMDE from "react-simplemde-editor";
 import { z } from "zod";
 import { MdCancel } from "react-icons/md";
 import Spinner from "@/app/components/Spinner";
@@ -40,7 +39,7 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
     reset,
     formState: { errors },
   } = useForm<ApplicationFormData>({
-    // resolver: zodResolver(applicationSchema),
+    resolver: zodResolver(applicationSchema),
   });
 
   const onSubmit: SubmitHandler<ApplicationFormData> = async (data) => {
@@ -142,14 +141,25 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
             error={errors.job_title}
           /> 
 
-           <FloatInput
+           {/* <FloatInput
             id="job_info"
             label="Job Info"
             inputAs="textarea"
             helperText="Enter the job description, skill requirment, etc"
             register={register}
             error={errors.job_info}
-          /> 
+          />  */}
+          <Box width="100%" mb="3"
+          >
+          <Controller
+              name="job_info"
+              control={control}
+              defaultValue={application?.job_info ?? ""}
+              render={({ field }) => (
+                <SimpleMDE placeholder="Description" {...field} />
+              )}
+            />
+            </Box>
 
           <FloatInput
             id="track_link"
