@@ -2,7 +2,7 @@ import { Flex, Spacer } from "@chakra-ui/react";
 import prisma from "@/prisma/client";
 import React from "react";
 import AddApplication from "./AddApplication";
-import { Application, Status } from "@prisma/client";
+import { Status } from "@prisma/client";
 import ApplicationTable, { columnName, searchParamsProps } from "./ApplicationTable";
 
 interface Props {
@@ -31,7 +31,7 @@ const Applications = async ( {searchParams} : Props) => {
     take: pageSize,
   });
 
-  // const issueCount = await prisma.application.count({ where });
+  const applicationCount = await prisma.application.count({ where });
 
   return (
     <Flex direction="column" gap="3">
