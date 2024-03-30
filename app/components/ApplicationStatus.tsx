@@ -7,10 +7,10 @@ interface ApplicationStatusBadgeProps {
 }
 const statusMap: Record<
   Status,
-  { label: string; color: "red" | "violet" | "blue" | "green" }
+  { label: string; color: "red" | "blue" | "orange" | "green" }
 > = {
-  Applied: { label: "Applied", color: "violet" },
-  Interview: { label: "Interview", color: "blue" },
+  Applied: { label: "Applied", color: "blue" },
+  Interview: { label: "Interview", color: "orange" },
   Offer: { label: "Offer", color: "green" },
   Rejected: { label: "Rejected", color: "red" },
 };

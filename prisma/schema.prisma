@@ -34,7 +34,7 @@ model Application {
   // user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   // userId           Int
   application_date DateTime @default(now())
-  Status           Status   @default(Applied)
+  status           Status   @default(Applied)
 
   // @@index([userId])
 }

@@ -1,23 +1,43 @@
 import { Flex, Spacer } from "@chakra-ui/react";
+import prisma from "@/prisma/client";
 import React from "react";
 import AddApplication from "./AddApplication";
 import { Application, Status } from "@prisma/client";
-
-interface searchParamsProps {
-  status: Status;
-  orderBy: keyof Application;
-  page: string;
-}
+import ApplicationTable, { columnName, searchParamsProps } from "./ApplicationTable";
 
 interface Props {
   searchParams: searchParamsProps;
 }
 
 const Applications = async ( {searchParams} : Props) => {
+  const statuses = Object.values(Status);
+  const status = statuses.includes(searchParams.status)
+    ? searchParams.status
+    : undefined;
+
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
+  const where = { status };
+
+  const orderBy = columnName.includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: "asc" }
+    : undefined;
+
+  // fetch all applications from backend
+  const applications = await prisma.application.findMany({
+    where,
+    orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  // const issueCount = await prisma.application.count({ where });
+
   return (
-    <Flex direction="row" gap="3">
-      {/* <Selector /> */}
+    <Flex direction="column" gap="3">
       <AddApplication />
+      <Spacer />
+      <ApplicationTable applications={applications}  searchParams={searchParams}/>
     </Flex>
   );
 };
