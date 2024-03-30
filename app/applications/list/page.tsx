@@ -1,4 +1,4 @@
-import { Flex, Spacer } from "@chakra-ui/react";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
 import prisma from "@/prisma/client";
 import React from "react";
 import AddApplication from "./AddApplication";
@@ -35,7 +35,11 @@ const Applications = async ( {searchParams} : Props) => {
 
   return (
     <Flex direction="column" gap="3">
-      <AddApplication />
+      <Flex>
+        <Box>
+        <AddApplication />
+        </Box>
+      </Flex>
       <Spacer />
       <ApplicationTable applications={applications}  searchParams={searchParams}/>
     </Flex>

@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { Application, Status } from "@prisma/client";
-import { IoIosArrowRoundUp } from "react-icons/io";
+import { IoIosArrowDropup } from "react-icons/io";
 import React from "react";
 import ApplicationStatusBadge from "@/app/components/ApplicationStatus";
 
@@ -42,23 +42,23 @@ const ApplicationTable = ({ applications, searchParams }: Props) => {
         <Table variant="simple">
           <Thead>
             <Tr>
-            {columns.map((column) => (
+              {columns.map((column) => (
                 <Th key={column.value}>
-                    <NextLink
-                href={{
-                  query: {
-                    ...searchParams,
-                    orderBy: column.value,
-                  },
-                }}
-              >
-                {column.label}
-                {column.value === searchParams.orderBy && (
-                  <IoIosArrowRoundUp className="inline" />
-                )}
-              </NextLink>
+                  <NextLink
+                    href={{
+                      query: {
+                        ...searchParams,
+                        orderBy: column.value,
+                      },
+                    }}
+                  >
+                    {column.label}
+                    {column.value === searchParams.orderBy && (
+                      <IoIosArrowDropup className="inline" />
+                    )}
+                  </NextLink>
                 </Th>
-            ))}
+              ))}
             </Tr>
           </Thead>
           <Tbody>
