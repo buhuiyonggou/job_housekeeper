@@ -10,7 +10,7 @@ const ApplicationForm = dynamic(
   }
 );
 
-const NewIssuePage = () => {
+const NewApplicationPage = () => {
   return <ApplicationForm />;
 };
 

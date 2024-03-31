@@ -18,7 +18,9 @@ const ApplicationForm = dynamic(()=> import("../../_components/ApplicationForm")
 
 const EditApplicationForm = async ({params}: EditApplicationFormProps) => {
     const application = await prisma.application.findUnique({
-        where: {application_id: params.application_id}
+        where: {
+            application_id: parseInt(params.application_id),
+        }
     })
 
     if(!application) notFound();
