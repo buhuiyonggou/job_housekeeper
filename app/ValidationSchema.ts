@@ -13,3 +13,8 @@ export const applicationSchema = z.object({
   year: z.number().min(1, "Year is required."),
   location: z.string().min(1, "Location is required.").max(255),
 });
+
+export const patchApplicationSchema = applicationSchema.extend({
+  status: z.nativeEnum(Status),
+  assignedToUserId: z.string().min(1).max(255).optional().nullable(),
+});

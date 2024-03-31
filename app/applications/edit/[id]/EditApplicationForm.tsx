@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 import React from 'react'
 import prisma from "@/prisma/client";
-import ApplicationFormSkeleton from '../_components/ApplicationFormSkeleton'
+import ApplicationFormSkeleton from '../../_components/ApplicationFormSkeleton'
 import { notFound } from 'next/navigation';
 
 interface EditApplicationFormProps {
@@ -10,7 +10,7 @@ interface EditApplicationFormProps {
     }
 }
 
-const ApplicationForm = dynamic(()=> import("../_components/ApplicationForm"), {
+const ApplicationForm = dynamic(()=> import("../../_components/ApplicationForm"), {
     ssr: false,
     loading: () => <ApplicationFormSkeleton />
 

@@ -12,31 +12,32 @@ datasource db {
 }
 
 model User {
-  id       Int           @id @default(autoincrement())
-  email    String        @unique
-  name     String?
-  password String
-  // posts    Application[]
+  id                   String        @id @default(cuid())
+  email                String        @unique
+  name                 String?
+  password             String
+  assginedApplications Application[]
 }
 
 model Application {
-  application_id   String   @id @default(uuid())
+  application_id   Int      @id @default(autoincrement())
   company          String
   category         Category
   job_title        String
   job_info         String?
-  track_link    String?
-  position_code  String?
+  track_link       String?
+  position_code    String?
   type             Type
   term             Term
   year             Int
   location         String
-  // user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  // userId           Int
-  application_date DateTime @default(now())
   status           Status   @default(Applied)
+  application_date DateTime @default(now())
+  assignedToUserId String?  @db.VarChar(255)
+  assignedToUser   User?    @relation(fields: [assignedToUserId], references: [id])
 
-  // @@index([userId])
+  @@index([application_id])
+  @@index([assignedToUserId])
 }
 
 enum Term {

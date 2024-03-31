@@ -34,14 +34,6 @@ const newApplication = await prisma.application.create({
   return NextResponse.json(newApplication, { status: 201 });
 }
 
-export async function GET() {
-    try {
-      const applications = await prisma.application.findMany();
-      return NextResponse.json(applications);
-    } catch (error) {
-      console.error("Failed to fetch applications:", error);
-      return NextResponse.json({ error: "Failed to fetch applications" }, { status: 500 });
-    }
-  }
+
 
 
