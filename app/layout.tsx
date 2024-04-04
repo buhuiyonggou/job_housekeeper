@@ -7,6 +7,7 @@ import { fonts } from "./fonts";
 import { Providers } from "./Providers";
 import { ColorModeScript } from "@chakra-ui/react";
 import theme from "./theme";
+import { ApplicationProvider } from "./ApplicationProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -25,8 +26,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <QueryClientProvider>
+          <ApplicationProvider>
             <NavBar />
             <main className="p-4">{children}</main>
+            </ApplicationProvider>
           </QueryClientProvider>
         </Providers>
       </body>

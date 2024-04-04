@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   //   return NextResponse.json({}, { status: 401 });
   // }
   const body = await request.json();
-  console.log("nice body: ", body);
+
   const validation = applicationSchema.safeParse(body);
 
   if (!validation.success) {
@@ -34,6 +34,16 @@ const newApplication = await prisma.application.create({
   return NextResponse.json(newApplication, { status: 201 });
 }
 
+export async function GET(
+  request: NextRequest,
+) {
+  const application = await prisma.application.findMany({
+  });
 
+  if (!application) {
+    return NextResponse.json({ error: "Invalid application" }, { status: 404 });
+  }
 
+  return NextResponse.json(application);
+}
 

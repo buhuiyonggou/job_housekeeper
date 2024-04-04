@@ -59,15 +59,11 @@ const ApplicationForm = ({ application }: Props) => {
   });
 
   const onSubmit: SubmitHandler<ApplicationFormData> = async (data) => {
-    console.log("update data: ", data);
     try {
       setIsSubmitting(true);
       // check if application exists
       if (application) {
-        await axios.patch(
-          `/api/applications/${application.application_id}`,
-          data
-        );
+        await axios.patch(`/api/applications/${application.application_id}`, data);
       } else {
         await axios.post("/api/applications", data);
       }
@@ -104,212 +100,195 @@ const ApplicationForm = ({ application }: Props) => {
           >
             New Application
           </label>
+              <Box
+                display="flex"
+                justifyContent="space-around"
+                gap="8"
+                width="100%"
+                mb="3"
+              >
+                <FloatInput
+                  id="company"
+                  label="Company Name"
+                  helperText="Enter the company name"
+                  register={register}
+                  validationRules={{ required: "Company name is required" }}
+                  error={errors.company} />
 
-          <Box
-            display="flex"
-            justifyContent="space-around"
-            gap="8"
-            width="100%"
-            mb="3"
-          >
-            <FloatInput
-              id="company"
-              label="Company Name"
-              helperText="Enter the company name"
-              register={register}
-              validationRules={{ required: "Company name is required" }}
-              error={errors.company}
-            />
+                <FormControl
+                  variant="floating"
+                  id="category"
+                  isRequired
+                  isInvalid={errors.category ? true : false}
+                >
+                  <Controller
+                    name="category"
+                    control={control}
+                    render={({ field }) => (
+                      <Selector
+                        type="Category"
+                        items={Category}
+                        onValueChange={(value) => field.onChange(value)}
+                        value={field.value} />
+                    )} />
+                  <FormHelperText>Select the category of job</FormHelperText>
+                  <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
+                </FormControl>
+              </Box>
 
-            <FormControl
-              variant="floating"
-              id="category"
-              isRequired
-              isInvalid={errors.category ? true : false}
+              <FloatInput
+                id="job_title"
+                label="Job Title"
+                helperText="Enter the job title"
+                register={register}
+                validationRules={{ required: "Job Title is required" }}
+                error={errors.job_title} />
+
+              <Box width="100%" mb="3">
+                <Controller
+                  name="job_info"
+                  control={control}
+                  defaultValue={application?.job_info ?? ""}
+                  render={({ field }) => (
+                    <SimpleMDE placeholder="Description" {...field} />
+                  )} />
+              </Box>
+
+              <FloatInput
+                id="track_link"
+                label="Track Link"
+                helperText="Enter the job track link"
+                register={register}
+                error={errors.track_link} />
+
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-around"
+                gap="8"
+                width="100%"
+                mb="3"
+              >
+                <FloatInput
+                  id="position_code"
+                  label="Position Code"
+                  helperText="Enter the position/job code"
+                  register={register}
+                  error={errors.position_code} />
+
+                <FloatInput
+                  id="location"
+                  label="Location"
+                  helperText="Enter location of the job"
+                  register={register}
+                  validationRules={{ required: "Location is required" }}
+                  error={errors.location} />
+              </Box>
+
+              <SimpleGrid columns={3} gap={5} width="100%" mb="3">
+                <FormControl
+                  variant="floating"
+                  id="type"
+                  isRequired
+                  isInvalid={errors.type ? true : false}
+                  className="flex flex-col items-center justify-center"
+                >
+                  <Controller
+                    name="type"
+                    control={control}
+                    render={({ field }) => (
+                      <Selector
+                        type="Type"
+                        items={Type}
+                        onValueChange={(value) => {
+                          if (value !== "") {
+                            field.onChange(value);
+                          }
+                        } }
+                        value={field.value} />
+                    )} />
+                  <FormHelperText>Select the type of job</FormHelperText>
+                  <FormErrorMessage>{errors.type?.message}</FormErrorMessage>
+                </FormControl>
+
+                <FormControl
+                  variant="floating"
+                  id="term"
+                  isRequired
+                  isInvalid={errors.term ? true : false}
+                  className="flex flex-col items-center justify-center"
+                >
+                  <Controller
+                    name="term"
+                    control={control}
+                    render={({ field }) => (
+                      <Selector
+                        type="Term"
+                        items={Term}
+                        onValueChange={(value) => {
+                          if (value !== "") {
+                            field.onChange(value);
+                          }
+                        } }
+                        value={field.value} />
+                    )} />
+                  <FormHelperText>Select your job term</FormHelperText>
+                  <FormErrorMessage>{errors.term?.message}</FormErrorMessage>
+                </FormControl>
+
+                <FormControl
+                  variant="floating"
+                  id="year"
+                  isInvalid={errors.year ? true : false}
+                  as="fieldset"
+                  isRequired
+                  className="flex flex-col items-center justify-center"
+                >
+                  <Controller
+                    name="year"
+                    control={control}
+                    render={({
+                      field: { onChange, value }, fieldState: { error },
+                    }) => (
+                      <DateSelector
+                        selectedYear={value}
+                        onDateChange={(year) => onChange(year)} />
+                    )} />
+                  <FormHelperText>Select the year</FormHelperText>
+                  <FormErrorMessage>{errors.year?.message}</FormErrorMessage>
+                </FormControl>
+              </SimpleGrid>
+            </Flex><Flex
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              gap="3"
             >
-              <Controller
-                name="category"
-                control={control}
-                render={({ field }) => (
-                  <Selector
-                    type="Category"
-                    items={Category}
-                    onValueChange={(value) => field.onChange(value)}
-                    value={field.value}
-                  />
-                )}
-              />
-              <FormHelperText>Select the category of job</FormHelperText>
-              <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
-            </FormControl>
-          </Box>
+                <Button
+                  colorScheme="orange"
+                  size="md"
+                  onClick={backToApplicationList}
+                >
+                  Go Back
+                </Button>
+                <Button onClick={handleReset} colorScheme="red" size="md">
+                  Reset <MdCancel size="24px" />
+                </Button>
 
-          <FloatInput
-            id="job_title"
-            label="Job Title"
-            helperText="Enter the job title"
-            register={register}
-            validationRules={{ required: "Job Title is required" }}
-            error={errors.job_title}
-          />
-
-          <Box width="100%" mb="3">
-            <Controller
-              name="job_info"
-              control={control}
-              defaultValue={application?.job_info ?? ""}
-              render={({ field }) => (
-                <SimpleMDE placeholder="Description" {...field} />
-              )}
-            />
-          </Box>
-
-          <FloatInput
-            id="track_link"
-            label="Track Link"
-            helperText="Enter the job track link"
-            register={register}
-            error={errors.track_link}
-          />
-
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-around"
-            gap="8"
-            width="100%"
-            mb="3"
-          >
-            <FloatInput
-              id="position_code"
-              label="Position Code"
-              helperText="Enter the position/job code"
-              register={register}
-              error={errors.position_code}
-            />
-
-            <FloatInput
-              id="location"
-              label="Location"
-              helperText="Enter location of the job"
-              register={register}
-              validationRules={{ required: "Location is required" }}
-              error={errors.location}
-            />
-          </Box>
-
-          <SimpleGrid columns={3} gap={5} width="100%" mb="3">
-            <FormControl
-              variant="floating"
-              id="type"
-              isRequired
-              isInvalid={errors.type ? true : false}
-              className="flex flex-col items-center justify-center"
-            >
-              <Controller
-                name="type"
-                control={control}
-                render={({ field }) => (
-                  <Selector
-                    type="Type"
-                    items={Type}
-                    onValueChange={(value) => {
-                      if (value !== "") {
-                        field.onChange(value);
-                      }
-                    }}
-                    value={field.value}
-                  />
-                )}
-              />
-              <FormHelperText>Select the type of job</FormHelperText>
-              <FormErrorMessage>{errors.type?.message}</FormErrorMessage>
-            </FormControl>
-
-            <FormControl
-              variant="floating"
-              id="term"
-              isRequired
-              isInvalid={errors.term ? true : false}
-              className="flex flex-col items-center justify-center"
-            >
-              <Controller
-                name="term"
-                control={control}
-                render={({ field }) => (
-                  <Selector
-                    type="Term"
-                    items={Term}
-                    onValueChange={(value) => {
-                      if (value !== "") {
-                        field.onChange(value);
-                      }
-                    }}
-                    value={field.value}
-                  />
-                )}
-              />
-              <FormHelperText>Select your job term</FormHelperText>
-              <FormErrorMessage>{errors.term?.message}</FormErrorMessage>
-            </FormControl>
-
-            <FormControl
-              variant="floating"
-              id="year"
-              isInvalid={errors.year ? true : false}
-              as="fieldset"
-              isRequired
-              className="flex flex-col items-center justify-center"
-            >
-              <Controller
-                name="year"
-                control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <DateSelector
-                    selectedYear={value}
-                    onDateChange={(year) => onChange(year)}
-                  />
-                )}
-              />
-              <FormHelperText>Select the year</FormHelperText>
-              <FormErrorMessage>{errors.year?.message}</FormErrorMessage>
-            </FormControl>
-          </SimpleGrid>
-        </Flex>
-
-        <Flex
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          gap="3"
-        >
-          <Button
-            colorScheme="orange"
-            size="md"
-            onClick={backToApplicationList}
-          >
-            Go Back
-          </Button>
-          <Button onClick={handleReset} colorScheme="red" size="md">
-            Reset <MdCancel size="24px" />
-          </Button>
-
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            colorScheme="teal"
-            size="md"
-          >
-            {application ? "Update" : "Submit"}
-            {isSubmitting && <Spinner />}
-          </Button>
-        </Flex>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  colorScheme="teal"
+                  size="md"
+                >
+                  {application ? "Update" : "Submit"}
+                  {isSubmitting && <Spinner />}
+                </Button>
+              </Flex>
       </form>
     </div>
   );
 };
 
 export default ApplicationForm;
+

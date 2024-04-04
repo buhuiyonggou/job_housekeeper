@@ -14,7 +14,6 @@ export const applicationSchema = z.object({
   location: z.string().min(1, "Location is required.").max(255),
 });
 
-export const patchApplicationSchema = applicationSchema.extend({
+export const updateApplicationSchema = applicationSchema.extend({
   status: z.nativeEnum(Status),
-  assignedToUserId: z.string().min(1).max(255).optional().nullable(),
-});
+}).partial();

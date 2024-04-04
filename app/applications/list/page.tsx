@@ -5,6 +5,7 @@ import AddApplication from "./AddApplication";
 import { Status } from "@prisma/client";
 import ApplicationTable, { columnName, searchParamsProps } from "./ApplicationTable";
 
+
 interface Props {
   searchParams: searchParamsProps;
 }
@@ -23,15 +24,15 @@ const Applications = async ( {searchParams} : Props) => {
     ? { [searchParams.orderBy]: "asc" }
     : undefined;
 
-  // fetch all applications from backend
-  const applications = await prisma.application.findMany({
-    where,
-    orderBy,
-    skip: (page - 1) * pageSize,
-    take: pageSize,
-  });
+    const applications = await prisma.application.findMany({
+      where,
+      orderBy,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
 
-  const applicationCount = await prisma.application.count({ where });
+  
+  // const applicationCount = await prisma.application.count({ where });
 
   return (
     <Flex direction="column" gap="3">
