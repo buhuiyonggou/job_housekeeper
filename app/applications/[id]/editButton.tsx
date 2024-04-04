@@ -1,6 +1,5 @@
 import { Button } from '@chakra-ui/react';
 import Link from 'next/link';
-import React from 'react'
 import { BsPencilSquare } from "react-icons/bs";
 
 interface editApplicationProps {
@@ -9,13 +8,13 @@ interface editApplicationProps {
   content: string;
 }
 
-const editApplication = ({applicationId, colorScheme, content} : editApplicationProps) => {
+const editApplicationButton = ({applicationId, colorScheme, content} : editApplicationProps) => {
   return (
     <Button colorScheme = {colorScheme}>
-    <BsPencilSquare />
+    <BsPencilSquare className="mr-1"/>
     <Link href={`/applications/${applicationId}/edit`}>{content}</Link>
   </Button>
   )
 }
 
-export default editApplication
+export default editApplicationButton

@@ -1,20 +1,14 @@
 import React from "react";
 import {
   Box,
-  VStack,
-  Heading,
-  Text,
   Link,
-  Badge,
   Button,
   Flex,
 } from "@chakra-ui/react";
-import { CiLink } from "react-icons/ci";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
-import { Status } from "@prisma/client";
-import ReactMarkdown from "react-markdown";
-import EditApplication from "./editApplication";
+import EditApplicationButton from "./editButton";
+import ApplicationDetails from "./ApplicationDetails";
 
 interface ApplicationDetailsProps {
   params: {
@@ -22,7 +16,7 @@ interface ApplicationDetailsProps {
   };
 }
 
-const ApplicationDetails = async ({ params }: ApplicationDetailsProps) => {
+const ApplicationDetailPage = async ({ params }: ApplicationDetailsProps) => {
   if (isNaN(parseInt(params.id))) notFound();
 
   const application = await prisma.application.findUnique({
@@ -42,75 +36,12 @@ const ApplicationDetails = async ({ params }: ApplicationDetailsProps) => {
       borderRadius="lg"
       overflow="hidden"
     >
-      <VStack spacing={5} align="stretch">
-        <Heading as="h1" size="lg" className="text-center">
-          Application Details
-        </Heading>
-        <Text fontSize="lg">
-          <strong>Company:</strong>
-          {application.company}
-        </Text>
-        <Text fontSize="lg">
-          <strong>Status:</strong>{" "}
-          <Badge
-            colorScheme={getStatusColorScheme(application.status)}
-            fontSize="lg"
-            borderRadius="lg"
-          >
-            {application.status}
-          </Badge>
-        </Text>
-
-        <Text fontSize="lg">
-          <strong>Category:</strong> {application.category}
-        </Text>
-        <Text fontSize="lg">
-          <strong>Job Title:</strong> {application.job_title}
-        </Text>
-        <strong>Job Info:</strong>
-        <Box
-          borderWidth="1px"
-          borderRadius="lg"
-          p="5"
-          overflow="hidden"
-          className="prose"
-        >
-          <ReactMarkdown>{application.job_info}</ReactMarkdown>
-        </Box>
-        <Text fontSize="lg">
-          <strong>Track Link:</strong>{" "}
-          <Link href={application.track_link ?? ""} isExternal color="teal.500">
-            {" "}
-            <CiLink
-              style={{ display: application.track_link ? "inline" : "none" }}
-              size={20}
-              color="teal"
-            />
-            {application.track_link ?? ""}
-          </Link>
-        </Text>
-        <Text fontSize="lg">
-          <strong>Position Code:</strong> {application.position_code}
-        </Text>
-        <Text fontSize="lg">
-          <strong>Type:</strong> {application.type}
-        </Text>
-        <Text fontSize="lg">
-          <strong>Term:</strong> {application.term}
-        </Text>
-        <Text fontSize="lg">
-          <strong>Year:</strong> {application.year}
-        </Text>
-        <Text fontSize="lg">
-          <strong>Location:</strong> {application.location}
-        </Text>
-      </VStack>
-
+     <ApplicationDetails application={application} />
       <Flex direction={{ base: "column", md: "row" }}justify="space-around" mt="5" gap={{ base: 4, md: 0 }}>
         <Button colorScheme="orange" flex= {{md: "0.35"}}  height={{ base: "36px", md: "auto" }}>
           <Link href={`/applications/list`}>Go Back</Link>
         </Button>
-        <EditApplication
+        <EditApplicationButton
           applicationId={application.application_id}
           colorScheme="teal"
           content="Edit Application"
@@ -120,19 +51,6 @@ const ApplicationDetails = async ({ params }: ApplicationDetailsProps) => {
   );
 };
 
-function getStatusColorScheme(status: Status) {
-  switch (status) {
-    case Status.Applied:
-      return "blue";
-    case Status.Interview:
-      return "yellow";
-    case Status.Offer:
-      return "green";
-    case Status.Rejected:
-      return "red";
-    default:
-      return "gray";
-  }
-}
 
-export default ApplicationDetails;
+
+export default ApplicationDetailPage;

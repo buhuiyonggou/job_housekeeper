@@ -28,7 +28,11 @@ import FloatInput from "@/app/components/FloatInput";
 
 type ApplicationFormData = z.infer<typeof applicationSchema>;
 
-const ApplicationForm = ({ application }: { application?: Application }) => {
+interface Props {
+  application?: Application;
+}
+
+const ApplicationForm = ({ application }: Props) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -40,10 +44,22 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
     formState: { errors },
   } = useForm<ApplicationFormData>({
     resolver: zodResolver(applicationSchema),
+    defaultValues: {
+      company: application?.company ?? "",
+      category: application?.category ?? undefined,
+      job_title: application?.job_title ?? "",
+      job_info: application?.job_info ?? "",
+      track_link: application?.track_link ?? "",
+      location: application?.location ?? "",
+      position_code: application?.position_code ?? "",
+      type: application?.type ?? undefined,
+      term: application?.term ?? undefined,
+      year: application?.year ?? undefined,
+    },
   });
 
   const onSubmit: SubmitHandler<ApplicationFormData> = async (data) => {
-    // console.log("submit data: ", data);
+    console.log("update data: ", data);
     try {
       setIsSubmitting(true);
       // check if application exists
@@ -118,18 +134,14 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
                   <Selector
                     type="Category"
                     items={Category}
-                    onValueChange={(value) => {
-                      if (value !== "") {
-                        field.onChange(value);
-                      }
-                    }}
-                    defaultValue={""}
+                    onValueChange={(value) => field.onChange(value)}
+                    value={field.value}
                   />
                 )}
               />
               <FormHelperText>Select the category of job</FormHelperText>
               <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
-            </FormControl> 
+            </FormControl>
           </Box>
 
           <FloatInput
@@ -139,19 +151,10 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
             register={register}
             validationRules={{ required: "Job Title is required" }}
             error={errors.job_title}
-          /> 
+          />
 
-           {/* <FloatInput
-            id="job_info"
-            label="Job Info"
-            inputAs="textarea"
-            helperText="Enter the job description, skill requirment, etc"
-            register={register}
-            error={errors.job_info}
-          />  */}
-          <Box width="100%" mb="3"
-          >
-          <Controller
+          <Box width="100%" mb="3">
+            <Controller
               name="job_info"
               control={control}
               defaultValue={application?.job_info ?? ""}
@@ -159,7 +162,7 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
                 <SimpleMDE placeholder="Description" {...field} />
               )}
             />
-            </Box>
+          </Box>
 
           <FloatInput
             id="track_link"
@@ -167,25 +170,25 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
             helperText="Enter the job track link"
             register={register}
             error={errors.track_link}
-          /> 
+          />
 
-           <Box
+          <Box
             display="flex"
             alignItems="center"
             justifyContent="space-around"
             gap="8"
             width="100%"
             mb="3"
-          > 
-           <FloatInput
+          >
+            <FloatInput
               id="position_code"
               label="Position Code"
               helperText="Enter the position/job code"
               register={register}
               error={errors.position_code}
-            /> 
+            />
 
-          <FloatInput
+            <FloatInput
               id="location"
               label="Location"
               helperText="Enter location of the job"
@@ -193,10 +196,10 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
               validationRules={{ required: "Location is required" }}
               error={errors.location}
             />
-          </Box> 
+          </Box>
 
-          <SimpleGrid columns={3} gap={5} width="100%" mb="3"> 
-          <FormControl
+          <SimpleGrid columns={3} gap={5} width="100%" mb="3">
+            <FormControl
               variant="floating"
               id="type"
               isRequired
@@ -215,14 +218,14 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
                         field.onChange(value);
                       }
                     }}
-                    defaultValue={""}
+                    value={field.value}
                   />
                 )}
               />
               <FormHelperText>Select the type of job</FormHelperText>
               <FormErrorMessage>{errors.type?.message}</FormErrorMessage>
-            </FormControl> 
-          
+            </FormControl>
+
             <FormControl
               variant="floating"
               id="term"
@@ -242,15 +245,15 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
                         field.onChange(value);
                       }
                     }}
-                    defaultValue={""}
+                    value={field.value}
                   />
                 )}
               />
               <FormHelperText>Select your job term</FormHelperText>
               <FormErrorMessage>{errors.term?.message}</FormErrorMessage>
-            </FormControl> 
+            </FormControl>
 
-          <FormControl
+            <FormControl
               variant="floating"
               id="year"
               isInvalid={errors.year ? true : false}
@@ -261,7 +264,6 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
               <Controller
                 name="year"
                 control={control}
-                defaultValue={new Date().getFullYear()}
                 render={({
                   field: { onChange, value },
                   fieldState: { error },
@@ -274,7 +276,7 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
               />
               <FormHelperText>Select the year</FormHelperText>
               <FormErrorMessage>{errors.year?.message}</FormErrorMessage>
-            </FormControl> 
+            </FormControl>
           </SimpleGrid>
         </Flex>
 

@@ -4,20 +4,22 @@ import React from "react";
 interface Props {
   type: string;
   items: Record<string, string>;
-  defaultValue: string;
+  value?: string;  
   onValueChange: (value: string) => void;
 }
 
-const Selector = ({ type, items, onValueChange }: Props) => {
+const Selector = ({ type, items, value, onValueChange }: Props) => {
   return (
     <Stack spacing={3}>
       <Select
-        defaultValue=""
         isRequired
-        onChange={(e) => onValueChange(e.target.value)}
+        value={value} 
+        onChange={(e) => {
+          onValueChange(e.target.value);
+        }}
       >
-        <option value="" disabled style={{ color: 'red' }}>
-          Select {type} 
+        <option value="" disabled style={{ color: "red" }}>
+          Select {type}
         </option>
         {Object.entries(items).map(([value, name]) => (
           <option key={value} value={value}>
