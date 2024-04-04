@@ -67,8 +67,15 @@ const ApplicationDetails = async ({ params }: ApplicationDetailsProps) => {
         <Text fontSize="lg">
           <strong>Job Title:</strong> {application.job_title}
         </Text>
-        <strong>Job Info:</strong><Box borderWidth="1px" borderRadius="lg" p="5" overflow="hidden" className="prose">
-         <ReactMarkdown>{application.job_info}</ReactMarkdown>
+        <strong>Job Info:</strong>
+        <Box
+          borderWidth="1px"
+          borderRadius="lg"
+          p="5"
+          overflow="hidden"
+          className="prose"
+        >
+          <ReactMarkdown>{application.job_info}</ReactMarkdown>
         </Box>
         <Text fontSize="lg">
           <strong>Track Link:</strong>{" "}
@@ -99,12 +106,16 @@ const ApplicationDetails = async ({ params }: ApplicationDetailsProps) => {
         </Text>
       </VStack>
 
-    <Flex justify="space-around" mt="5">
-        <Button colorScheme="orange" flex="0.35">
-            <Link href={`/applications/list`}>Go Back</Link>
+      <Flex direction={{ base: "column", md: "row" }}justify="space-around" mt="5" gap={{ base: 4, md: 0 }}>
+        <Button colorScheme="orange" flex= {{md: "0.35"}}  height={{ base: "36px", md: "auto" }}>
+          <Link href={`/applications/list`}>Go Back</Link>
         </Button>
-        <EditApplication applicationId={application.application_id} colorScheme="teal" content="Edit Application"/>
-    </Flex>
+        <EditApplication
+          applicationId={application.application_id}
+          colorScheme="teal"
+          content="Edit Application"
+        />
+      </Flex>
     </Box>
   );
 };
