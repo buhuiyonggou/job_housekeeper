@@ -13,6 +13,8 @@ import { CiLink } from "react-icons/ci";
 import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
 import { Status } from "@prisma/client";
+import ReactMarkdown from "react-markdown";
+import EditApplication from "./editApplication";
 
 interface ApplicationDetailsProps {
   params: {
@@ -65,9 +67,9 @@ const ApplicationDetails = async ({ params }: ApplicationDetailsProps) => {
         <Text fontSize="lg">
           <strong>Job Title:</strong> {application.job_title}
         </Text>
-        <Text fontSize="lg">
-          <strong>Job Info:</strong> {application.job_info}
-        </Text>
+        <strong>Job Info:</strong><Box borderWidth="1px" borderRadius="lg" p="5" overflow="hidden" className="prose">
+         <ReactMarkdown>{application.job_info}</ReactMarkdown>
+        </Box>
         <Text fontSize="lg">
           <strong>Track Link:</strong>{" "}
           <Link href={application.track_link ?? ""} isExternal color="teal.500">
@@ -97,14 +99,12 @@ const ApplicationDetails = async ({ params }: ApplicationDetailsProps) => {
         </Text>
       </VStack>
 
-      <Flex justify="space-around" mt="5">
-        <Button colorScheme="orange" flex="0.25">
+    <Flex justify="space-around" mt="5">
+        <Button colorScheme="orange" flex="0.35">
             <Link href={`/applications/list`}>Go Back</Link>
         </Button>
-        <Button colorScheme="teal" flex="0.25">
-          Edit
-        </Button>
-      </Flex>
+        <EditApplication applicationId={application.application_id} colorScheme="teal" content="Edit Application"/>
+    </Flex>
     </Box>
   );
 };

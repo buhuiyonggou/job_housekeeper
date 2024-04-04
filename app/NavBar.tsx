@@ -1,37 +1,57 @@
 "use client";
 
-import Skeleton from "../app/components/Skeleton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { MdDashboard } from "react-icons/md";
 import { AiFillFolder } from "react-icons/ai";
 import { MdWork } from "react-icons/md";
-
 import classnames from "classnames";
-import { Container, Flex } from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { Box, Container, Flex, IconButton, useBreakpointValue } from "@chakra-ui/react";
 import "./globals.css";
 import ColorModeSwitch from "./components/ColorModeSwitch";
 
 const NavBar = () => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
   return (
-    <nav className="border-b mb-5 px-5 py-5">
-      <Flex justify="between">
+    <Box as="nav" className="border-b mb-5 px-5 py-5">
+      <Flex justify="between" align="center">
         <Container maxW="container.xl">
-          <Flex justify="between">
-            <Flex align="center" gap="3">
-              <NavLinks />
-            </Flex>
+          <Flex justify="between" align="center">
+            {isMobile && (
+              <IconButton
+                aria-label="Toggle navigation"
+                icon={isNavOpen ? <CloseIcon /> : <HamburgerIcon />}
+                onClick={() => setIsNavOpen(!isNavOpen)}
+              />
+            )}
+            {/* Render NavLinks for desktop or when the nav is not open in mobile */}
+            {!isMobile && <NavLinks />}
           </Flex>
         </Container>
         <ColorModeSwitch />
       </Flex>
-    </nav>
+
+      {isMobile && isNavOpen && (
+        <Box pb={4} display={{ md: "none" }}>
+          <NavLinks isNavOpen={isNavOpen} isMobile={isMobile} />
+        </Box>
+      )}
+    </Box>
   );
 };
 
-const NavLinks = () => {
+const NavLinks = (
+  {isNavOpen, isMobile}: {isNavOpen?: boolean; isMobile?: boolean}
+) => {
   const currentPath = usePathname();
+  const ulClass = classnames("font-bold", {
+    "flex flex-col space-y-4 mt-4": isNavOpen && isMobile, 
+    "flex flex-row items-center w-full space-x-6": !isNavOpen || !isMobile, 
+  });
 
   const links = [
     { label: "Dashboard", href: "/", icon: <MdDashboard size="32px" /> },
@@ -48,7 +68,7 @@ const NavLinks = () => {
   ];
 
   return (
-    <ul className="flex items-center w-full space-x-6 font-bold">
+    <ul className= {ulClass} >
       {links.map((link) => (
         <li key={link.href}>
           <Link

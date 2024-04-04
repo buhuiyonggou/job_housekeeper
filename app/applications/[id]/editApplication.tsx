@@ -3,12 +3,17 @@ import Link from 'next/link';
 import React from 'react'
 import { BsPencilSquare } from "react-icons/bs";
 
+interface editApplicationProps {
+  applicationId: number;
+  colorScheme?: string;
+  content: string;
+}
 
-const editApplication = ({applicationId} : {applicationId: number}) => {
+const editApplication = ({applicationId, colorScheme, content} : editApplicationProps) => {
   return (
-    <Button>
+    <Button colorScheme = {colorScheme}>
     <BsPencilSquare />
-    <Link href={`/applications/edit/${applicationId}`}>Edit My Application</Link>
+    <Link href={`/applications/${applicationId}/edit`}>{content}</Link>
   </Button>
   )
 }

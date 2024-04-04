@@ -1,4 +1,3 @@
-import React from "react";
 import dynamic from "next/dynamic";
 import ApplicationFormSkeleton from "../_components/ApplicationFormSkeleton";
 
@@ -14,4 +13,4 @@ const NewApplicationPage = () => {
   return <ApplicationForm />;
 };
 
-export default ApplicationForm;
+export default NewApplicationPage;
