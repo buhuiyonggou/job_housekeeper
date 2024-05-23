@@ -23,16 +23,13 @@ const Applications = async ( {searchParams} : Props) => {
   const orderBy = columnName.includes(searchParams.orderBy)
     ? { [searchParams.orderBy]: "asc" }
     : undefined;
-
-    const applications = await prisma.application.findMany({
-      where,
-      orderBy,
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-    });
-
   
-  // const applicationCount = await prisma.application.count({ where });
+  const applications = await prisma.application.findMany({
+    where,
+    orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
 
   return (
     <Flex direction="column" gap="3">

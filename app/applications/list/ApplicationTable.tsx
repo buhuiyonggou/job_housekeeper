@@ -13,7 +13,7 @@ import NextLink from "next/link";
 import { Application, Status } from "@prisma/client";
 import { IoIosArrowDropup } from "react-icons/io";
 import React from "react";
-import ApplicationStatusBadge from "../../components/ApplicationStatusBadge"
+import { ApplicationStatusBadge } from "@/app/components";
 
 interface Props {
   applications: Application[];
@@ -81,10 +81,7 @@ const ApplicationTable = ({ applications, searchParams }: Props) => {
                 <Td className="hidden md:table-cell">{application.term}</Td>
                 <Td className="hidden md:table-cell">{application.year}</Td>
                 <Td className="hidden md:table-cell">
-                  <ApplicationStatusBadge
-                    application={application}
-                    editable={true}
-                  />
+                  <ApplicationStatusBadge application={application} />
                 </Td>
               </Tr>
             ))}

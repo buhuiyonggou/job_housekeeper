@@ -1,8 +1,6 @@
 import {
   Flex,
-  HStack,
   IconButton,
-  Switch,
   Text,
   useColorMode,
 } from "@chakra-ui/react";

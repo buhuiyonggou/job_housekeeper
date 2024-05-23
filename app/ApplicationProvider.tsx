@@ -40,8 +40,9 @@ export const ApplicationProvider: React.FC<ApplicationProviderProps> = ({
 }) => {
   const [applications, setApplications] = useState<Application[]>([]);
 
+  // Fetch applications from the API on component mount
   useEffect(() => {
-    // Function to fetch applications from your API
+    // Function to fetch applications from the API
     const fetchApplications = async () => {
         const response = await axios.get("/api/applications");
         setApplications(response.data);
@@ -54,7 +55,6 @@ export const ApplicationProvider: React.FC<ApplicationProviderProps> = ({
     applicationId: number,
     newStatus: Status
   ): Promise<void> => {
-    // Update the application status in the backend
     await axios.patch(`/api/applications/${applicationId}`, {
       status: newStatus,
     });

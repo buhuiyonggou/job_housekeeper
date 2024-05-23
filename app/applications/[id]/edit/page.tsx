@@ -22,7 +22,7 @@ const EditIssuePage = async ({ params }: EditApplicationPageProps) => {
 
   if (!application) notFound();
 
-  return <ApplicationForm application={application} />;
+  return <ApplicationForm application={application} editStatus/>;
 };
 
 export default EditIssuePage;

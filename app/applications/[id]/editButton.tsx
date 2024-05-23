@@ -8,7 +8,7 @@ interface editApplicationProps {
   content: string;
 }
 
-const editApplicationButton = ({applicationId, colorScheme, content} : editApplicationProps) => {
+const EditApplicationButton = ({applicationId, colorScheme, content} : editApplicationProps) => {
   return (
     <Button colorScheme = {colorScheme}>
     <BsPencilSquare className="mr-1"/>
@@ -17,4 +17,4 @@ const editApplicationButton = ({applicationId, colorScheme, content} : editAppli
   )
 }
 
-export default editApplicationButton
+export default EditApplicationButton

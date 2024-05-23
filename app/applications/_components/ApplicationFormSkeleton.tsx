@@ -1,4 +1,4 @@
-import { Box, Flex, SimpleGrid, Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react';
+import { Box, Flex, SimpleGrid, Skeleton, SkeletonCircle } from '@chakra-ui/react';
 import React from 'react';
 
 const ApplicationFormSkeleton = () => {

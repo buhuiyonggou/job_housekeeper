@@ -7,6 +7,7 @@ import {
   FormErrorMessage,
   FormHelperText,
   SimpleGrid,
+  Spacer,
 } from "@chakra-ui/react";
 import { Callout } from "@radix-ui/themes";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
@@ -25,14 +26,16 @@ import Selector from "@/app/components/Selector";
 import { Category } from "@prisma/client";
 import DateSelector from "@/app/components/DateSelector";
 import FloatInput from "@/app/components/FloatInput";
+import StatusEditor from "@/app/components/StatusEditor";
 
 type ApplicationFormData = z.infer<typeof applicationSchema>;
 
 interface Props {
   application?: Application;
+  editStatus?: boolean;
 }
 
-const ApplicationForm = ({ application }: Props) => {
+const ApplicationForm = ({ application,  editStatus}: Props) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -94,12 +97,24 @@ const ApplicationForm = ({ application }: Props) => {
       )}
       <form className="space-y-8" onSubmit={handleSubmit(onSubmit)}>
         <Flex flexWrap="wrap" gap="32px">
-          <label
-            htmlFor=""
-            className="font-sans text-2xl font-bold text-center w-full"
-          >
-            New Application
-          </label>
+        <Flex alignItems="center" width="100%">
+          <Spacer />
+          <Spacer />
+          <Spacer />
+            <label
+              htmlFor=""
+              className="font-sans text-2xl font-bold"
+            >
+              New Application
+            </label>
+            <Spacer />
+            {(editStatus && application) && (
+              <Box ml="auto">
+                <StatusEditor application={application} />
+              </Box>
+            )}
+          </Flex>
+          
               <Box
                 display="flex"
                 justifyContent="space-around"
