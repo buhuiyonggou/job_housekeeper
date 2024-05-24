@@ -96,6 +96,7 @@ export interface searchParamsProps {
   status: Status;
   orderBy: keyof Application;
   page: string;
+  query?: string;
 }
 
 export default ApplicationTable;
