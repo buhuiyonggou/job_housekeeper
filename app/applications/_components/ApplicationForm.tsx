@@ -98,8 +98,7 @@ const ApplicationForm = ({ application,  editStatus}: Props) => {
       <form className="space-y-8" onSubmit={handleSubmit(onSubmit)}>
         <Flex flexWrap="wrap" gap="32px">
         <Flex alignItems="center" width="100%">
-          <Spacer />
-          <Spacer />
+        {(editStatus && application) && (<Spacer />)}
           <Spacer />
             <label
               htmlFor=""

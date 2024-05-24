@@ -4,6 +4,7 @@ import React from "react";
 import AddApplication from "./AddApplication";
 import { Status } from "@prisma/client";
 import ApplicationTable, { columnName, searchParamsProps } from "./ApplicationTable";
+import Pagination from "@/app/components/Pagination";
 
 
 interface Props {
@@ -17,7 +18,7 @@ const Applications = async ( {searchParams} : Props) => {
     : undefined;
 
   const page = parseInt(searchParams.page) || 1;
-  const pageSize = 10;
+  const pageSize = 8;
   const where = { status };
 
   const orderBy = columnName.includes(searchParams.orderBy)
@@ -31,6 +32,8 @@ const Applications = async ( {searchParams} : Props) => {
     take: pageSize,
   });
 
+  const appsCount = await prisma.application.count({ where });
+
   return (
     <Flex direction="column" gap="3">
       <Flex>
@@ -40,6 +43,11 @@ const Applications = async ( {searchParams} : Props) => {
       </Flex>
       <Spacer />
       <ApplicationTable applications={applications}  searchParams={searchParams}/>
+      <Pagination
+        TotalItems={appsCount}
+        PageSize={pageSize}
+        CurrentPage={page}
+      />
     </Flex>
   );
 };

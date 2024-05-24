@@ -14,9 +14,10 @@ const statusOptions: Record<Status, { label: string; color: string }> = {
 
 interface Props {
   application: Application;
+  placeholder?: string;
 }
 
-const StatusEditor = ({ application }: Props) => {
+const StatusEditor = ({ application, placeholder }: Props) => {
   const [currentStatus, setCurrentStatus] = useState<Status>(
     application.status
   );
@@ -34,6 +35,7 @@ const StatusEditor = ({ application }: Props) => {
     <Select
       defaultValue={currentStatus}
       borderColor='transparent'
+      placeholder={placeholder}
       onChange={(e) => handleStatusChange(e.target.value as Status)}
     >
       {Object.entries(statusOptions).map(([value, { label }]) => (
