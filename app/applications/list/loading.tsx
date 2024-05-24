@@ -1,13 +1,28 @@
 import React from "react";
-import { Skeleton, Table, TableContainer, Tbody, Th, Thead, Tr, Td } from "@chakra-ui/react";
+import { Skeleton, Table, TableContainer, Tbody, Th, Thead, Tr, Td, Box, Button, Flex, Input, InputGroup, InputLeftElement, Spacer } from "@chakra-ui/react";
 import AddApplication from "./AddApplication";
+import { pageSize } from "./page";
+import { SearchIcon } from "@chakra-ui/icons";
 
 const LoadingPage = () => {
-  const placeholders = [1, 2, 3, 4, 5]; 
-
+  const placeholders = []
+  for (let i = 0; i < pageSize; i++) {
+    placeholders.push(i);
+  }
   return (
     <div>
-      <AddApplication />
+      <Flex direction="column" gap="3">
+        <Box display='flex' gap={6} alignItems='baseline'>
+          <Skeleton height="40px" width="150px" mb="4">
+            <AddApplication />
+          </Skeleton>
+            <Skeleton height="40px" width="300px">
+              <Input/>
+            </Skeleton>
+        </Box>
+      </Flex>
+
+      <Spacer />
       <TableContainer>
         <Table variant="simple">
           <Thead>
@@ -22,7 +37,7 @@ const LoadingPage = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {placeholders.map((placeholder, index) => (
+            {placeholders.map((_, index) => (
               <Tr key={index}>
                 <Td><Skeleton height="20px" className="hidden md:table-cell"/></Td>
                 <Td><Skeleton height="20px" className="hidden md:table-cell"/></Td>

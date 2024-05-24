@@ -14,7 +14,6 @@ interface Props {
 const Applications = async ({ searchParams }: Props) => {
   const query = searchParams?.query || "";
   const page = parseInt(searchParams.page) || 1;
-  const pageSize = 8;
 
   const statuses = Object.values(Status);
 
@@ -48,12 +47,10 @@ const Applications = async ({ searchParams }: Props) => {
 
   return (
     <Flex direction="column" gap="3">
-      <Flex>
         <Box display='flex' gap={6} alignItems='baseline'>
           <AddApplication />
           <SearchBar placeholder="Search applications..." />
         </Box>
-      </Flex>
       <Spacer />
       <ApplicationTable
         applications={applications}
@@ -72,5 +69,7 @@ export const metadata = {
   title: "Applications | Application List",
   description: "All Applications Page",
 };
+
+export const pageSize = 8;
 
 export default Applications;
