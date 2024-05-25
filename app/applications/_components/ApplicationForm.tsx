@@ -48,16 +48,16 @@ const ApplicationForm = ({ application,  editStatus}: Props) => {
   } = useForm<ApplicationFormData>({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
-      company: application?.company ?? "",
-      category: application?.category ?? undefined,
-      job_title: application?.job_title ?? "",
-      job_info: application?.job_info ?? "",
-      track_link: application?.track_link ?? "",
-      location: application?.location ?? "",
-      position_code: application?.position_code ?? "",
-      type: application?.type ?? undefined,
-      term: application?.term ?? undefined,
-      year: application?.year ?? undefined,
+        company: application?.company ?? "",
+        category: application?.category ?? Category.Software,
+        job_title: application?.job_title ?? "",
+        job_info: application?.job_info ?? "",
+        track_link: application?.track_link ?? "",
+        location: application?.location ?? "",
+        position_code: application?.position_code ?? "",
+        type: application?.type ?? Type.Full_Time,
+        term: application?.term ?? Term.Fall,
+        year: application?.year ?? new Date().getFullYear(),
     },
   });
 
@@ -132,7 +132,7 @@ const ApplicationForm = ({ application,  editStatus}: Props) => {
                 <FormControl
                   variant="floating"
                   id="category"
-                  isRequired
+                  // isRequired
                   isInvalid={errors.category ? true : false}
                 >
                   <Controller
@@ -203,7 +203,7 @@ const ApplicationForm = ({ application,  editStatus}: Props) => {
                 <FormControl
                   variant="floating"
                   id="type"
-                  isRequired
+                  // isRequired
                   isInvalid={errors.type ? true : false}
                   className="flex flex-col items-center justify-center"
                 >
@@ -228,7 +228,7 @@ const ApplicationForm = ({ application,  editStatus}: Props) => {
                 <FormControl
                   variant="floating"
                   id="term"
-                  isRequired
+                  // isRequired
                   isInvalid={errors.term ? true : false}
                   className="flex flex-col items-center justify-center"
                 >
@@ -255,7 +255,7 @@ const ApplicationForm = ({ application,  editStatus}: Props) => {
                   id="year"
                   isInvalid={errors.year ? true : false}
                   as="fieldset"
-                  isRequired
+                  // isRequired
                   className="flex flex-col items-center justify-center"
                 >
                   <Controller
@@ -305,4 +305,3 @@ const ApplicationForm = ({ application,  editStatus}: Props) => {
 };
 
 export default ApplicationForm;
-

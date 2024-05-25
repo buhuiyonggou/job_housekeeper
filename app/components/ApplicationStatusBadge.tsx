@@ -1,14 +1,7 @@
 "use client";
 import { Badge, Button, Link } from "@chakra-ui/react";
-import { Application, Status } from "@prisma/client";
-
-const statusOptions: Record<Status, { label: string; color: string }> = {
-  Applied: { label: "Applied", color: "yellow" },
-  Interview: { label: "Interview", color: "blue" },
-  Offer: { label: "Offer", color: "green" },
-  Rejected: { label: "Rejected", color: "red" },
-  Pending: { label: "Pending", color: "gray" },
-};
+import { Application } from "@prisma/client";
+import {statusOptions} from "@/app/components/StatusEditor";
 
 interface Props {
   application: Application;

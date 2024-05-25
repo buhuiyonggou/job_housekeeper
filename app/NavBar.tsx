@@ -54,16 +54,16 @@ const NavLinks = (
   });
 
   const links = [
-    { label: "Dashboard", href: "/", icon: <MdDashboard size="32px" /> },
+    { label: "Findings", href: "/", icon: <MdWork size="32px" /> },
     {
       label: "Applications",
       href: "/applications/list",
       icon: <AiFillFolder size="32px" />,
     },
     {
-      label: "Collections",
-      href: "/collections/list",
-      icon: <MdWork size="32px" />,
+      label: "Analysis",
+      href: "/analysis",
+      icon: <MdDashboard size="32px" />
     },
   ];
 

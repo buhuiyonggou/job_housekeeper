@@ -1,14 +1,11 @@
-import React from "react";
-import {
-  Box,
-  Link,
-  Button,
-  Flex,
-} from "@chakra-ui/react";
-import prisma from "@/prisma/client";
-import { notFound } from "next/navigation";
-import EditApplicationButton from "./editButton";
+"use client";
+import React, { useState, useEffect } from "react";
+import { Box } from "@chakra-ui/react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import ApplicationDetails from "./ApplicationDetails";
+import ManipulationButtons from "./ManipulationButtons";
+import ApplicationFormSkeleton from "../_components/ApplicationFormSkeleton";
 
 interface ApplicationDetailsProps {
   params: {
@@ -16,16 +13,49 @@ interface ApplicationDetailsProps {
   };
 }
 
-const ApplicationDetailPage = async ({ params }: ApplicationDetailsProps) => {
-  if (isNaN(parseInt(params.id))) notFound();
+const ApplicationDetailPage = ({ params }: ApplicationDetailsProps) => {
+  const router = useRouter();
 
-  const application = await prisma.application.findUnique({
-    where: {
-      application_id: parseInt(params.id),
-    },
-  });
+  const [application, setApplication] = useState(null);
+  const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  if (!application) notFound();
+  useEffect(() => {
+    const fetchApplication = async () => {
+      try {
+        const res = await axios.get(`/api/applications/${params.id}`);
+        if (res.status === 404) {
+          router.push("/applications/list");
+        } else {
+          setApplication(res.data);
+        }
+      } catch (error) {
+        console.error(error);
+        router.push("/applications/list");
+      }
+    };
+
+    fetchApplication();
+  }, [params.id]);
+
+  const handleDelete = async () => {
+    if (isDeleteConfirmed) {
+      setIsLoading(true);
+      try {
+        await axios.delete(`/api/applications/${params.id}`);
+        router.push("/applications/list");
+      } catch (error) {
+        console.error("Failed to delete the application", error);
+        setIsLoading(false);
+      }
+    } else {
+      setIsDeleteConfirmed(true);
+    }
+  };
+
+  if (!application) {
+    return <ApplicationFormSkeleton />;
+  }
 
   return (
     <Box
@@ -36,21 +66,17 @@ const ApplicationDetailPage = async ({ params }: ApplicationDetailsProps) => {
       borderRadius="lg"
       overflow="hidden"
     >
-     <ApplicationDetails application={application} />
-      <Flex direction={{ base: "column", md: "row" }}justify="space-around" mt="5" gap={{ base: 4, md: 0 }}>
-        <Button colorScheme="orange" flex= {{md: "0.35"}}  height={{ base: "36px", md: "auto" }}>
-          <Link href={`/applications/list`}>Go Back</Link>
-        </Button>
-        <EditApplicationButton
-          applicationId={application.application_id}
-          colorScheme="teal"
-          content="Edit Application"
-        />
-      </Flex>
+      <ApplicationDetails application={application} />
+      <ManipulationButtons 
+        application={application} 
+        isDeleteConfirmed={isDeleteConfirmed} 
+        isLoading={isLoading} 
+        deleteFunction={handleDelete} 
+      />
     </Box>
   );
 };
 
-
-
 export default ApplicationDetailPage;
+
+

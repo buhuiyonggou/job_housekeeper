@@ -4,14 +4,6 @@ import { Application, Status } from "@prisma/client";
 import React, { useState } from "react";
 import { useApplications } from "../ApplicationProvider";
 
-const statusOptions: Record<Status, { label: string; color: string }> = {
-  Applied: { label: "Applied", color: "yellow" },
-  Interview: { label: "Interview", color: "blue" },
-  Offer: { label: "Offer", color: "green" },
-  Rejected: { label: "Rejected", color: "red" },
-  Pending: { label: "Pending", color: "gray" },
-};
-
 interface Props {
   application: Application;
   placeholder?: string;
@@ -46,6 +38,14 @@ const StatusEditor = ({ application, placeholder }: Props) => {
     </Select>
     </Badge>
   );
+};
+
+export const statusOptions: Record<Status, { label: string; color: string }> = {
+  Applied: { label: "Applied", color: "yellow" },
+  Interview: { label: "Interview", color: "blue" },
+  Offer: { label: "Offer", color: "green" },
+  Rejected: { label: "Rejected", color: "red" },
+  Updating: { label: "Updating", color: "gray" },
 };
 
 export default StatusEditor;

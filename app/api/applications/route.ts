@@ -22,7 +22,7 @@ const newApplication = await prisma.application.create({
             category: body.category,
             job_title: body.job_title,
             job_info: body.job_info,
-            track_link: body.track_link,
+            track_link: body?.track_link,
             position_code: body.position_code,
             type: body.type,
             term: body.term,

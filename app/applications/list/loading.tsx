@@ -1,8 +1,8 @@
 import React from "react";
-import { Skeleton, Table, TableContainer, Tbody, Th, Thead, Tr, Td, Box, Button, Flex, Input, InputGroup, InputLeftElement, Spacer } from "@chakra-ui/react";
+import { Skeleton, Table, TableContainer, Tbody, Th, Thead, Tr, Td, Box, Flex, Input, Spacer } from "@chakra-ui/react";
 import AddApplication from "./AddApplication";
 import { pageSize } from "./page";
-import { SearchIcon } from "@chakra-ui/icons";
+
 
 const LoadingPage = () => {
   const placeholders = []
