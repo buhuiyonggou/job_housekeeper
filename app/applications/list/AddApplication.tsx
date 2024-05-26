@@ -1,9 +1,10 @@
-import { Button, ButtonGroup, Link } from "@chakra-ui/react";
+import {  Button, ButtonGroup, Link } from "@chakra-ui/react";
 import React from "react";
+
 
 const AddApplication = () => {
   return (
-    <ButtonGroup>
+    <ButtonGroup >
       <Button colorScheme="teal" size="md">
         <Link href="/applications/new">Add Application</Link>
       </Button>

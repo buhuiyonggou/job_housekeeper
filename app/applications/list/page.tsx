@@ -6,6 +6,7 @@ import { Status } from "@prisma/client";
 import ApplicationTable, { searchParamsProps } from "./ApplicationTable";
 import Pagination from "@/app/components/Pagination";
 import SearchBar from "@/app/components/SearchBar";
+import ApplicationStatusFilter from "./ApplicationStatusFilter";
 
 interface Props {
   searchParams: searchParamsProps;
@@ -44,9 +45,11 @@ const Applications = async ({ searchParams }: Props) => {
   return (
     <Flex direction="column" gap="3">
         <Box display='flex' gap={6} alignItems='baseline'>
+        <ApplicationStatusFilter />
           <AddApplication />
           <SearchBar placeholder="Search applications..." />
         </Box>
+        
       <Spacer />
       <ApplicationTable
         applications={applications}

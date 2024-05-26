@@ -25,7 +25,7 @@ export default function SearchBar({ placeholder }: { placeholder: string }) {
   }
 
   return (
-    <InputGroup w="100">
+    <InputGroup w="28%" mt='3'>
       <InputLeftElement pointerEvents="none">
         <SearchIcon color="gray.300" />
       </InputLeftElement>
