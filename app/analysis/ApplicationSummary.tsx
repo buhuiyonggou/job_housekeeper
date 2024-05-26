@@ -1,14 +1,7 @@
 import { Status } from "@prisma/client"
 import { Card, Flex, Text } from "@chakra-ui/react"
 import Link from "next/link"
-
-interface SummaryStatus {
-    applied: number;
-    interview: number;
-    offer: number;
-    rejected: number;
-    updating: number;
-}
+import {SummaryStatus} from "@/app/utils/Reusables"
 
 const ApplicationSummary = ({applied, interview, offer, rejected, updating}: SummaryStatus) => {
     const containers: {
@@ -24,7 +17,7 @@ const ApplicationSummary = ({applied, interview, offer, rejected, updating}: Sum
     ]
 
     return (
-        <Flex gap="3">
+        <Flex direction = "row" gap="3" w="100%">
             {containers.map((container) => (
                 <Card key={container.label} style={cardStyle}>
                     <Flex direction="column" gap="1" align="center">
@@ -45,7 +38,7 @@ const ApplicationSummary = ({applied, interview, offer, rejected, updating}: Sum
 }
 
 const cardStyle = {
-    flex: "1 0 calc(33.333% - 1rem)",
+    flex: "1 0 calc(20% - 1rem)",
   };
 
 export default ApplicationSummary

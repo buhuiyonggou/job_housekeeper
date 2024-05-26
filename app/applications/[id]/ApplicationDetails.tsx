@@ -3,21 +3,7 @@ import { Application, Status } from "@prisma/client";
 import React from "react";
 import { CiLink } from "react-icons/ci";
 import ReactMarkdown from "react-markdown";
-
-function getStatusColorScheme(status: Status) {
-  switch (status) {
-    case Status.Applied:
-      return "blue";
-    case Status.Interview:
-      return "yellow";
-    case Status.Offer:
-      return "green";
-    case Status.Rejected:
-      return "red";
-    default:
-      return "gray";
-  }
-}
+import { getStatusColorScheme } from "@/app/utils/Reusables";
 
 const ApplicationDetails = ({ application }: { application: Application }) => {
   return (

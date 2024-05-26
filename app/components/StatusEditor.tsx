@@ -3,6 +3,7 @@ import { Badge, Select } from "@chakra-ui/react";
 import { Application, Status } from "@prisma/client";
 import React, { useState } from "react";
 import { useApplications } from "../ApplicationProvider";
+import { statusOptions } from "../utils/Reusables";
 
 interface Props {
   application: Application;
@@ -38,14 +39,6 @@ const StatusEditor = ({ application, placeholder }: Props) => {
     </Select>
     </Badge>
   );
-};
-
-export const statusOptions: Record<Status, { label: string; color: string }> = {
-  Applied: { label: "Applied", color: "yellow" },
-  Interview: { label: "Interview", color: "blue" },
-  Offer: { label: "Offer", color: "green" },
-  Rejected: { label: "Rejected", color: "red" },
-  Updating: { label: "Updating", color: "gray" },
 };
 
 export default StatusEditor;

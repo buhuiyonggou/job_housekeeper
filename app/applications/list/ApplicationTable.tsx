@@ -13,7 +13,7 @@ import NextLink from "next/link";
 import { Application, Status } from "@prisma/client";
 import { IoIosArrowDropup } from "react-icons/io";
 import React from "react";
-import { ApplicationStatusBadge } from "@/app/components";
+import { ApplicationStatusBadge } from "../../utils/index"
 
 interface Props {
   applications: Application[];
