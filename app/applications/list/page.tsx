@@ -16,19 +16,15 @@ const Applications = async ({ searchParams }: Props) => {
   const page = parseInt(searchParams.page) || 1;
 
   const statuses = Object.values(Status);
+  const status = statuses.includes(searchParams.status) ? searchParams.status : undefined;
 
-  const where: any = {};
+  const where: any = {status};
 
   if (query) {
-    const statusConditions = statuses
-      .filter((s) => s.toLowerCase().includes(query.toLowerCase()))
-      .map((s) => ({ status: s }));
-
     where.OR = [
       { company: { contains: query, mode: "insensitive" } },
       { location: { contains: query, mode: "insensitive" } },
       { job_title: { contains: query, mode: "insensitive" } },
-      ...statusConditions,
     ];
   }
 
