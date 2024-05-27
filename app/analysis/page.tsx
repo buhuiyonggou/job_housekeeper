@@ -1,32 +1,11 @@
-import prisma from "@/prisma/client";
+import { fetchApplicationCounts } from "../utils/fetchApplicationCounts";
 import ApplicationSummary from "./ApplicationSummary";
 import { Flex, Grid } from "@chakra-ui/react";
 import Chart from "./Chart";
+import LatestApplication from "./LatestApplication";
 
 export default async function Analysis() {
-  const applied_items = await prisma.application.count({
-    where: { status: "Applied" },
-  });
-  const interview_items = await prisma.application.count({
-    where: { status: "Interview" },
-  });
-  const offer_items = await prisma.application.count({
-    where: { status: "Offer" },
-  });
-  const rejected_items = await prisma.application.count({
-    where: { status: "Rejected" },
-  });
-  const updating_items = await prisma.application.count({
-    where: { status: "Updating" },
-  });
-
-  const summaryStatus = {
-    applied: applied_items,
-    interview: interview_items,
-    offer: offer_items,
-    rejected: rejected_items,
-    updating: updating_items,
-  };
+  const summaryStatus = await fetchApplicationCounts();
 
   return (
     <Grid gap="5">
@@ -34,7 +13,7 @@ export default async function Analysis() {
         <ApplicationSummary {...summaryStatus} />
         <Chart data={summaryStatus} />
       </Flex>
-      {/* <LatestApplications /> */}
+      <LatestApplication />
     </Grid>
   );
 }
