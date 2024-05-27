@@ -1,15 +1,15 @@
-import { fetchApplicationCounts } from "../utils/fetchApplicationCounts";
+import { fetchApplicationCountsByStatus } from "../utils/fetchApplicationCountsByStatus";
 import ApplicationSummary from "./ApplicationSummary";
 import { Flex, Grid } from "@chakra-ui/react";
 import Chart from "./Chart";
 import LatestApplication from "./LatestApplication";
 
 export default async function Analysis() {
-  const summaryStatus = await fetchApplicationCounts();
+  const summaryStatus = await fetchApplicationCountsByStatus();
 
   return (
     <Grid gap="5">
-      <Flex direction="column" w='50%'>
+      <Flex direction="column" w='100%' >
         <ApplicationSummary {...summaryStatus} />
         <Chart data={summaryStatus} />
       </Flex>

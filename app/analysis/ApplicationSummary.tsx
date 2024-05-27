@@ -24,7 +24,7 @@ const ApplicationSummary = ({
 
   return (
     <Box>
-      <Heading as="h3" size="md" noOfLines={1} mb="6">
+      <Heading as="h3" size="md" noOfLines={1} mb="6" textAlign="center">
         Applications Summary
       </Heading>
 

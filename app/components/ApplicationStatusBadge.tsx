@@ -1,5 +1,5 @@
 "use client";
-import { Badge, Button, Link } from "@chakra-ui/react";
+import { Badge, Box, Button, Link } from "@chakra-ui/react";
 import { Application } from "@prisma/client";
 import { statusOptions } from "../utils/Reusables";
 
@@ -10,7 +10,7 @@ interface Props {
 
 const ApplicationStatusBadge = ({ application, isEdit }: Props) => {
   return (
-    <>
+    <Box justifyContent="center">
       <Badge colorScheme={statusOptions[application.status].color}>
         {statusOptions[application.status].label}
       </Badge>
@@ -21,7 +21,7 @@ const ApplicationStatusBadge = ({ application, isEdit }: Props) => {
           </Link>
         </Button>
       ) : null}
-    </>
+    </Box>
   );
 };
 

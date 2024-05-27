@@ -1,12 +1,12 @@
 import prisma from "@/prisma/client";
-import { Avatar, Box, Flex, Heading, Table, Tbody, Tr, Td } from "@chakra-ui/react";
+import { Avatar, Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import React from "react";
 import { ApplicationStatusBadge } from "../utils/index";
 import Link from "next/link";
 import dayjs from "dayjs";
+import { BsArchiveFill } from "react-icons/bs";
 
-
-const displayApplications = 1;
+const displayApplications = 3;
 
 const LatestApplications = async () => {
   const applications = await prisma.application.findMany({
@@ -19,41 +19,56 @@ const LatestApplications = async () => {
 
   return (
     <Box mt="2" p="4" borderWidth="1px" borderRadius="lg">
-      <Heading as="h3" size="md" mb="2">
+      <Heading as="h3" size="md" mb="2" textAlign="center">
         Latest Applications
       </Heading>
-      <Table variant="simple">
-        <Tbody>
-          {applications.map((application) => (
-            <Tr key={application.application_id}>
-              <Td>
-                <Flex justify="space-between" align="center">
-                  <Flex direction="row" align="start" gap="3">
-                    {/* add icon here */}
-                    <Link href={`/applications/${application.application_id}`}>
-                      <Flex direction="column">
-                        <label >Title: {application.job_title}</label>
-                        <label>Company: {application.company}</label>
-                        <label> Application_Date:{dayjs(application.application_date).format("DD-MM-YYYY")}</label>
-                      </Flex>
-                    </Link>
-                    <ApplicationStatusBadge application={application} isEdit={false}/>
+      <Grid
+        templateColumns="repeat(3, 1fr)"
+        gap={6}
+        display={{ base: "grid", md: "grid", lg: "grid" }}
+      >
+        {applications.map((application) => (
+          <Box
+            key={application.application_id}
+            p="4"
+            borderWidth="1px"
+            borderRadius="lg"
+            boxShadow="md"
+          >
+            <Flex direction="column" gap="3" align="center">
+              <Flex direction="row" align="center" gap="3">
+                <BsArchiveFill />
+                <Link href={`/applications/${application.application_id}`}>
+                  <Flex direction="column" align="center">
+                    <Heading as="h5" size="sm" m="1">
+                      Title: {application.job_title}
+                    </Heading>
+                    <Heading as="h5" size="sm" m="1">
+                      Company: {application.company}
+                    </Heading>
+                    <Text fontSize="sm" m="1">
+                      Application Date:{" "}
+                      {dayjs(application.application_date).format("DD-MM-YYYY")}
+                    </Text>
                   </Flex>
-                  {application.assignedToUser && (
-                    <Avatar
-                      name={application.assignedToUser?.name || "User"}
-                      src={application.assignedToUser?.image || ""}
-                    />
-                  )}
-                </Flex>
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
+                </Link>
+              </Flex>
+              <ApplicationStatusBadge
+                application={application}
+                isEdit={false}
+              />
+              {application.assignedToUser && (
+                <Avatar
+                  name={application.assignedToUser?.name || "User"}
+                  src={application.assignedToUser?.image || ""}
+                />
+              )}
+            </Flex>
+          </Box>
+        ))}
+      </Grid>
     </Box>
   );
 };
 
 export default LatestApplications;
-

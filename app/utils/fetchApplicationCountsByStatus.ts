@@ -1,6 +1,6 @@
 import prisma from "@/prisma/client";
 
-export const fetchApplicationCounts = async () => {
+export const fetchApplicationCountsByStatus = async () => {
   const [applied_items, interview_items, offer_items, rejected_items, updating_items] = await Promise.all([
     prisma.application.count({ where: { status: "Applied" } }),
     prisma.application.count({ where: { status: "Interview" } }),
