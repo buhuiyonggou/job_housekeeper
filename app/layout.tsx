@@ -5,8 +5,6 @@ import QueryClientProvider from "./QueryClientProvider";
 import NavBar from "./NavBar";
 import { fonts } from "./fonts";
 import { Providers } from "./Providers";
-import { ColorModeScript } from "@chakra-ui/react";
-import theme from "./theme";
 import { ApplicationProvider } from "./ApplicationProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });

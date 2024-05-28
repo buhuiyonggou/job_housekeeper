@@ -14,7 +14,7 @@ import ColorModeSwitch from "./components/ColorModeSwitch";
 
 const NavBar = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useBreakpointValue({ base: true, sm: false });
 
   return (
     <Box as="nav" className="border-b mb-5 px-5 py-5">
