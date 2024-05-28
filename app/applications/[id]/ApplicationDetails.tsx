@@ -1,5 +1,5 @@
 import { VStack, Heading, Badge, Text, Box, Link } from "@chakra-ui/react";
-import { Application, Status } from "@prisma/client";
+import { Application } from "@prisma/client";
 import React from "react";
 import { CiLink } from "react-icons/ci";
 import ReactMarkdown from "react-markdown";
