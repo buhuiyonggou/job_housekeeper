@@ -1,11 +1,12 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Avatar, Box, Link, Menu, MenuButton, MenuList, MenuItem, Skeleton, Text } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
+import { Avatar, Box, Link, Menu, MenuButton, MenuList, MenuItem, Text } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import React from "react";
 
 export const AuthStatus = () => {
   const { status, data: session } = useSession();
 
-  if (status === "loading") return <Skeleton width="3rem" />;
+  if (status === "loading") return <Text>Loading...</Text>;
 
   if (status === "unauthenticated")
     return (
@@ -15,14 +16,11 @@ export const AuthStatus = () => {
     );
 
   return (
-      <Menu >
-        <MenuButton as={Box} cursor="pointer">
-          <Avatar
-            src={session!.user!.image!}
-            name={session!.user!.name!}
-            size="sm"
-            referrerPolicy="no-referrer"
-          />
+    <Box>
+      <Menu>
+        <MenuButton>
+          <Avatar src={session!.user!.image!} name={session!.user!.name!} size="sm" />
+          <ChevronDownIcon />
         </MenuButton>
         <MenuList>
           <MenuItem>
@@ -33,5 +31,6 @@ export const AuthStatus = () => {
           </MenuItem>
         </MenuList>
       </Menu>
+    </Box>
   );
 };

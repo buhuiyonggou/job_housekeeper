@@ -2,30 +2,34 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdDashboard } from "react-icons/md";
 import { AiFillFolder } from "react-icons/ai";
 import { MdWork } from "react-icons/md";
 import classnames from "classnames";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Container,
-  Flex,
-  IconButton,
-  useBreakpointValue,
-} from "@chakra-ui/react";
-import "./globals.css";
+import { Box, Container, Flex, IconButton, useBreakpointValue } from "@chakra-ui/react";
 import ColorModeSwitch from "./components/ColorModeSwitch";
 import { AuthStatus } from "./components/AuthStatus";
 
 const NavBar = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const isMobile = useBreakpointValue({ base: true, sm: false } ,{ ssr: false });
+  const [isMounted, setIsMounted] = useState(false);
+  const isMobile = useBreakpointValue({ base: true, sm: false });
+
+  useEffect(() => {
+    setIsMounted(true);
+    if (!isMobile) {
+      setIsNavOpen(false);
+    }
+  }, [isMobile]);
+
+  // Render nothing if not yet mounted to prevent mismatch between server and client
+  if (!isMounted) return null;
 
   return (
     <Box as="nav" className="border-b mb-5 px-5 py-5">
-      <Container maxW="container mx-auto">
+      <Container maxW="container.fluid">
         <Flex justify="space-between" align="center">
           <Flex justify="between" align="center">
             {isMobile && (
@@ -35,14 +39,12 @@ const NavBar = () => {
                 onClick={() => setIsNavOpen(!isNavOpen)}
               />
             )}
-            {/* Render NavLinks for desktop or when the nav is not open in mobile */}
-            {!isMobile && <NavLinks />}
+            {!isMobile && <NavLinks isNavOpen={false} isMobile={false} />}
           </Flex>
-
-            <Flex gap="6" align="center">
+          <Flex gap="6" align="center">
             <AuthStatus />
             <ColorModeSwitch />
-            </Flex>
+          </Flex>
         </Flex>
       </Container>
 
@@ -55,13 +57,7 @@ const NavBar = () => {
   );
 };
 
-const NavLinks = ({
-  isNavOpen,
-  isMobile,
-}: {
-  isNavOpen?: boolean;
-  isMobile?: boolean;
-}) => {
+const NavLinks = ({ isNavOpen, isMobile }: { isNavOpen: boolean, isMobile: boolean }) => {
   const currentPath = usePathname();
   const ulClass = classnames("font-bold", {
     "flex flex-col space-y-4 mt-4": isNavOpen && isMobile,
@@ -105,3 +101,6 @@ const NavLinks = ({
 };
 
 export default NavBar;
+
+
+

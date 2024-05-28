@@ -7,6 +7,7 @@ import ApplicationTable, { searchParamsProps } from "./ApplicationTable";
 import Pagination from "@/app/components/Pagination";
 import SearchBar from "@/app/components/SearchBar";
 import ApplicationStatusFilter from "./ApplicationStatusFilter";
+import { pageSize } from "./constants";
 
 interface Props {
   searchParams: searchParamsProps;
@@ -68,7 +69,5 @@ export const metadata = {
   title: "Applications | Application List",
   description: "All Applications Page",
 };
-
-export const pageSize = 8;
 
 export default Applications;

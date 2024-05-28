@@ -5,7 +5,7 @@ import { statusOptions } from "../utils/Reusables";
 
 interface Props {
   application: Application;
-  isEdit: boolean;
+  isEdit?: boolean;
 }
 
 const ApplicationStatusBadge = ({ application, isEdit }: Props) => {

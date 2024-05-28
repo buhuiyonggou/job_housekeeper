@@ -36,7 +36,7 @@ const ApplicationDetailPage = ({ params }: ApplicationDetailsProps) => {
     };
 
     fetchApplication();
-  }, [params.id]);
+  }, [params.id, router]);
 
   const handleDelete = async () => {
     if (isDeleteConfirmed) {

@@ -16,6 +16,9 @@ const authOptions: NextAuthOptions = {
         clientSecret: process.env.GITHUB_SECRET!,
       }),
   ],
+  pages: {
+    signIn: "/auth/signin",
+  },
   session: {
     strategy: "jwt",
   },
