@@ -6,6 +6,7 @@ import NavBar from "./NavBar";
 import { fonts } from "./fonts";
 import { Providers } from "./Providers";
 import { ApplicationProvider } from "./ApplicationProvider";
+import AuthProvider from "./auth/AuthenProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -24,10 +25,12 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <QueryClientProvider>
+            <AuthProvider>
           <ApplicationProvider>
             <NavBar />
             <main className="p-4">{children}</main>
             </ApplicationProvider>
+            </AuthProvider>
           </QueryClientProvider>
         </Providers>
       </body>

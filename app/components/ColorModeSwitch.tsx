@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   IconButton,
   Text,
@@ -10,10 +11,9 @@ import React from "react";
 const ColorModeSwitch = () => {
   const { toggleColorMode, colorMode } = useColorMode();
   return (
-    <>
       <Flex
-        justify="between"
-        alignItems="center"
+        justify="right"
+        align="center"
         fontSize="small"
         fontWeight="bold"
       >
@@ -21,7 +21,7 @@ const ColorModeSwitch = () => {
           aria-label="toggle theme"
           rounded="full"
           size="md"
-          right="4"
+          right="2"
           onClick={toggleColorMode}
           icon={colorMode === "dark" ? <FaSun /> : <FaMoon />}
         />
@@ -31,7 +31,7 @@ const ColorModeSwitch = () => {
           <Text>Toggle Dark </Text>
         )}
       </Flex>
-    </>
+
   );
 };
 
