@@ -21,7 +21,7 @@ import { AuthStatus } from "./components/AuthStatus";
 
 const NavBar = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const isMobile = useBreakpointValue({ base: true, sm: false });
+  const isMobile = useBreakpointValue({ base: true, sm: false } ,{ ssr: false });
 
   return (
     <Box as="nav" className="border-b mb-5 px-5 py-5">
@@ -38,12 +38,11 @@ const NavBar = () => {
             {/* Render NavLinks for desktop or when the nav is not open in mobile */}
             {!isMobile && <NavLinks />}
           </Flex>
-          <Flex align="center">
-            <Flex align="center" gap="6">
+
+            <Flex gap="6" align="center">
             <AuthStatus />
             <ColorModeSwitch />
             </Flex>
-          </Flex>
         </Flex>
       </Container>
 

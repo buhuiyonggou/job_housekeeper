@@ -15,8 +15,7 @@ export const AuthStatus = () => {
     );
 
   return (
-    <Box>
-      <Menu>
+      <Menu >
         <MenuButton as={Box} cursor="pointer">
           <Avatar
             src={session!.user!.image!}
@@ -34,6 +33,5 @@ export const AuthStatus = () => {
           </MenuItem>
         </MenuList>
       </Menu>
-    </Box>
   );
 };
