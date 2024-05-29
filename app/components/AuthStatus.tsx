@@ -1,5 +1,14 @@
 import { useSession } from "next-auth/react";
-import { Avatar, Box, Link, Menu, MenuButton, MenuList, MenuItem, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Text,
+} from "@chakra-ui/react";
+import Link from '../components/Link';
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import React from "react";
 
@@ -10,7 +19,7 @@ export const AuthStatus = () => {
 
   if (status === "unauthenticated")
     return (
-      <Link className="nav-link" href="/api/auth/signin">
+      <Link href="/api/auth/signin">
         Login
       </Link>
     );
@@ -19,12 +28,18 @@ export const AuthStatus = () => {
     <Box>
       <Menu>
         <MenuButton>
-          <Avatar src={session!.user!.image!} name={session!.user!.name!} size="sm" />
+          <Avatar
+            src={session?.user?.image || ""}
+            name={session?.user?.name || "User"}
+            size="sm"
+          />
           <ChevronDownIcon />
         </MenuButton>
         <MenuList>
           <MenuItem>
-            <Text size="sm">{session!.user!.email}</Text>
+            <Link href={`/profile/${session?.user?.id}`}>
+              <Text size="sm">{session?.user?.email}</Text>
+            </Link>
           </MenuItem>
           <MenuItem>
             <Link href="/api/auth/signout">Log out</Link>
