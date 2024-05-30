@@ -155,7 +155,7 @@ export default function SignIn() {
               </Flex>
               <Flex justifyContent="center" m="2">
                 <Text>Forgot your password?</Text>
-                <Link href="/auth/forgot-password">
+                <Link href="/auth/reset-password">
                   <Text color="blue.500" ml="1">
                     Reset
                   </Text>
