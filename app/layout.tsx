@@ -24,14 +24,15 @@ export default function RootLayout({
     <html lang="en" className={fonts.rubik.variable}>
       <body className={inter.className}>
         <Providers>
-          <QueryClientProvider>
-            <AuthProvider>
-          <ApplicationProvider>
-            <NavBar />
-            <main className="p-4">{children}</main>
-            </ApplicationProvider>
-            </AuthProvider>
-          </QueryClientProvider>
+          {/* Auth provider should be outside QueryClientProvider */}
+          <AuthProvider>
+            <QueryClientProvider>
+              <ApplicationProvider>
+                <NavBar />
+                <main className="p-4">{children}</main>
+              </ApplicationProvider>
+            </QueryClientProvider>
+          </AuthProvider>
         </Providers>
       </body>
     </html>

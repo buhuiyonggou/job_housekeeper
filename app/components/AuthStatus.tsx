@@ -8,7 +8,7 @@ import {
   MenuItem,
   Text,
 } from "@chakra-ui/react";
-import Link from '../components/Link';
+import Link from "../components/Link";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import React from "react";
 
@@ -19,9 +19,9 @@ export const AuthStatus = () => {
 
   if (status === "unauthenticated")
     return (
-      <Link href="/api/auth/signin">
-        Login
-      </Link>
+      <Box mr="2">
+        <Link href="/api/auth/signin">Log in</Link>
+      </Box>
     );
 
   return (
