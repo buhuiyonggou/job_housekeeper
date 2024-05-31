@@ -6,7 +6,6 @@ import NavBar from "./NavBar";
 import { fonts } from "./fonts";
 import { Providers } from "./Providers";
 import { ApplicationProvider } from "./ApplicationProvider";
-import AuthProvider from "./auth/AuthenProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -24,15 +23,12 @@ export default function RootLayout({
     <html lang="en" className={fonts.rubik.variable}>
       <body className={inter.className}>
         <Providers>
-          {/* Auth provider should be outside QueryClientProvider */}
-          <AuthProvider>
-            <QueryClientProvider>
-              <ApplicationProvider>
-                <NavBar />
-                <main className="p-4">{children}</main>
-              </ApplicationProvider>
-            </QueryClientProvider>
-          </AuthProvider>
+          <QueryClientProvider>
+            <ApplicationProvider>
+              <NavBar />
+              <main className="p-4">{children}</main>
+            </ApplicationProvider>
+          </QueryClientProvider>
         </Providers>
       </body>
     </html>

@@ -39,19 +39,19 @@ export default function SignUp() {
       });
       return;
     }
-
+  
     try {
-        await axios.post("/api/auth/signup", { email, password });
-        router.push("/auth/signin");
+      await axios.post("/api/auth/signup", { email, password });
+      router.push("/auth/signin");
     } catch (error: any) {
-        console.error("Failed to sign up:", error);
-        toast({
-            title: "Failed to sign up.",
-            description: error.response?.data?.error || error.message,
-            status: "error",
-            duration: 3000,
-            isClosable: true,
-        });
+      console.error("Failed to sign up:", error);
+      toast({
+        title: "Failed to sign up.",
+        description: error.response?.data?.error || error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 

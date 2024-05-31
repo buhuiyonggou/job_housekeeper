@@ -5,7 +5,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/prisma/client";
-import { error } from "console";
 
 const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -31,7 +30,7 @@ const authOptions: NextAuthOptions = {
         });
 
         if (!user) {
-          error("User not found");
+          console.error("User not found");
           return null;
         }
 
@@ -57,11 +56,11 @@ const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-        if (token && session.user) {
-          session.user.id = token.id as string;
-        }
-        return session;
-      },
+      if (token && session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
   },
   events: {
     async signIn(message) {

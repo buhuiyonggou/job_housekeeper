@@ -1,37 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Textarea,
-  VStack,
-  useToast,
-  HStack,
-} from "@chakra-ui/react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { Box, Button, VStack, Image, Text, Heading, Link, HStack, Spinner, Divider } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { AtSignIcon, InfoIcon } from "@chakra-ui/icons";
-import { FaUser, FaGenderless, FaLinkedin, FaGlobe, FaImage } from "react-icons/fa";
-
-interface User {
-  id: string;
-  name?: string;
-  email: string;
-  gender?: string;
-  description?: string;
-  linkedin?: string;
-  personal_site?: string;
-  image?: string;
-}
+import { User } from "../../utils/Reusables";
 
 const Profile = () => {
-  const { register, handleSubmit, reset } = useForm<User>();
   const [user, setUser] = useState<User | null>(null);
-  const toast = useToast();
   const router = useRouter();
 
   useEffect(() => {
@@ -39,110 +14,72 @@ const Profile = () => {
       try {
         const response = await axios.get("/api/users/me");
         setUser(response.data);
-        reset(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
     fetchUser();
-  }, [reset]);
-
-  const onSubmit: SubmitHandler<User> = async (data) => {
-    try {
-      const response = await axios.patch(`/api/users/me/edit`, data);
-      setUser(response.data);
-      toast({
-        title: "Profile updated.",
-        description: "Your profile has been updated successfully.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-      router.push("/applications/list");
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      toast({
-        title: "Error updating profile.",
-        description: "There was an error updating your profile. Please try again.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-  };
+  }, []);
 
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <Spinner size="xl" />
+      </Box>
+    );
   }
 
   return (
-    <Box maxW="lg" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <VStack spacing={2}>
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <FaUser color="gray.500" />
-              <FormLabel m={0} ml={2}>Name</FormLabel>
-            </HStack>
-            <Input {...register("name")} placeholder="Name" />
-          </FormControl>
-
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <AtSignIcon color="gray.500" />
-              <FormLabel m={0} ml={1}>Email</FormLabel>
-            </HStack>
-            <Input {...register("email")} placeholder="Email" isReadOnly />
-          </FormControl>
-
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <FaGenderless color="gray.500" />
-              <FormLabel m={0} ml={1}>Gender</FormLabel>
-            </HStack>
-            <Input {...register("gender")} placeholder="Gender" />
-          </FormControl>
-
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <InfoIcon color="gray.500" />
-              <FormLabel m={0} ml={1}>Description</FormLabel>
-            </HStack>
-            <Textarea {...register("description")} placeholder="Description" />
-          </FormControl>
-
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <FaLinkedin color="gray.500" />
-              <FormLabel m={0} ml={1}>LinkedIn</FormLabel>
-            </HStack>
-            <Input {...register("linkedin")} placeholder="LinkedIn URL" />
-          </FormControl>
-
-          <FormControl>
-            <HStack alignItems="center" m="2"> 
-              <FaGlobe color="gray.500" />
-              <FormLabel m={0} ml={1}>Personal Site</FormLabel>
-            </HStack>
-            <Input {...register("personal_site")} placeholder="Personal Site URL" />
-          </FormControl>
-
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <FaImage color="gray.500" />
-              <FormLabel m={0} ml={1}>Profile Image URL</FormLabel>
-            </HStack>
-            <Input {...register("image")} placeholder="Profile Image URL" />
-          </FormControl>
-
-          <Button type="submit" colorScheme="teal">
-            Save Changes
-          </Button>
-        </VStack>
-      </form>
+    <Box maxW="lg" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md" boxShadow="lg" bg="gray.50">
+      <VStack spacing={6} align="stretch">
+      <Box display="flex" justifyContent="center">
+        {user.image && (
+          <Image src={user.image} alt="" boxSize="150px" objectFit="cover"/>
+        )}
+        </Box>
+        <Heading as="h1" size="xl" textAlign="center">
+          {user.name}
+        </Heading>
+        <Text fontSize="lg" color="gray.600" textAlign="center">
+          {user.email}
+        </Text>
+        <Divider />
+        {user.gender && (
+          <HStack>
+            <Text fontWeight="bold">Gender:</Text>
+            <Text>{user.gender}</Text>
+          </HStack>
+        )}
+        {user.description && (
+          <HStack>
+            <Text fontWeight="bold">Description:</Text>
+            <Text>{user.description}</Text>
+          </HStack>
+        )}
+        {user.linkedin && (
+          <HStack>
+            <Text fontWeight="bold">LinkedIn:</Text>
+            <Link href={user.linkedin} isExternal color="teal.500">
+              {user.linkedin}
+            </Link>
+          </HStack>
+        )}
+        {user.personal_site && (
+          <HStack>
+            <Text fontWeight="bold">Personal Site:</Text>
+            <Link href={user.personal_site} isExternal color="teal.500">
+              {user.personal_site}
+            </Link>
+          </HStack>
+        )}
+        <Button colorScheme="teal" onClick={() => router.push(`/profile/${user.id}/edit`)}>
+          Edit Profile
+        </Button>
+      </VStack>
     </Box>
   );
 };
 
 export default Profile;
+

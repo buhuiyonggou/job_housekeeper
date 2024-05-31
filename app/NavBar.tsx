@@ -18,7 +18,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import ColorModeSwitch from "./components/ColorModeSwitch";
-import { AuthStatus } from "./components/AuthStatus";
+import { AuthStatus } from "./auth/AuthStatus";
 
 const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
