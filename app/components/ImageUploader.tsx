@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Image } from '@chakra-ui/react'
+import { Image } from "@chakra-ui/react";
 import { Box, Text, useToast, useColorModeValue } from "@chakra-ui/react";
 import { UploadButton } from "../src/utils/uploading";
 import { User } from "@prisma/client";
@@ -27,8 +27,11 @@ export default function ImageUploader({
       display="flex"
       flexDirection="column"
       alignItems="center"
-      height={!editStatus?{ base:"25vh", md:"35vh"}
-      :{ base: "30vh", md: "40vh" }}
+      height={
+        !editStatus
+          ? { base: "25vh", md: "35vh" }
+          : { base: "30vh", md: "40vh" }
+      }
       p={{ base: 2, md: 4 }}
       bg={bgColor}
       borderRadius="md"
@@ -84,7 +87,7 @@ export default function ImageUploader({
         ""
       )}
 
-<Box
+      <Box
         mt={4}
         position="relative"
         width={{ base: "80px", md: "120px" }}

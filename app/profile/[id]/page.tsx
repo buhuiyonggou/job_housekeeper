@@ -25,6 +25,11 @@ import {
 import ImageUploader from "../../components/ImageUploader";
 import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { UserSchema } from "@/app/ValidationSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+export type UserFormData = z.infer<typeof UserSchema>;
 
 const Profile = () => {
   const {
@@ -33,7 +38,9 @@ const Profile = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<User>();
+  } = useForm<UserFormData>({
+    resolver: zodResolver(UserSchema),
+  });
 
   const [user, setUser] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -56,10 +63,15 @@ const Profile = () => {
     fetchUser();
   }, [reset]);
 
-  const onSubmit: SubmitHandler<User> = async (data) => {
+  const onSubmit: SubmitHandler<UserFormData> = async (data) => {
     try {
       setIsSubmitting(true);
-      const response = await axios.patch(`/api/users/me/edit`, data);
+      console.log("Submitting data:", data); // Debug log
+      const response = await axios.patch(`/api/users/me/edit`, {
+        ...data,
+        updatedAt: new Date(),
+      });
+      console.log("Response data:", response.data); // Debug log
       setUser(response.data);
       toast({
         title: "Profile updated.",
@@ -69,7 +81,7 @@ const Profile = () => {
         isClosable: true,
       });
       setIsEditing(false);
-      route.push("/profile/[id]");
+      route.push(`/profile/${response.data.id}`);
     } catch (error) {
       console.error("Error updating profile:", error);
       toast({
@@ -130,7 +142,11 @@ const Profile = () => {
                 Email
               </FormLabel>
             </HStack>
-            <Input {...register("email")} placeholder="Email" disabled={!isEditing} />
+            <Input
+              {...register("email")}
+              placeholder="Email"
+              disabled
+            />
           </FormControl>
 
           <FormControl>
@@ -199,7 +215,12 @@ const Profile = () => {
             >
               Edit
             </Button>
-            <Button type="submit" colorScheme="teal" isDisabled={!isEditing || isSubmitting} width="20%">
+            <Button
+              type="submit"
+              colorScheme="teal"
+              isDisabled={!isEditing || isSubmitting}
+              width="20%"
+            >
               Update
             </Button>
             <Button

@@ -46,7 +46,7 @@ export const AuthStatus = () => {
           });
         });
     }
-  }, [status, toast, user]);
+  }, [status, toast]);
 
   if (status === "loading") {
     return (
