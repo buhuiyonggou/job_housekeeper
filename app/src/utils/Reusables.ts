@@ -8,6 +8,17 @@ export interface SummaryStatus {
     updating: number;
 }
 
+export interface User {
+  id: string;
+  name?: string;
+  email: string;
+  gender?: string;
+  description?: string;
+  linkedin?: string;
+  personal_site?: string;
+  image?: string;
+}
+
 export const statusOptions: Record<Status, { label: string; color: string }> = {
     Applied: { label: "Applied", color: "yellow" },
     Interview: { label: "Interview", color: "blue" },

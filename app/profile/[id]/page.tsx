@@ -10,7 +10,7 @@ import {
   VStack,
   useToast,
   HStack,
-  Image,
+  Flex,
 } from "@chakra-ui/react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import axios from "axios";
@@ -23,13 +23,8 @@ import {
   FaImage,
 } from "react-icons/fa";
 import ImageUploader from "../../components/ImageUploader";
-import { User } from "../../src/utils/Reusables";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { UserSchema } from "../../ValidationSchema";
+import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
-
-// export type UserFormData = z.infer<typeof UserSchema>;
 
 const Profile = () => {
   const {
@@ -40,9 +35,6 @@ const Profile = () => {
     formState: { errors },
   } = useForm<User>();
 
-  // useForm<UserFormData>()({
-  //   resolver: zodResolver(UserSchema),
-  // });
   const [user, setUser] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -88,12 +80,13 @@ const Profile = () => {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleReset = () => {
     reset();
-    setUser(null);
     setIsEditing(false);
   };
 
@@ -101,19 +94,22 @@ const Profile = () => {
     <Box maxW="xl" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md">
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={2}>
-          <Controller
-            name="image"
-            control={control}
-            render={({ field }) => (
-              <ImageUploader
-                editStatus={isEditing}
-                onImageUpload={(url) => field.onChange(url)}
-                onUploadError={(error) => console.error(error)}
-              />
-            )}
-          />
+          {user && (
+            <Controller
+              name="image"
+              control={control}
+              render={({ field }) => (
+                <ImageUploader
+                  editStatus={isEditing}
+                  user={user}
+                  onImageUpload={(url) => field.onChange(url)}
+                  onUploadError={(error) => console.error(error)}
+                />
+              )}
+            />
+          )}
 
-          {/* <FormControl>
+          <FormControl>
             <HStack alignItems="center" m="2">
               <FaUser color="gray.500" />
               <FormLabel m={0} ml={2}>
@@ -123,7 +119,7 @@ const Profile = () => {
             <Input
               {...register("name")}
               placeholder="Name"
-              isReadOnly={!isEditing}
+              disabled={!isEditing}
             />
           </FormControl>
 
@@ -134,7 +130,7 @@ const Profile = () => {
                 Email
               </FormLabel>
             </HStack>
-            <Input {...register("email")} placeholder="Email" isReadOnly />
+            <Input {...register("email")} placeholder="Email" disabled={!isEditing} />
           </FormControl>
 
           <FormControl>
@@ -161,7 +157,7 @@ const Profile = () => {
             <Textarea
               {...register("description")}
               placeholder="Description"
-              isReadOnly={!isEditing}
+              disabled={!isEditing}
             />
           </FormControl>
 
@@ -175,7 +171,7 @@ const Profile = () => {
             <Input
               {...register("linkedin")}
               placeholder="LinkedIn URL"
-              isReadOnly={!isEditing}
+              disabled={!isEditing}
             />
           </FormControl>
 
@@ -189,35 +185,21 @@ const Profile = () => {
             <Input
               {...register("personal_site")}
               placeholder="Personal Site URL"
-              isReadOnly={!isEditing}
+              disabled={!isEditing}
             />
           </FormControl>
 
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <FaImage color="gray.500" />
-              <FormLabel m={0} ml={1}>
-                Profile Image URL
-              </FormLabel>
-            </HStack>
-            <Input
-              {...register("image")}
-              placeholder="Profile Image URL"
-              isReadOnly={!isEditing}
-            />
-          </FormControl> */}
-
-          <HStack spacing={8}>
+          <Flex display="flex" justifyContent="space-around" width="90%" mt="6">
             <Button
               type="button"
               colorScheme="blue"
               onClick={() => setIsEditing(true)}
               isDisabled={isEditing}
-              minWidth={90}
+              width="20%"
             >
               Edit
             </Button>
-            <Button type="submit" colorScheme="teal" isDisabled={!isEditing}>
+            <Button type="submit" colorScheme="teal" isDisabled={!isEditing || isSubmitting} width="20%">
               Update
             </Button>
             <Button
@@ -225,10 +207,11 @@ const Profile = () => {
               colorScheme="gray"
               onClick={handleReset}
               isDisabled={!isEditing}
+              width="20%"
             >
               Cancel
             </Button>
-          </HStack>
+          </Flex>
         </VStack>
       </form>
     </Box>
