@@ -43,7 +43,7 @@ const Chart = ({ data }: { data: SummaryStatus }) => {
       try {
         const applicationsData = await fetchApplicationsSubmitted();
         setLineChartData(applicationsData);
-        console.log(applicationsData);
+        // console.log(applicationsData);
       } catch (error) {
         console.error(error);
       }

@@ -27,8 +27,9 @@ import { User } from "../../src/utils/Reusables";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSchema } from "../../ValidationSchema";
+import { useRouter } from "next/navigation";
 
-export type UserFormData = z.infer<typeof UserSchema>;
+// export type UserFormData = z.infer<typeof UserSchema>;
 
 const Profile = () => {
   const {
@@ -37,12 +38,16 @@ const Profile = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<UserFormData>({
-    resolver: zodResolver(UserSchema),
-  });
+  } = useForm<User>();
+
+  // useForm<UserFormData>()({
+  //   resolver: zodResolver(UserSchema),
+  // });
   const [user, setUser] = useState<User | null>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const route = useRouter();
   const toast = useToast();
 
   useEffect(() => {
@@ -72,6 +77,7 @@ const Profile = () => {
         isClosable: true,
       });
       setIsEditing(false);
+      route.push("/profile/[id]");
     } catch (error) {
       console.error("Error updating profile:", error);
       toast({
@@ -92,26 +98,20 @@ const Profile = () => {
   };
 
   return (
-    <Box maxW="lg" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md">
+    <Box maxW="xl" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md">
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={2}>
-            <Image
-                src={user?.image}
-                alt=""
-                boxSize="150px"
-                borderRadius="full"
-                objectFit="cover"
-            />
-            <Controller
-                name="image"
-                control={control}
-                render={({ field }) => (
-                  <ImageUploader
-                    onImageUpload={(url) => field.onChange(url)}
-                    onUploadError={(error) => console.error(error)}
-                  />
-                )}
+          <Controller
+            name="image"
+            control={control}
+            render={({ field }) => (
+              <ImageUploader
+                editStatus={isEditing}
+                onImageUpload={(url) => field.onChange(url)}
+                onUploadError={(error) => console.error(error)}
               />
+            )}
+          />
 
           {/* <FormControl>
             <HStack alignItems="center" m="2">
@@ -207,21 +207,22 @@ const Profile = () => {
             />
           </FormControl> */}
 
-          <HStack spacing={4}>
+          <HStack spacing={8}>
             <Button
               type="button"
               colorScheme="blue"
               onClick={() => setIsEditing(true)}
               isDisabled={isEditing}
+              minWidth={90}
             >
               Edit
             </Button>
             <Button type="submit" colorScheme="teal" isDisabled={!isEditing}>
-              Save Changes
+              Update
             </Button>
             <Button
               type="button"
-              colorScheme="red"
+              colorScheme="gray"
               onClick={handleReset}
               isDisabled={!isEditing}
             >
