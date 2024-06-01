@@ -3,7 +3,7 @@ import { Badge, Select } from "@chakra-ui/react";
 import { Application, Status } from "@prisma/client";
 import React, { useState } from "react";
 import { useApplications } from "../ApplicationProvider";
-import { statusOptions } from "../utils/Reusables";
+import { statusOptions } from "../src/utils/Reusables";
 
 interface Props {
   application: Application;

@@ -1,7 +1,7 @@
 import { Status } from "@prisma/client";
 import { Box, Card, Flex, Heading, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import { SummaryStatus } from "@/app/utils/Reusables";
+import { SummaryStatus } from "@/app/src/utils/Reusables";
 
 const ApplicationSummary = ({
   applied,

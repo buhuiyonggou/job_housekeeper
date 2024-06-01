@@ -1,7 +1,7 @@
 import prisma from "@/prisma/client";
 import { Avatar, Box, Flex, Grid, Heading, Text } from "@chakra-ui/react";
 import React from "react";
-import { ApplicationStatusBadge } from "../utils/index";
+import { ApplicationStatusBadge } from "../src/utils/index";
 import Link from "next/link";
 import dayjs from "dayjs";
 import { BsArchiveFill } from "react-icons/bs";

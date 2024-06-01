@@ -1,7 +1,7 @@
 "use client";
 import { Badge, Box, Button, Link } from "@chakra-ui/react";
 import { Application } from "@prisma/client";
-import { statusOptions } from "../utils/Reusables";
+import { statusOptions } from "../src/utils/Reusables";
 
 interface Props {
   application: Application;

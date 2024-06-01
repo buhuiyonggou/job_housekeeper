@@ -18,6 +18,17 @@ export const applicationSchema = z.object({
   location: z.string().min(1, "Location is required.").max(255),
 });
 
+export const UserSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1).max(255).optional(), 
+  email: z.string().email(),
+  gender: z.string().optional(),
+  description: z.string().optional(),
+  linkedin: z.string().optional(),
+  personal_site: z.string().optional(),
+  image: z.string().optional(),
+});
+
 export const updateApplicationSchema = applicationSchema.extend({
   status: z.nativeEnum(Status),
 }).partial();

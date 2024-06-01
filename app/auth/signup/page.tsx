@@ -42,6 +42,13 @@ export default function SignUp() {
   
     try {
       await axios.post("/api/auth/signup", { email, password });
+      toast({
+        title: "Account created.",
+        description: "You have successfully created an account.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
       router.push("/auth/signin");
     } catch (error: any) {
       console.error("Failed to sign up:", error);

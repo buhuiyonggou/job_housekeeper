@@ -3,7 +3,7 @@ import { Application } from "@prisma/client";
 import React from "react";
 import { CiLink } from "react-icons/ci";
 import ReactMarkdown from "react-markdown";
-import { getStatusColorScheme } from "@/app/utils/Reusables";
+import { getStatusColorScheme } from "@/app/src/utils/Reusables";
 
 const ApplicationDetails = ({ application }: { application: Application }) => {
   return (

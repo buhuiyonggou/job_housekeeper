@@ -15,7 +15,7 @@ import {
   Line,
 } from "recharts";
 import { Box, Card, Flex, Heading } from "@chakra-ui/react";
-import { SummaryStatus, getAnalysisColorScheme } from "@/app/utils/Reusables";
+import { SummaryStatus, getAnalysisColorScheme } from "@/app/src/utils/Reusables";
 import { Status } from "@prisma/client";
 import axios from "axios";
 

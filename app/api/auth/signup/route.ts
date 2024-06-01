@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       data: {
         email,
         password: hashedPassword,
-        image: '/public/default_portrait.jpg', // Set default portrait
+        image: '/default_portrait.jpg', // Set default portrait, src in public folder is considered as root
       },
     });
 

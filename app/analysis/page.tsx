@@ -1,4 +1,4 @@
-import { fetchApplicationCountsByStatus } from "../utils/fetchApplicationCountsByStatus";
+import { fetchApplicationCountsByStatus } from "../src/utils/fetchApplicationCountsByStatus";
 import ApplicationSummary from "./ApplicationSummary";
 import { Flex, Grid } from "@chakra-ui/react";
 import Chart from "./Chart";
