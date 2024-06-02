@@ -14,7 +14,6 @@ export async function PATCH(req: NextRequest) {
 
   try {
     const data = await req.json();
-    console.log("Received data, api:", data); // Debug log
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
@@ -23,7 +22,6 @@ export async function PATCH(req: NextRequest) {
         updatedAt: new Date(), // Update the updated time
       },
     });
-    console.log("Updated user, api:", updatedUser); // Debug log
     return NextResponse.json(updatedUser);
   } catch (error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

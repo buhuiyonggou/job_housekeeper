@@ -6,6 +6,7 @@ import NavBar from "./NavBar";
 import { fonts } from "./fonts";
 import { Providers } from "./Providers";
 import { ApplicationProvider } from "./ApplicationProvider";
+import {store} from "../lib/store";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 

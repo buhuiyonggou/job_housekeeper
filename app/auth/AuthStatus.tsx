@@ -14,26 +14,23 @@ import {
 } from "@chakra-ui/react";
 import Link from "../components/Link";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-  image: string;
-};
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../../lib/userSlice';
+import { RootState } from '../../lib/store';
 
 export const AuthStatus = () => {
   const { status, data: session } = useSession();
-  const [user, setUser] = useState<User | null>(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user.user);
   const toast = useToast();
 
   useEffect(() => {
     if (status === "authenticated") {
       axios.get("/api/users/me")
         .then((response) => {
-          setUser(response.data);
+          dispatch(setUser(response.data));
           console.log("User fetched successfully:", response.data);
         })
         .catch((error) => {
@@ -46,24 +43,7 @@ export const AuthStatus = () => {
           });
         });
     }
-  }, [status, toast]);
-
-  if (status === "loading") {
-    return (
-      <HStack>
-        <Skeleton height="40px" width="40px" borderRadius="full" />
-        <Skeleton height="20px" width="80px" />
-      </HStack>
-    );
-  }
-
-  if (status === "unauthenticated") {
-    return (
-      <Box mr="2">
-        <Link href="/api/auth/signin">Log in</Link>
-      </Box>
-    );
-  }
+  }, [status, dispatch, toast]);
 
   return (
     <Box>

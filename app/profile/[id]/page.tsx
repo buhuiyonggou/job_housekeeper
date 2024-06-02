@@ -20,14 +20,15 @@ import {
   FaGenderless,
   FaLinkedin,
   FaGlobe,
-  FaImage,
 } from "react-icons/fa";
 import ImageUploader from "../../components/ImageUploader";
-import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { UserSchema } from "@/app/ValidationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../../lib/userSlice';
+import {User} from "@prisma/client"
 
 export type UserFormData = z.infer<typeof UserSchema>;
 
@@ -42,18 +43,19 @@ const Profile = () => {
     resolver: zodResolver(UserSchema),
   });
 
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUserState] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const route = useRouter();
   const toast = useToast();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await axios.get("/api/users/me");
-        setUser(response.data);
+        setUserState(response.data);
         reset(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -66,13 +68,12 @@ const Profile = () => {
   const onSubmit: SubmitHandler<UserFormData> = async (data) => {
     try {
       setIsSubmitting(true);
-      console.log("Submitting data:", data); // Debug log
       const response = await axios.patch(`/api/users/me/edit`, {
         ...data,
         updatedAt: new Date(),
       });
-      console.log("Response data:", response.data); // Debug log
-      setUser(response.data);
+      setUserState(response.data);
+      dispatch(setUser(response.data));  // Update the user in Redux state
       toast({
         title: "Profile updated.",
         description: "Your profile has been updated successfully.",
