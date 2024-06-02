@@ -8,8 +8,6 @@ import {
   MenuList,
   MenuItem,
   Text,
-  Skeleton,
-  HStack,
   useToast,
 } from "@chakra-ui/react";
 import Link from "../components/Link";
@@ -47,10 +45,10 @@ export const AuthStatus = () => {
 
   return (
     <Box>
-      <Menu>
+      {!session ? (<Link href="/api/auth/signin">Sign in</Link>): (<Menu>
         <MenuButton as={Box} display="flex" alignItems="center">
           <Avatar
-            src={user?.image}
+            src={user?.image || undefined}
             name={user?.name || "User"}
             size="sm"
           />
@@ -63,10 +61,11 @@ export const AuthStatus = () => {
             </Link>
           </MenuItem>
           <MenuItem>
-            <Link href="/api/auth/signout">Log out</Link>
+            <Link href="/api/auth/signout">Sign out</Link>
           </MenuItem>
         </MenuList>
-      </Menu>
+      </Menu>)}
+      
     </Box>
   );
 };

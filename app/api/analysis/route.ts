@@ -20,6 +20,11 @@ export async function GET(req: NextRequest) {
         application_date: {
           gte: sixMonthsAgo.toDate(),
         },
+        // to demo the analysis, we include applications hadn't assigned to users
+        OR: [
+          { assignedToUserId: session.user.id },
+          { assignedToUserId: null },
+        ],
       },
     });
 

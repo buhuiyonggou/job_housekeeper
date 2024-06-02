@@ -16,6 +16,7 @@ export async function GET(
   const application = await prisma.application.findUnique({
     where: {
       application_id: parseInt(params.id),
+      assignedToUserId: session.user.id,
     },
   });
 
@@ -42,24 +43,10 @@ export async function PATCH(
     return NextResponse.json(validation.error.format(), { status: 400 });
   }
 
-  const {
-    assignedToUserId,
-    company,
-    category,
-    job_title,
-    job_info,
-    track_link,
-    position_code,
-    type,
-    term,
-    year,
-    location,
-    status,
-  } = body;
-
   const application = await prisma.application.findUnique({
     where: {
       application_id: parseInt(params.id),
+      assignedToUserId: session.user.id,
     },
   });
 
@@ -71,19 +58,7 @@ export async function PATCH(
     where: {
       application_id: application.application_id,
     },
-    data: {
-      company,
-      category,
-      job_title,
-      job_info,
-      track_link,
-      position_code,
-      type,
-      term,
-      year,
-      location,
-      status,
-      assignedToUserId,
+    data: {...body, updatedAt: new Date()
     },
   });
 

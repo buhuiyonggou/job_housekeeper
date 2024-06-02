@@ -1,6 +1,7 @@
-import { Box, Flex, Spacer } from "@chakra-ui/react";
-import prisma from "@/prisma/client";
-import React from "react";
+"use client";
+import { Box, Flex, Spacer, useToast } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import AddApplication from "./AddApplication";
 import { Status } from "@prisma/client";
 import ApplicationTable, { searchParamsProps } from "./ApplicationTable";
@@ -13,44 +14,54 @@ interface Props {
   searchParams: searchParamsProps;
 }
 
-const Applications = async ({ searchParams }: Props) => {
-  const query = searchParams?.query || "";
-  const page = parseInt(searchParams.page) || 1;
+const Applications = ({ searchParams }: Props) => {
+  const [applications, setApplications] = useState([]);
+  const [appsCount, setAppsCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const toast = useToast();
 
-  const statuses = Object.values(Status);
-  const status = statuses.includes(searchParams.status) ? searchParams.status : undefined;
+  useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+        const { data } = await axios.get('/api/applications', {
+          params: searchParams,
+        });
+        setApplications(data.applications);
+        setAppsCount(data.appsCount);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch applications", error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch applications.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        setIsLoading(false);
+      }
+    };
 
-  const where: any = {status};
+    fetchApplications();
+  }, [searchParams, toast]);
 
-  if (query) {
-    where.OR = [
-      { company: { contains: query, mode: "insensitive" } },
-      { location: { contains: query, mode: "insensitive" } },
-      { job_title: { contains: query, mode: "insensitive" } },
-    ];
+  if (isLoading) {
+    return <Box>Loading...</Box>;
   }
 
-  const orderBy = searchParams.orderBy
-    ? { [searchParams.orderBy]: "asc" }
-    : undefined;
-
-  const applications = await prisma.application.findMany({
-    where,
-    orderBy,
-    skip: (page - 1) * pageSize,
-    take: pageSize,
-  });
-
-  const appsCount = await prisma.application.count({ where });
+  const query = searchParams?.query || "";
+  const page = parseInt(searchParams.page) || 1;
+  const statuses = Object.values(Status);
+  const status = statuses.includes(searchParams.status as Status) ? searchParams.status : undefined;
 
   return (
     <Flex direction="column" gap="3">
-        <Box display='flex' gap={6} alignItems='baseline'>
+      <Box display='flex' gap={6} alignItems='baseline'>
         <ApplicationStatusFilter />
-          <AddApplication />
-          <SearchBar placeholder="Search applications..." />
-        </Box>
-        
+        <AddApplication />
+        <SearchBar placeholder="Search applications..." />
+      </Box>
+
       <Spacer />
       <ApplicationTable
         applications={applications}
@@ -65,9 +76,5 @@ const Applications = async ({ searchParams }: Props) => {
   );
 };
 
-export const metadata = {
-  title: "Applications | Application List",
-  description: "All Applications Page",
-};
-
 export default Applications;
+

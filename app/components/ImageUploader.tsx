@@ -96,7 +96,7 @@ export default function ImageUploader({
         borderRadius="full"
         border="1px solid #ccc"
       >
-        <Image src={imageUrl} alt="User Image" />
+        <Image src={imageUrl} alt=""/>
       </Box>
     </Box>
   );

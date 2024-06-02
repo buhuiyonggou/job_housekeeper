@@ -160,7 +160,7 @@ const Profile = () => {
             <Input
               {...register("gender")}
               placeholder="Gender"
-              isReadOnly={!isEditing}
+              disabled={!isEditing}
             />
           </FormControl>
 
