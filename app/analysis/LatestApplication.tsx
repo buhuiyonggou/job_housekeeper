@@ -5,15 +5,25 @@ import { ApplicationStatusBadge } from "../src/utils/index";
 import Link from "next/link";
 import dayjs from "dayjs";
 import { BsArchiveFill } from "react-icons/bs";
+import { getServerSession } from 'next-auth';
+import authOptions from '@/app/auth/authOptions';
 
 const displayApplications = 3;
 
 const LatestApplications = async () => {
+  const session = await getServerSession(authOptions);
+
   const applications = await prisma.application.findMany({
     orderBy: { application_date: "desc" },
     take: displayApplications,
+    where: {
+      OR: [
+        { assignedToUserId: session?.user.id },
+        { assignedToUserId: null },
+      ],
+    },
     include: {
-      assignedToUser: true,
+      assignedToUser: true, // Include the related user details not string id
     },
   });
 
@@ -57,7 +67,7 @@ const LatestApplications = async () => {
                 application={application}
                 isEdit={false}
               />
-              {application.assignedToUser && (
+              {application.assignedToUserId && (
                 <Avatar
                   name={application.assignedToUser?.name || "User"}
                   src={application.assignedToUser?.image || ""}

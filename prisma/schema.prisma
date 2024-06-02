@@ -61,7 +61,6 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
  
   @@id([provider, providerAccountId])
-  @@index([userId])
 }
 
 model Session {
@@ -101,9 +100,6 @@ model Application {
   application_date DateTime @default(now())
   assignedToUserId String?  @db.VarChar(255)
   assignedToUser   User?    @relation(fields: [assignedToUserId], references: [id])
-
-  @@index([application_id])
-  @@index([assignedToUserId])
 }
 
 enum Term {
