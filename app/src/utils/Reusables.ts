@@ -19,6 +19,34 @@ export interface User {
   image?: string;
 }
 
+export interface Job {
+  id: string;
+  title: string;
+  company: string;
+  description: string;
+  image: string;
+  location: string;
+  employmentType: string;
+  timeAgoPosted: string;
+  salaryRange: string;
+  jobProviders: JobProviders[];
+}
+
+export interface JobProviders {
+  jobProvider: string;
+  url: string;
+}
+
+export interface JobFilters {
+  query: string
+  location: string
+  distance: number
+  remoteOnly: boolean
+  datePosted: string
+  employmentTypes: string
+  index: number
+}
+
 export const statusOptions: Record<Status, { label: string; color: string }> = {
     Applied: { label: "Applied", color: "yellow" },
     Interview: { label: "Interview", color: "blue" },
