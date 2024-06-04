@@ -8,12 +8,12 @@ export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const id = request.nextUrl.pathname.split('/').pop();
+  const id = request.nextUrl.pathname.split("/").pop();
   if (!id) {
-    return NextResponse.json({ error: 'Invalid job id' }, { status: 400 });
+    return NextResponse.json({ error: "Invalid job id" }, { status: 400 });
   }
 
   const job = await prisma.job_Collection.findUnique({
@@ -30,13 +30,12 @@ export async function DELETE(request: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  console.log("Delete request: ", request.nextUrl.pathname)
-  const id = request.nextUrl.pathname.split('/').pop();
+  const id = request.nextUrl.pathname.split("/").pop();
   console.log("Delete id: ", id);
   if (!id) {
-    return NextResponse.json({ error: 'Invalid job id' }, { status: 400 });
+    return NextResponse.json({ error: "Invalid job id" }, { status: 400 });
   }
 
   try {
@@ -46,9 +45,15 @@ export async function DELETE(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ message: 'Collection Removed' }, { status: 200 });
+    return NextResponse.json(
+      { message: "Collection Removed" },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('Error deleting job collection:', error);
-    return NextResponse.json({ error: 'Failed to delete job collection' }, { status: 500 });
+    console.error("Error deleting job collection:", error);
+    return NextResponse.json(
+      { error: "Failed to delete job collection" },
+      { status: 500 }
+    );
   }
 }

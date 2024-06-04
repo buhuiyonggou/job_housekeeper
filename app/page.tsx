@@ -104,7 +104,7 @@ const Home = () => {
 
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt="8">
             {jobs.map((job, index) => (
-              <JobCard key={`${job.id}-${index}`} job={job} />
+              <JobCard key={`${job.id}-${index}`} job={job}/>
             ))}
           </SimpleGrid>
         </GridItem>

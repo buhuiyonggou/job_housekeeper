@@ -50,9 +50,9 @@ model Job_Collection {
   description    String?
   location       String
   employmentType String?
-  datePosted  String?
+  datePosted     String?
   salaryRange    String?
-  providers      Job_Providers[]
+  jobProviders   Job_Providers[]
   userId         String
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -61,12 +61,13 @@ model Job_Collection {
 }
 
 model Job_Providers {
-  id           Int            @id @default(autoincrement())
-  jobProvider  String 
-  url          String
-  jobId        String
-  job          Job_Collection @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  id          Int            @id @default(autoincrement())
+  jobProvider String
+  url         String
+  jobId       String
+  job         Job_Collection @relation(fields: [jobId], references: [id], onDelete: Cascade)
 }
+
 model Account {
   userId            String
   type              String

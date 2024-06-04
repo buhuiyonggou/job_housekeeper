@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
         skip: (page - 1) * pageSize,
         take: pageSize,
         include: {
-            providers: true, // Ensure providers are included
+            jobProviders: true, // Ensure providers are included
         },
     });
 
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
                 employmentType: body.employmentType || "",
                 datePosted: body.datePosted || "",
                 salaryRange: body.salaryRange || "",
-                providers: {
+                jobProviders: {
                     create: body.jobProviders.map((provider: { jobProvider: string, url: string }) => ({
                         jobProvider: provider.jobProvider,
                         url: provider.url,

@@ -11,26 +11,30 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { Job } from "app/src/utils/Reusables";
-import { JobProviders } from "app/src/utils/Reusables";
 import { BsCollectionFill } from "react-icons/bs";
 import { FaClover } from "react-icons/fa6";
 import axios from "axios";
 
-const JobCard = ({ job }: { job: Job }) => {
-  const [isSaved, setIsSaved] = useState(false);
+interface Props {
+    job: Job;
+    isCollected?: boolean; 
+}
+
+const JobCard = ({ job, isCollected }: Props) => {
+  const [isSaved, setIsSaved] = useState(isCollected || false);
 
   const handleSaveJob = async () => {
     setIsSaved(true);
     try {
-      await axios.post('/api/collection', {
+      await axios.post("/api/collection", {
         ...job,
-        jobProviders: job.jobProviders.map(provider => ({ 
-          jobProvider: provider.jobProvider, 
-          url: provider.url 
-        }))
+        jobProviders: job.jobProviders.map((provider) => ({
+          jobProvider: provider.jobProvider,
+          url: provider.url,
+        })),
       });
     } catch (error) {
-      console.error('Failed to save job:', error);
+      console.error("Failed to save job:", error);
       setIsSaved(false);
     }
   };
@@ -40,10 +44,13 @@ const JobCard = ({ job }: { job: Job }) => {
     try {
       await axios.delete(`/api/collection/${job.id}`);
     } catch (error) {
-      console.error('Failed to unsave job:', error);
-      setIsSaved(true); 
+      console.error("Failed to unsave job:", error);
+      setIsSaved(true);
     }
   };
+
+//   if providers is not provided, use the job.jobProviders
+  const jobProviders = job.jobProviders || []
 
   return (
     <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
@@ -100,9 +107,9 @@ const JobCard = ({ job }: { job: Job }) => {
         </Box>
 
         <Box as="span" color="gray.600" fontSize="sm" p="1">
-          {(job.jobProviders || [])
-            .slice(0, 3)
-            .map((jobProvider: JobProviders, index) => (
+          {jobProviders
+            .slice(0, jobProviders.length >= 3 ? 3 : jobProviders.length)
+            .map((jobProvider, index) => (
               <Box as="span" key={jobProvider.jobProvider} mr="1">
                 {index + 1}.{" "}
                 <Link href={jobProvider.url} isExternal>
@@ -110,7 +117,7 @@ const JobCard = ({ job }: { job: Job }) => {
                 </Link>
               </Box>
             ))}
-          {job.jobProviders.length > 5 && (
+          {jobProviders.length > 5 && (
             <Box as="span" p="1">
               ...
             </Box>
