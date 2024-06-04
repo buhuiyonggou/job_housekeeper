@@ -2,6 +2,7 @@
 
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import {
+  Flex,
   Input,
   InputGroup,
   InputLeftElement,
@@ -24,7 +25,7 @@ export default function SearchBar({ placeholder }: { placeholder: string }) {
   }
 
   return (
-    <InputGroup w="28%" mt='3'>
+    <InputGroup w={{base:"90%", md:"28%"}} mt={{base: 0, md: 3}}>
       <InputLeftElement pointerEvents="none">
         <SearchIcon color="gray.300" />
       </InputLeftElement>

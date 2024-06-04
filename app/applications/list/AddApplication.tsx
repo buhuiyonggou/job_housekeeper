@@ -5,7 +5,7 @@ import React from "react";
 const AddApplication = () => {
   return (
     <ButtonGroup >
-      <Button colorScheme="teal" size="md">
+      <Button colorScheme="teal" size="md" variant="outline">
         <Link href="/applications/new">Add Application</Link>
       </Button>
     </ButtonGroup>

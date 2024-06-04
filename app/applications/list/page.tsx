@@ -27,7 +27,7 @@ const Applications = ({ searchParams }: Props) => {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const { data } = await axios.get('/api/applications', {
+        const { data } = await axios.get("/api/applications", {
           params: searchParams,
         });
         setApplications(data.applications);
@@ -53,7 +53,7 @@ const Applications = ({ searchParams }: Props) => {
     const totalPages = Math.ceil(appsCount / pageSize);
     // Don't update if the page is out of range
     if (page < 1 || page > totalPages) {
-      return; 
+      return;
     }
 
     const params = new URLSearchParams(changeSearchParams || undefined);
@@ -62,22 +62,27 @@ const Applications = ({ searchParams }: Props) => {
   };
 
   if (isLoading) {
-    return <ListLoading/>
+    return <ListLoading />;
   }
 
   const query = searchParams?.query || "";
   const page = parseInt(searchParams.page) || 1;
   const statuses = Object.values(Status);
-  const status = statuses.includes(searchParams.status as Status) ? searchParams.status : undefined;
+  const status = statuses.includes(searchParams.status as Status)
+    ? searchParams.status
+    : undefined;
 
   return (
     <Flex direction="column" gap="3">
-      <Box display='flex' gap={6} alignItems='baseline'>
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        gap={6}
+        alignItems="baseline"
+      >
         <ApplicationStatusFilter />
         <AddApplication />
         <SearchBar placeholder="Search applications..." />
-      </Box>
- 
+      </Flex>
       <Spacer />
       <ApplicationTable
         applications={applications}

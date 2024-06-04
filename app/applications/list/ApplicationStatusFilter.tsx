@@ -33,7 +33,7 @@ const ApplicationStatusFilter = () => {
     <Select
       defaultValue={searchParams?.get("status") || ""}
       onChange={(e) => handleStatusChange(e.target.value as Status)}
-      w='15%'
+      w= {{base: "55%", md: "12%"}}
     >
       {statusOptions.map((option) => (
         <option key={option.label} value={option.value || ""}>

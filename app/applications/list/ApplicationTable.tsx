@@ -23,15 +23,16 @@ interface Props {
 const columns: {
   label: string;
   value: keyof Application;
+  className?: string;
 }[] = [
   { label: "Company", value: "company" },
   { label: "Title", value: "job_title" },
   { label: "Location", value: "location" },
-  { label: "Type", value: "type" },
-  { label: "Term", value: "term" },
-  { label: "Year", value: "year" },
-  { label: "Last Update", value: "updatedAt" },
-  { label: "Status", value: "status" },
+  { label: "Type", value: "type", className: "hidden md:table-cell" },
+  { label: "Term", value: "term", className: "hidden md:table-cell" },
+  { label: "Year", value: "year", className: "hidden md:table-cell" },
+  { label: "Last Update", value: "updatedAt", className: "hidden lg:table-cell" },
+  { label: "Status", value: "status", className: "hidden lg:table-cell" },
 ];
 
 export const columnName = columns.map((column) => column.value);
@@ -44,7 +45,7 @@ const ApplicationTable = ({ applications, searchParams }: Props) => {
           <Thead>
             <Tr>
               {columns.map((column) => (
-                <Th key={column.value}>
+                <Th key={column.value} className={column.className}>
                   <NextLink
                     href={{
                       query: {
@@ -65,7 +66,7 @@ const ApplicationTable = ({ applications, searchParams }: Props) => {
           <Tbody>
             {applications.map((application) => (
               <Tr key={application.application_id}>
-                <Td className="hidden md:table-cell small-font">
+                <Td className="small-font">
                   <ChakraLink
                     color="teal.500"
                     as={NextLink}
@@ -74,17 +75,17 @@ const ApplicationTable = ({ applications, searchParams }: Props) => {
                     {application.company}
                   </ChakraLink>
                 </Td>
-                <Td className="hidden md:table-cell small-font">
+                <Td className="small-font">
                   {application.job_title}
                 </Td>
-                <Td className="hidden md:table-cell small-font">{application.location}</Td>
+                <Td className="small-font">{application.location}</Td>
                 <Td className="hidden md:table-cell small-font">{application.type}</Td>
                 <Td className="hidden md:table-cell small-font">{application.term}</Td>
                 <Td className="hidden md:table-cell small-font">{application.year}</Td>
-                <Td className="hidden md:table-cell small-font">
+                <Td className="hidden lg:table-cell small-font">
                   {new Date(application.updatedAt || '2000-01-02').toLocaleDateString()}  
                 </Td>
-                <Td className="hidden md:table-cell small-font">
+                <Td className="hidden lg:table-cell small-font">
                   <ApplicationStatusBadge application={application} isEdit={true}/>
                 </Td>
               </Tr>
