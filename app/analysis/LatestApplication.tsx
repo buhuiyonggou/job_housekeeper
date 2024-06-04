@@ -33,7 +33,7 @@ const LatestApplications = async () => {
         Latest Applications
       </Heading>
       <Grid
-        templateColumns="repeat(3, 1fr)"
+        templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
         gap={6}
         display={{ base: "grid", md: "grid", lg: "grid" }}
       >

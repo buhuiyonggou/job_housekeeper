@@ -10,6 +10,7 @@ import SearchBar from "@/app/components/SearchBar";
 import ApplicationStatusFilter from "./ApplicationStatusFilter";
 import { pageSize } from "../../src/utils/constants";
 import { useRouter, useSearchParams } from "next/navigation";
+import ListLoading from "./loading";
 
 interface Props {
   searchParams: searchParamsProps;
@@ -61,7 +62,7 @@ const Applications = ({ searchParams }: Props) => {
   };
 
   if (isLoading) {
-    return <Box>Loading...</Box>;
+    return <ListLoading/>
   }
 
   const query = searchParams?.query || "";

@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import {
   Box,
   Heading,
@@ -16,11 +17,12 @@ import { FaClover } from "react-icons/fa6";
 import axios from "axios";
 
 interface Props {
-    job: Job;
-    isCollected?: boolean; 
+  job: Job;
+  isCollected?: boolean;
 }
 
 const JobCard = ({ job, isCollected }: Props) => {
+  const { data: session } = useSession();
   const [isSaved, setIsSaved] = useState(isCollected || false);
 
   const handleSaveJob = async () => {
@@ -49,26 +51,28 @@ const JobCard = ({ job, isCollected }: Props) => {
     }
   };
 
-//   if providers is not provided, use the job.jobProviders
-  const jobProviders = job.jobProviders || []
+  const jobProviders = job.jobProviders || [];
+  const firstProvider = jobProviders[0] || { jobProvider: "", url: "" };
 
   return (
     <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
       <Flex justify="space-between">
         <Image src={job.image} alt={job.company} />
-        {isSaved ? (
-          <Button rightIcon={<BsCollectionFill />} onClick={handleUnSaveJob}>
-            Job Saved
-          </Button>
-        ) : (
-          <Button
-            rightIcon={<FaClover />}
-            colorScheme="blue"
-            variant="outline"
-            onClick={handleSaveJob}
-          >
-            Save to Collection
-          </Button>
+        {session && (
+          isSaved ? (
+            <Button rightIcon={<BsCollectionFill />} onClick={handleUnSaveJob}>
+              Job Saved
+            </Button>
+          ) : (
+            <Button
+              rightIcon={<FaClover />}
+              colorScheme="blue"
+              variant="outline"
+              onClick={handleSaveJob}
+            >
+              Save to Collection
+            </Button>
+          )
         )}
       </Flex>
 
@@ -91,7 +95,7 @@ const JobCard = ({ job, isCollected }: Props) => {
         </Box>
 
         <Box m="3" fontWeight="semibold" lineHeight="tight" noOfLines={1}>
-          <Link href={`/job_detail/${job.id}`}>
+          <Link href={firstProvider.url} isExternal>
             <Heading as="h5" size="sm">
               {job.title}
             </Heading>
@@ -109,11 +113,11 @@ const JobCard = ({ job, isCollected }: Props) => {
         <Box as="span" color="gray.600" fontSize="sm" p="1">
           {jobProviders
             .slice(0, jobProviders.length >= 3 ? 3 : jobProviders.length)
-            .map((jobProvider, index) => (
-              <Box as="span" key={jobProvider.jobProvider} mr="1">
+            .map((provider, index) => (
+              <Box as="span" key={provider.jobProvider} mr="1">
                 {index + 1}.{" "}
-                <Link href={jobProvider.url} isExternal>
-                  {jobProvider.jobProvider}
+                <Link href={provider.url} isExternal>
+                  {provider.jobProvider}
                 </Link>
               </Box>
             ))}
@@ -129,3 +133,4 @@ const JobCard = ({ job, isCollected }: Props) => {
 };
 
 export default JobCard;
+

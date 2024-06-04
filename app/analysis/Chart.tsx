@@ -53,8 +53,8 @@ const Chart = ({ data }: { data: SummaryStatus }) => {
 
   return (
     <Card mt="6">
-      <Flex justify="center">
-        <Box width="100%">
+      <Flex  direction={{ base: "column", md: "row" }} justify="center" >
+        <Box width={{ base: "100%", md: "50%" }}>
         <Heading as="h3" size="md" noOfLines={1} mb="2" textAlign="center">
           Bar Chart
         </Heading>
@@ -76,7 +76,7 @@ const Chart = ({ data }: { data: SummaryStatus }) => {
         </ResponsiveContainer>
         </Box>
         
-        <Box width="100%">
+        <Box width={{ base: "100%", md: "50%" }}>
         <Heading as="h3" size="md" noOfLines={1} mb="2" mt="4" textAlign="center">
           Recent Applications Analysis
         </Heading>

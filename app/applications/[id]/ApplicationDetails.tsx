@@ -31,7 +31,8 @@ const ApplicationDetails = ({ application }: { application: Application }) => {
       </Text>
       <Text fontSize="lg">
         <strong>Job Title:</strong> {application.job_title}
-      </Text>
+      </Text >
+      <Text fontSize="lg">
       <strong>Job Info:</strong>
       <Box
         borderWidth="1px"
@@ -41,7 +42,8 @@ const ApplicationDetails = ({ application }: { application: Application }) => {
         className="prose"
       >
         <ReactMarkdown>{application.job_info}</ReactMarkdown>
-      </Box>
+      </Box></Text>
+
       <Text fontSize="lg">
         <strong>Track Link:</strong>{" "}
         <Link href={application.track_link ?? ""} isExternal color="teal.500">

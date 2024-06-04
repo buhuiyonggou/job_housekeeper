@@ -13,7 +13,7 @@ import NextLink from "next/link";
 import { Application, Status } from "@prisma/client";
 import { IoIosArrowDropup } from "react-icons/io";
 import React from "react";
-import { ApplicationStatusBadge } from "../../src/utils/index"
+import { ApplicationStatusBadge } from "../../src/utils/index";
 
 interface Props {
   applications: Application[];
@@ -30,6 +30,7 @@ const columns: {
   { label: "Type", value: "type" },
   { label: "Term", value: "term" },
   { label: "Year", value: "year" },
+  { label: "Last Update", value: "updatedAt" },
   { label: "Status", value: "status" },
 ];
 
@@ -64,7 +65,7 @@ const ApplicationTable = ({ applications, searchParams }: Props) => {
           <Tbody>
             {applications.map((application) => (
               <Tr key={application.application_id}>
-                <Td className="hidden md:table-cell">
+                <Td className="hidden md:table-cell small-font">
                   <ChakraLink
                     color="teal.500"
                     as={NextLink}
@@ -73,14 +74,17 @@ const ApplicationTable = ({ applications, searchParams }: Props) => {
                     {application.company}
                   </ChakraLink>
                 </Td>
-                <Td className="hidden md:table-cell">
+                <Td className="hidden md:table-cell small-font">
                   {application.job_title}
                 </Td>
-                <Td className="hidden md:table-cell">{application.location}</Td>
-                <Td className="hidden md:table-cell">{application.type}</Td>
-                <Td className="hidden md:table-cell">{application.term}</Td>
-                <Td className="hidden md:table-cell">{application.year}</Td>
-                <Td className="hidden md:table-cell">
+                <Td className="hidden md:table-cell small-font">{application.location}</Td>
+                <Td className="hidden md:table-cell small-font">{application.type}</Td>
+                <Td className="hidden md:table-cell small-font">{application.term}</Td>
+                <Td className="hidden md:table-cell small-font">{application.year}</Td>
+                <Td className="hidden md:table-cell small-font">
+                  {new Date(application.updatedAt || '2000-01-02').toLocaleDateString()}  
+                </Td>
+                <Td className="hidden md:table-cell small-font">
                   <ApplicationStatusBadge application={application} isEdit={true}/>
                 </Td>
               </Tr>

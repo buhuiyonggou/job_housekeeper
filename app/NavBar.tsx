@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -84,6 +83,7 @@ const NavLinks = ({ isMobile }: { isMobile: boolean }) => {
           as="li"
           key={link.href}
           className={link.href === currentPath ? "!text-zinc-500" : ""}
+          borderRadius="md"
         >
           <Link href={link.href}>
             <HStack

@@ -33,7 +33,7 @@ const ManipulationButtons = ({ application, isDeleteConfirmed, isLoading, delete
         >
           {isDeleteConfirmed ? 'Confirm Delete' : 'Delete'}
         </Button>
-        <Button colorScheme="orange" flex={{ md: "0.35" }} height={{ base: "36px", md: "auto" }}>
+        <Button colorScheme="orange" flex={{ md: "0.35" }} height={{ base: "36px", md: "auto" }} isLoading>
           <Link href={`/applications/list`}>Go Back</Link>
         </Button>
         <EditApplicationButton

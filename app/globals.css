@@ -17,6 +17,10 @@
   }
 }
 
+.small-font {
+  font-size: 0.9rem; /* 15px */
+}
+
 /* Additional custom utilities */
 @layer utilities {
   .text-balance {

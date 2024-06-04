@@ -29,7 +29,7 @@ export default function SignIn() {
 
   useEffect(() => {
     (async () => {
-      const res = await getProviders();
+      const res = await getProviders()
       setProviders(res);
     })();
   }, []);
@@ -169,7 +169,7 @@ export default function SignIn() {
               Sign in with Providers
             </Heading>
             {providers &&
-              Object.values(providers).map((provider: any) => (
+              Object.values(providers).filter((provider: any) => provider.name !== "Credentials").map((provider: any) => (
                 <Button
                   key={provider.name}
                   onClick={() => signIn(provider.id, { callbackUrl: "/applications/list" })}

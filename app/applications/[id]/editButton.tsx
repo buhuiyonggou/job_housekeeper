@@ -10,7 +10,7 @@ interface editApplicationProps {
 
 const EditApplicationButton = ({applicationId, colorScheme, content} : editApplicationProps) => {
   return (
-    <Button colorScheme = {colorScheme}>
+    <Button colorScheme = {colorScheme} isLoading>
     <BsPencilSquare className="mr-1"/>
     <Link href={`/applications/${applicationId}/edit`}>{content}</Link>
   </Button>

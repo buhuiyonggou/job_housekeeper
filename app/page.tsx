@@ -17,8 +17,9 @@ import { Job, JobFilters } from "../app/src/utils/Reusables";
 const Home = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [filters, setFilters] = useState<JobFilters>({
+    // Default filters, fill query and location will enable search jobs on page load
     query: "Software Developer",
-    location: "Vancover, BC, Canada",
+    location: "",
     distance: 50,
     remoteOnly: false,
     datePosted: "month",
@@ -29,12 +30,12 @@ const Home = () => {
     fetchJobs(filters, getRandomIndex());
   }, [filters]);
 
+  // used to explore jobs by random index
   const getRandomIndex = () => {
     return Math.floor(Math.random() * 10);
   };
 
   const fetchJobs = async (filters: JobFilters, pageIndex: number) => {
-    // console.log("fetching jobs with filters", filters, "and index", pageIndex);
     const options = {
       method: "GET",
       url: "https://jobs-api14.p.rapidapi.com/list",
@@ -64,7 +65,6 @@ const Home = () => {
       } else {
         setJobs(response.data.jobs);
       }
-      console.log("response", response);
     } catch (error) {
       console.error(error);
       setJobs([]);

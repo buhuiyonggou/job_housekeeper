@@ -3,12 +3,9 @@ import { Skeleton, Table, TableContainer, Tbody, Th, Thead, Tr, Td, Box, Flex, I
 import AddApplication from "./AddApplication";
 import { pageSize } from "../../src/utils/constants";
 
+const ListLoading = () => {
+  const placeholders = Array.from({ length: pageSize });
 
-const LoadingPage = () => {
-  const placeholders = []
-  for (let i = 0; i < pageSize; i++) {
-    placeholders.push(i);
-  }
   return (
     <div>
       <Flex direction="column" gap="3">
@@ -16,9 +13,9 @@ const LoadingPage = () => {
           <Skeleton height="40px" width="150px" mb="4">
             <AddApplication />
           </Skeleton>
-            <Skeleton height="40px" width="300px">
-              <Input/>
-            </Skeleton>
+          <Skeleton height="40px" width="300px">
+            <Input />
+          </Skeleton>
         </Box>
       </Flex>
 
@@ -39,13 +36,13 @@ const LoadingPage = () => {
           <Tbody>
             {placeholders.map((_, index) => (
               <Tr key={index}>
-                <Td><Skeleton height="20px" className="hidden md:table-cell"/></Td>
-                <Td><Skeleton height="20px" className="hidden md:table-cell"/></Td>
-                <Td><Skeleton height="20px" className="hidden md:table-cell"/></Td>
-                <Td><Skeleton height="20px" className="hidden md:table-cell"/></Td>
-                <Td><Skeleton height="20px" className="hidden md:table-cell"/></Td>
-                <Td><Skeleton height="20px" className="hidden md:table-cell"/></Td>
-                <Td><Skeleton height="20px" className="hidden md:table-cell"/></Td>
+                <Td><Skeleton height="20px" /></Td>
+                <Td><Skeleton height="20px" /></Td>
+                <Td><Skeleton height="20px" /></Td>
+                <Td><Skeleton height="20px" /></Td>
+                <Td><Skeleton height="20px" /></Td>
+                <Td><Skeleton height="20px" /></Td>
+                <Td><Skeleton height="20px" /></Td>
               </Tr>
             ))}
           </Tbody>
@@ -55,4 +52,4 @@ const LoadingPage = () => {
   );
 };
 
-export default LoadingPage;
+export default ListLoading;

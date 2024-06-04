@@ -29,11 +29,10 @@ export interface Job {
   employmentType: string;
   datePosted: string;
   salaryRange: string;
-  jobProviders: JobProviders[];
+  jobProviders: JobProvider[];
 }
 
-export interface JobProviders {
-  providerId: string;
+export interface JobProvider {
   jobProvider: string;
   url: string;
 }

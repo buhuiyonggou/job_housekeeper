@@ -15,20 +15,15 @@ import {
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { AtSignIcon, InfoIcon } from "@chakra-ui/icons";
-import {
-  FaUser,
-  FaGenderless,
-  FaLinkedin,
-  FaGlobe,
-} from "react-icons/fa";
+import { FaUser, FaGenderless, FaLinkedin, FaGlobe } from "react-icons/fa";
 import ImageUploader from "../../components/ImageUploader";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { UserSchema } from "@/app/ValidationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch } from 'react-redux';
-import { setUser } from '../../../lib/userSlice';
-import {User} from "@prisma/client"
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../lib/userSlice";
+import { User } from "@prisma/client";
 
 export type UserFormData = z.infer<typeof UserSchema>;
 
@@ -73,7 +68,7 @@ const Profile = () => {
         updatedAt: new Date(),
       });
       setUserState(response.data);
-      dispatch(setUser(response.data));  // Update the user in Redux state
+      dispatch(setUser(response.data)); // Update the user in Redux state
       toast({
         title: "Profile updated.",
         description: "Your profile has been updated successfully.",
@@ -143,11 +138,7 @@ const Profile = () => {
                 Email
               </FormLabel>
             </HStack>
-            <Input
-              {...register("email")}
-              placeholder="Email"
-              disabled
-            />
+            <Input {...register("email")} placeholder="Email" disabled />
           </FormControl>
 
           <FormControl>
@@ -206,13 +197,21 @@ const Profile = () => {
             />
           </FormControl>
 
-          <Flex display="flex" justifyContent="space-around" width="90%" mt="6">
+          <Flex
+            display="flex"
+            justifyContent="space-around"
+            width="90%"
+            mt="6"
+            flexDirection={{ base: "column", md: "row" }}
+            alignItems={{ base: "stretch", md: "center" }}
+          >
             <Button
               type="button"
               colorScheme="blue"
               onClick={() => setIsEditing(true)}
               isDisabled={isEditing}
-              width="20%"
+              width={{ base: "100%", md: "25%" }}
+              mb={{ base: "4", md: "0" }}
             >
               Edit
             </Button>
@@ -220,7 +219,8 @@ const Profile = () => {
               type="submit"
               colorScheme="teal"
               isDisabled={!isEditing || isSubmitting}
-              width="20%"
+              width={{ base: "100%", md: "25%" }}
+              mb={{ base: "4", md: "0" }}
             >
               Update
             </Button>
@@ -229,7 +229,7 @@ const Profile = () => {
               colorScheme="gray"
               onClick={handleReset}
               isDisabled={!isEditing}
-              width="20%"
+              width={{ base: "100%", md: "25%" }}
             >
               Cancel
             </Button>

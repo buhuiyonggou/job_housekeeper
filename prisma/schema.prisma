@@ -125,6 +125,7 @@ model Application {
   application_date DateTime @default(now())
   assignedToUserId String?  @db.VarChar(255)
   assignedToUser   User?    @relation(fields: [assignedToUserId], references: [id], onDelete: Cascade)
+  updatedAt        DateTime? @updatedAt
 }
 
 enum Term {

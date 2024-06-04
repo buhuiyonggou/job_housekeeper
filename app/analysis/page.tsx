@@ -9,7 +9,7 @@ export default async function Analysis() {
 
   return (
     <Grid gap="5">
-      <Flex direction="column" w='100%' >
+      <Flex direction={{ base: "row", md: "column" }} w='100%' wrap="wrap">
         <ApplicationSummary {...summaryStatus} />
         <Chart data={summaryStatus} />
       </Flex>

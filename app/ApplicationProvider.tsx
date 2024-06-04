@@ -6,6 +6,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
+import { SessionProvider, useSession } from "next-auth/react";
 import axios from "axios";
 import { Application, Status } from "@prisma/client";
 
@@ -39,35 +40,45 @@ export const ApplicationProvider: React.FC<ApplicationProviderProps> = ({
   children,
 }) => {
   const [applications, setApplications] = useState<Application[]>([]);
+  const { data: session } = useSession();
 
-  // Fetch applications from the API on component mount
   useEffect(() => {
-    // Function to fetch applications from the API
     const fetchApplications = async () => {
+      try {
         const response = await axios.get("/api/applications");
         setApplications(response.data);
+      } catch (error) {
+        console.error('Error fetching applications:', error);
+      }
     };
 
-    fetchApplications();
-  }, []);
+    if (session) {
+      fetchApplications();
+    }
+  }, [session]);
 
   const handleStatusUpdate = async (
     applicationId: number,
     newStatus: Status
   ): Promise<void> => {
-    await axios.patch(`/api/applications/${applicationId}`, {
-      status: newStatus,
-    });
-    // Optionally refetch applications or update locally
-    const updatedApplications = applications.map((app) =>
-      app.application_id === applicationId ? { ...app, status: newStatus } : app
-    );
-    setApplications(updatedApplications);
+    try {
+      await axios.patch(`/api/applications/${applicationId}`, {
+        status: newStatus,
+      });
+      const updatedApplications = applications.map((app) =>
+        app.application_id === applicationId ? { ...app, status: newStatus } : app
+      );
+      setApplications(updatedApplications);
+    } catch (error) {
+      console.error('Error updating application status:', error);
+    }
   };
 
   return (
     <ApplicationContext.Provider value={{ applications, handleStatusUpdate }}>
-      {children}
+      <SessionProvider session={session}>
+        {children}
+      </SessionProvider>
     </ApplicationContext.Provider>
   );
 };
