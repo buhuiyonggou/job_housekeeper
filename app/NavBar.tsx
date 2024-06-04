@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { MdDashboard } from "react-icons/md";
+import { MdDashboard, MdWifiFind} from "react-icons/md";
 import { AiFillFolder } from "react-icons/ai";
 import { MdWork } from "react-icons/md";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
@@ -59,7 +59,7 @@ const NavLinks = ({ isMobile }: { isMobile: boolean }) => {
   const currentPath = usePathname();
 
   const links = [
-    { label: "Findings", href: "/", icon: <MdWork size="32px" /> },
+    { label: "Findings", href: "/", icon: <MdWifiFind size="32px" /> },
     {
       label: "Applications",
       href: "/applications/list",
@@ -69,6 +69,11 @@ const NavLinks = ({ isMobile }: { isMobile: boolean }) => {
       label: "Analysis",
       href: "/analysis",
       icon: <MdDashboard size="32px" />,
+    },
+    {
+      label: "Collection",
+      href: "/my-collection",
+      icon: <MdWork size="32px" />,
     },
   ];
 

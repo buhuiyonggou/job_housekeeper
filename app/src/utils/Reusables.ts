@@ -21,18 +21,19 @@ export interface User {
 
 export interface Job {
   id: string;
+  image: string;
   title: string;
   company: string;
   description: string;
-  image: string;
   location: string;
   employmentType: string;
-  timeAgoPosted: string;
+  datePosted: string;
   salaryRange: string;
   jobProviders: JobProviders[];
 }
 
 export interface JobProviders {
+  providerId: string;
   jobProvider: string;
   url: string;
 }
@@ -44,7 +45,6 @@ export interface JobFilters {
   remoteOnly: boolean
   datePosted: string
   employmentTypes: string
-  index: number
 }
 
 export const statusOptions: Record<Status, { label: string; color: string }> = {

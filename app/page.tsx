@@ -17,8 +17,8 @@ import { Job, JobFilters } from "../app/src/utils/Reusables";
 const Home = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [filters, setFilters] = useState<JobFilters>({
-    query: "",
-    location: "",
+    query: "Software Developer",
+    location: "Vancover, BC, Canada",
     distance: 50,
     remoteOnly: false,
     datePosted: "month",
@@ -34,7 +34,7 @@ const Home = () => {
   };
 
   const fetchJobs = async (filters: JobFilters, pageIndex: number) => {
-    console.log("fetching jobs with filters", filters, "and index", pageIndex);
+    // console.log("fetching jobs with filters", filters, "and index", pageIndex);
     const options = {
       method: "GET",
       url: "https://jobs-api14.p.rapidapi.com/list",
