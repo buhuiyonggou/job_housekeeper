@@ -8,7 +8,8 @@ import ApplicationTable, { searchParamsProps } from "./ApplicationTable";
 import Pagination from "@/app/components/Pagination";
 import SearchBar from "@/app/components/SearchBar";
 import ApplicationStatusFilter from "./ApplicationStatusFilter";
-import { pageSize } from "./constants";
+import { pageSize } from "../../src/utils/constants";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   searchParams: searchParamsProps;
@@ -19,6 +20,8 @@ const Applications = ({ searchParams }: Props) => {
   const [appsCount, setAppsCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
+  const changeSearchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -45,6 +48,18 @@ const Applications = ({ searchParams }: Props) => {
     fetchApplications();
   }, [searchParams, toast]);
 
+  const handlePageChange = (page: number) => {
+    const totalPages = Math.ceil(appsCount / pageSize);
+    // Don't update if the page is out of range
+    if (page < 1 || page > totalPages) {
+      return; 
+    }
+
+    const params = new URLSearchParams(changeSearchParams || undefined);
+    params.set("page", page.toString());
+    router.push("?" + params.toString());
+  };
+
   if (isLoading) {
     return <Box>Loading...</Box>;
   }
@@ -61,7 +76,7 @@ const Applications = ({ searchParams }: Props) => {
         <AddApplication />
         <SearchBar placeholder="Search applications..." />
       </Box>
-
+ 
       <Spacer />
       <ApplicationTable
         applications={applications}
@@ -71,10 +86,10 @@ const Applications = ({ searchParams }: Props) => {
         TotalItems={appsCount}
         PageSize={pageSize}
         CurrentPage={page}
+        onPageChange={handlePageChange}
       />
     </Flex>
   );
 };
 
 export default Applications;
-

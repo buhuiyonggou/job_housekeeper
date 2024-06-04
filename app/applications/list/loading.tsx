@@ -1,7 +1,7 @@
 import React from "react";
 import { Skeleton, Table, TableContainer, Tbody, Th, Thead, Tr, Td, Box, Flex, Input, Spacer } from "@chakra-ui/react";
 import AddApplication from "./AddApplication";
-import { pageSize } from "./constants";
+import { pageSize } from "../../src/utils/constants";
 
 
 const LoadingPage = () => {

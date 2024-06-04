@@ -24,10 +24,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <QueryClientProvider>
-            {/* <ApplicationProvider> */}
               <NavBar />
               <main className="p-4">{children}</main>
-            {/* </ApplicationProvider> */}
           </QueryClientProvider>
         </Providers>
       </body>

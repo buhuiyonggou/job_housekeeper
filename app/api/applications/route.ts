@@ -4,7 +4,7 @@ import prisma from "@/prisma/client";
 import { Status } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { pageSize } from "../../applications/list/constants";
+import { pageSize } from "../../src/utils/constants";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);

@@ -6,40 +6,30 @@ import {
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 interface Props {
   TotalItems: number;
   PageSize: number;
   CurrentPage: number;
+  onPageChange: (page: number) => void;
 }
 
-const Pagination = ({ TotalItems, PageSize, CurrentPage }: Props) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
+const Pagination = ({ TotalItems, PageSize, CurrentPage, onPageChange }: Props) => {
   const totalPages = Math.ceil(TotalItems / PageSize);
 
-  if (totalPages === 1) return null;
-
-  const changePage = (page: number) => {
-    // like a string builder
-    const params = new URLSearchParams(searchParams || undefined);
-    params.set("page", page.toString());
-    router.push("?" + params.toString());
-  };
+  if (totalPages <= 1) return null;
 
   return (
     <Flex align="center" gap="2">
-      <Text size="1" >
+      <Text size="1">
         Page {CurrentPage} of {totalPages}
       </Text>
       <Button
         color="gray"
         variant="soft"
         disabled={CurrentPage === 1}
-        onClick={() => changePage(1)}
+        onClick={() => onPageChange(1)}
       >
         <DoubleArrowLeftIcon />
       </Button>
@@ -47,7 +37,7 @@ const Pagination = ({ TotalItems, PageSize, CurrentPage }: Props) => {
         color="gray"
         variant="soft"
         disabled={CurrentPage === 1}
-        onClick={() => changePage(CurrentPage - 1)}
+        onClick={() => onPageChange(CurrentPage - 1)}
       >
         <ChevronLeftIcon />
       </Button>
@@ -55,7 +45,7 @@ const Pagination = ({ TotalItems, PageSize, CurrentPage }: Props) => {
         color="gray"
         variant="soft"
         disabled={CurrentPage === totalPages}
-        onClick={() => changePage(CurrentPage + 1)}
+        onClick={() => onPageChange(CurrentPage + 1)}
       >
         <ChevronRightIcon />
       </Button>
@@ -63,7 +53,7 @@ const Pagination = ({ TotalItems, PageSize, CurrentPage }: Props) => {
         color="gray"
         variant="soft"
         disabled={CurrentPage === totalPages}
-        onClick={() => changePage(totalPages)}
+        onClick={() => onPageChange(totalPages)}
       >
         <DoubleArrowRightIcon />
       </Button>
@@ -72,3 +62,5 @@ const Pagination = ({ TotalItems, PageSize, CurrentPage }: Props) => {
 };
 
 export default Pagination;
+
+
