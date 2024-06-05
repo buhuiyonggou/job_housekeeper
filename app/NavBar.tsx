@@ -51,7 +51,7 @@ const NavBar = () => {
           });
         });
     }
-  }, [status, dispatch, toast]);
+  }, [status, session, dispatch, toast]);
 
   return (
     <Box
