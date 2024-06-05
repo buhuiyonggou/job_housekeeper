@@ -1,5 +1,3 @@
-"use client";
-import { useSession } from "next-auth/react";
 import {
   Avatar,
   Box,
@@ -8,47 +6,25 @@ import {
   MenuList,
   MenuItem,
   Text,
-  useToast,
+  SkeletonCircle,
 } from "@chakra-ui/react";
 import Link from "../components/Link";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import React, { useEffect } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../lib/userSlice";
-import { RootState } from "../../lib/store";
+import React from "react";
+import { Session } from "next-auth";
+import { User } from "../src/utils/Reusables";
 
-export const AuthStatus = () => {
-  const { status, data: session } = useSession();
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user.user);
-  const toast = useToast();
+interface AuthStatusProps {
+  session: Session | null;
+  user: User | null;
+}
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      axios
-        .get("/api/users/me")
-        .then((response) => {
-          dispatch(setUser(response.data));
-          console.log("User fetched successfully:", response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-          toast({
-            title: "Error fetching user data",
-            status: "error",
-            duration: 3000,
-            isClosable: true,
-          });
-        });
-    }
-  }, [status, dispatch, toast]);
-
+export const AuthStatus = ({ session, user }: AuthStatusProps) => {
   return (
     <Box>
       {!session ? (
         <Link href="/api/auth/signin">Sign in</Link>
-      ) : (
+      ) : user ? (
         <Menu>
           <MenuButton as={Box} display="flex" alignItems="center">
             <Avatar
@@ -59,16 +35,18 @@ export const AuthStatus = () => {
             <ChevronDownIcon />
           </MenuButton>
           <MenuList>
-            <MenuItem color='tomato'>
+            <MenuItem color="tomato">
               <Link href={`/profile/${session?.user?.id}`}>
                 <Text size="sm">{session?.user?.email}</Text>
               </Link>
             </MenuItem>
-            <MenuItem color='gray.500'>
+            <MenuItem color="gray.500">
               <Link href="/api/auth/signout">Sign out</Link>
             </MenuItem>
           </MenuList>
         </Menu>
+      ) : (
+        <SkeletonCircle size="10" />
       )}
     </Box>
   );

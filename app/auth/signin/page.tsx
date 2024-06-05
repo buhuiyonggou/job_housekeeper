@@ -19,7 +19,8 @@ import { FaGoogle, FaGithub } from "react-icons/fa";
 import Link from "../../components/Link";
 
 export default function SignIn() {
-  const [providers, setProviders] = useState<any>();
+  // change the state type later
+  const [providers, setProviders] = useState<any>(null);
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +30,7 @@ export default function SignIn() {
 
   useEffect(() => {
     (async () => {
-      const res = await getProviders()
+      const res = await getProviders();
       setProviders(res);
     })();
   }, []);
@@ -59,16 +60,16 @@ export default function SignIn() {
           description: result.error,
           status: "error",
           duration: 3000,
-          isClosable: true,
         });
       } else {
         toast({
           title: "Signed in successfully",
           status: "success",
           duration: 3000,
-          isClosable: true,
         });
-        router.push("/applications/list");
+
+        // Reload the page and navigate to /applications/list
+        window.location.href = "/applications/list";
       }
     } catch (error: any) {
       console.error("Failed to sign in:", error);
@@ -77,7 +78,6 @@ export default function SignIn() {
         description: error.message,
         status: "error",
         duration: 3000,
-        isClosable: true,
       });
     }
   };
@@ -140,8 +140,12 @@ export default function SignIn() {
               </Stack>
             </Box>
             <Flex justifyContent="center" gap="10" mt="2">
-              <Button variant='outline' colorScheme='blue' onClick={handleSignIn}>Sign in</Button>
-              <Button variant='outline' onClick={cancelSignIn}>Cancel</Button>
+              <Button variant="outline" colorScheme="blue" onClick={handleSignIn}>
+                Sign in
+              </Button>
+              <Button variant="outline" onClick={cancelSignIn}>
+                Cancel
+              </Button>
             </Flex>
 
             <Flex direction="column">
@@ -169,19 +173,23 @@ export default function SignIn() {
               Sign in with Providers
             </Heading>
             {providers &&
-              Object.values(providers).filter((provider: any) => provider.name !== "Credentials").map((provider: any) => (
-                <Button
-                  key={provider.name}
-                  onClick={() => signIn(provider.id, { callbackUrl: "/applications/list" })}
-                  size="lg"
-                  colorScheme={provider.name === "Google" ? "red" : "gray"}
-                  leftIcon={
-                    provider.name === "Google" ? <FaGoogle /> : <FaGithub />
-                  }
-                >
-                  Sign in with {provider.name}
-                </Button>
-              ))}
+              Object.values(providers)
+                .filter((provider: any) => provider.name !== "Credentials")
+                .map((provider: any) => (
+                  <Button
+                    key={provider.name}
+                    onClick={() =>
+                      signIn(provider.id, { callbackUrl: "/applications/list" })
+                    }
+                    size="lg"
+                    colorScheme={provider.name === "Google" ? "red" : "gray"}
+                    leftIcon={
+                      provider.name === "Google" ? <FaGoogle /> : <FaGithub />
+                    }
+                  >
+                    Sign in with {provider.name}
+                  </Button>
+                ))}
           </Stack>
         </Box>
       </Container>

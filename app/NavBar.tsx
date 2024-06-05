@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { MdDashboard, MdWifiFind } from "react-icons/md";
 import { AiFillFolder } from "react-icons/ai";
 import { MdWork } from "react-icons/md";
@@ -16,22 +16,53 @@ import {
   VStack,
   HStack,
   Text,
+  useToast,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 import ColorModeSwitch from "./components/ColorModeSwitch";
 import { AuthStatus } from "./auth/AuthStatus";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../lib/userSlice";
+import { RootState } from "../lib/store";
 
 const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { status, data: session } = useSession();
+  const user = useSelector((state: RootState) => state.user.user);
+  const dispatch = useDispatch();
+  const toast = useToast();
+
+  useEffect(() => {
+    if (status === "authenticated" && session) {
+      axios
+        .get("/api/users/me")
+        .then((response) => {
+          dispatch(setUser(response.data));
+          console.log("User fetched successfully:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+          toast({
+            title: "Error fetching user data",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        });
+    }
+  }, [status, dispatch, toast]);
 
   return (
     <Box
       as="nav"
       borderBottomWidth="1px"
       mb={5}
-      px={{base: 0, md: 3}} py={{base: 1, md: 3}}
+      px={{ base: 0, md: 3 }}
+      py={{ base: 1, md: 3 }}
       className={"text-white bg-zinc-600"}
     >
-      <Container maxW="container.fluid" >
+      <Container maxW="container.fluid">
         <Flex justify="space-between" align="center">
           <Flex align="center">
             <IconButton
@@ -45,7 +76,7 @@ const NavBar = () => {
             </HStack>
           </Flex>
           <HStack spacing={4} align="center">
-            <AuthStatus />
+            <AuthStatus session={session} user={user} />
             <ColorModeSwitch />
           </HStack>
         </Flex>
@@ -93,7 +124,7 @@ const NavLinks = ({ isMobile }: { isMobile: boolean }) => {
             link.href === currentPath ? "!text-zinc-400" : ""
           } bg-zinc-600 hover:bg-zinc-700 active:bg-zinc-700 focus:outline-none focus:ring focus:ring-zinc-300`}
         >
-          <Link href={link.href} >
+          <Link href={link.href}>
             <HStack
               spacing={1}
               align="center"
@@ -111,4 +142,3 @@ const NavLinks = ({ isMobile }: { isMobile: boolean }) => {
 };
 
 export default NavBar;
-

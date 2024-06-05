@@ -51,12 +51,14 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        // console.log("JWT callback: setting user ID", user.id);
         token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
+        // console.log("Session callback: setting user ID", token.id);
         session.user.id = token.id as string;
       }
       return session;
@@ -67,6 +69,8 @@ const authOptions: NextAuthOptions = {
       // console.log("User signed in", message);
     },
   },
+  debug: false
 };
 
 export default authOptions;
+
