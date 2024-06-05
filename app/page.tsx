@@ -23,7 +23,7 @@ const Home = () => {
   const [filters, setFilters] = useState<JobFilters>({
     // Default filters, fill query and location will enable search jobs on page load
     query: "Software Developer",
-    location: "British Columbia, Canada",
+    location: "",
     distance: 50,
     remoteOnly: false,
     datePosted: "month",
@@ -89,7 +89,7 @@ const Home = () => {
   return (
     <Box>
       <Heading as="h1" size="xl" textAlign="center" mb="6">
-        Welcome to Job Application Tracker
+        Welcome to Job Housekeeper
       </Heading>
       <FeatureIntroduction />
       <div className="my-8 border-t border-gray-300" />

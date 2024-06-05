@@ -17,7 +17,6 @@ import axios from "axios";
 import { AtSignIcon, InfoIcon } from "@chakra-ui/icons";
 import { FaUser, FaGenderless, FaLinkedin, FaGlobe } from "react-icons/fa";
 import ImageUploader from "../../components/ImageUploader";
-import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { UserSchema } from "@/app/ValidationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -43,7 +42,6 @@ const Profile = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const route = useRouter();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -62,6 +60,7 @@ const Profile = () => {
     fetchUser();
   }, [reset]);
 
+
   const onSubmit: SubmitHandler<UserFormData> = async (data) => {
     try {
       setIsSubmitting(true);
@@ -70,8 +69,8 @@ const Profile = () => {
         updatedAt: new Date(),
       });
       setUserState(response.data);
+      setIsEditing(false);
       dispatch(setUser(response.data)); // Update the user in Redux state
-      route.push(`/profile/${response.data.id}`);
     } catch (error) {
       console.error("Error updating profile:", error);
     } finally {
@@ -241,4 +240,5 @@ const Profile = () => {
 };
 
 export default Profile;
+
 

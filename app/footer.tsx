@@ -13,7 +13,7 @@ const Footer = () => {
       >
         <Box mb={{ base: 4, md: 0 }}>
           <Text fontSize="lg" fontWeight="bold">
-            Job Application Tracker
+            Job Housekeeper
           </Text>
           <Text fontSize="sm">
             &copy; {new Date().getFullYear()} All rights reserved.

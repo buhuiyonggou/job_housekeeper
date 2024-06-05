@@ -140,8 +140,8 @@ export default function SignIn() {
               </Stack>
             </Box>
             <Flex justifyContent="center" gap="10" mt="2">
-              <Button onClick={handleSignIn}>Sign in</Button>
-              <Button onClick={cancelSignIn}>Cancel</Button>
+              <Button variant='outline' colorScheme='blue' onClick={handleSignIn}>Sign in</Button>
+              <Button variant='outline' onClick={cancelSignIn}>Cancel</Button>
             </Flex>
 
             <Flex direction="column">
