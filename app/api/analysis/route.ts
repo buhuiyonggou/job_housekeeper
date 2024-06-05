@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth';
 import authOptions from '@/app/auth/authOptions';
 
 export async function GET(req: NextRequest) {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -20,7 +20,6 @@ export async function GET(req: NextRequest) {
         application_date: {
           gte: sixMonthsAgo.toDate(),
         },
-        // to demo the analysis, we include applications hadn't assigned to users
         OR: [
           { assignedToUserId: session.user.id },
           { assignedToUserId: null },
@@ -34,19 +33,36 @@ export async function GET(req: NextRequest) {
       applicationsByMonth[month.format('YYYY-MM')] = 0;
     }
 
+    // Initialize the data structure for categories
+    const applicationsByCategory: { [key: string]: number } = {};
+
     // Populate the data structure with the actual data
     applications.forEach(application => {
       const month = dayjs(application.application_date).format('YYYY-MM');
       applicationsByMonth[month]++;
+      
+      const category = application.category;
+      if (!applicationsByCategory[category]) {
+        applicationsByCategory[category] = 0;
+      }
+      applicationsByCategory[category]++;
     });
 
     // Convert to array for charting
-    const chartData = Object.keys(applicationsByMonth).map(month => ({
+    const chartDataByMonth = Object.keys(applicationsByMonth).map(month => ({
       name: month,
       value: applicationsByMonth[month],
     }));
 
-    return NextResponse.json(chartData);
+    const chartDataByCategory = Object.keys(applicationsByCategory).map(category => ({
+      name: category,
+      value: applicationsByCategory[category],
+    }));
+
+    return NextResponse.json({
+      chartDataByMonth,
+      chartDataByCategory,
+    });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch applications data' }, { status: 500 });
   }

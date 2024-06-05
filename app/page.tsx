@@ -8,11 +8,15 @@ import {
   SimpleGrid,
   Button,
   Flex,
+  Skeleton,
+  SkeletonText,
 } from "@chakra-ui/react";
 import axios from "axios";
 import JobCard from "../app/components/JobCard";
 import JobFilter from "../app/components/JobFilter";
 import { Job, JobFilters } from "../app/src/utils/Reusables";
+import FeatureIntroduction from "./components/FeatureIntroduction";
+import {JobCardSkeleton} from "../app/components/JobCardSkeleton";
 
 const Home = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -25,6 +29,7 @@ const Home = () => {
     datePosted: "month",
     employmentTypes: "",
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchJobs(filters, getRandomIndex());
@@ -68,6 +73,8 @@ const Home = () => {
     } catch (error) {
       console.error(error);
       setJobs([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,17 +88,23 @@ const Home = () => {
 
   return (
     <Box>
-      <Heading as="h1" size="xl" textAlign="center" mb="8">
+      <Heading as="h1" size="xl" textAlign="center" mb="6">
         Welcome to Job Application Tracker
       </Heading>
+      <FeatureIntroduction />
+      <div className="my-8 border-t border-gray-300" />
       <Grid templateColumns="repeat(12, 1fr)" gap={6}>
-        <GridItem colSpan={{ base: 12, md: 4 }} maxW="md" m="4">
-          <JobFilter onSearch={handleSearch} defaultValues={filters} />
+        <GridItem colSpan={{ base: 12, md: 4 }} maxW="md" m="4" mt="0">
+          <Skeleton isLoaded={!loading}>
+            <JobFilter onSearch={handleSearch} defaultValues={filters} />
+          </Skeleton>
         </GridItem>
 
-        <GridItem colSpan={{ base: 12, md: 8 }} mt={{ base: 6, md: 0 }} m="8">
-          {!jobs.length ? (
-            <Heading as="h4" size="md" textAlign="center" m="4">
+        <GridItem colSpan={{ base: 12, md: 8 }} mt={{ base: 6, md: 0 }} m="6">
+          {loading ? (
+            <SkeletonText mt="4" noOfLines={3} spacing="4" skeletonHeight="2" />
+          ) : !jobs.length ? (
+            <Heading as="h4" size="md" textAlign="center" mt="4">
               Use Search Engine to Explore Posting Jobs
             </Heading>
           ) : (
@@ -102,10 +115,12 @@ const Home = () => {
             </Flex>
           )}
 
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt="8">
-            {jobs.map((job, index) => (
-              <JobCard key={`${job.id}-${index}`} job={job}/>
-            ))}
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt={{ base: 4, md: 8 }}>
+            {loading ? (
+              Array.from({ length: 6 }).map((_, index) => <JobCardSkeleton key={index} />)
+            ) : (
+              jobs.map((job, index) => <JobCard key={`${job.id}-${index}`} job={job} />)
+            )}
           </SimpleGrid>
         </GridItem>
       </Grid>
@@ -114,3 +129,4 @@ const Home = () => {
 };
 
 export default Home;
+

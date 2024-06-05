@@ -1,8 +1,9 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { MdDashboard, MdWifiFind} from "react-icons/md";
+import { MdDashboard, MdWifiFind } from "react-icons/md";
 import { AiFillFolder } from "react-icons/ai";
 import { MdWork } from "react-icons/md";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
@@ -23,8 +24,14 @@ const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box as="nav" borderBottomWidth="1px" mb={5} px={3} py={3}>
-      <Container maxW="container.fluid">
+    <Box
+      as="nav"
+      borderBottomWidth="1px"
+      mb={5}
+      px={{base: 0, md: 3}} py={{base: 1, md: 3}}
+      className={"text-white bg-zinc-600"}
+    >
+      <Container maxW="container.fluid" >
         <Flex justify="space-between" align="center">
           <Flex align="center">
             <IconButton
@@ -82,10 +89,11 @@ const NavLinks = ({ isMobile }: { isMobile: boolean }) => {
         <Box
           as="li"
           key={link.href}
-          className={link.href === currentPath ? "!text-zinc-500" : ""}
-          borderRadius="md"
+          className={`${
+            link.href === currentPath ? "!text-zinc-400" : ""
+          } bg-zinc-600 hover:bg-zinc-700 active:bg-zinc-700 focus:outline-none focus:ring focus:ring-zinc-300`}
         >
-          <Link href={link.href}>
+          <Link href={link.href} >
             <HStack
               spacing={1}
               align="center"
@@ -103,3 +111,4 @@ const NavLinks = ({ isMobile }: { isMobile: boolean }) => {
 };
 
 export default NavBar;
+

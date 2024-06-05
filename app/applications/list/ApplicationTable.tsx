@@ -66,26 +66,26 @@ const ApplicationTable = ({ applications, searchParams }: Props) => {
           <Tbody>
             {applications.map((application) => (
               <Tr key={application.application_id}>
-                <Td className="small-font">
-                  <ChakraLink
+                <Td className="small-font ">
+                    {application.company}
+                </Td>
+                <Td className="small-font font-medium underline underline-offset-auto">
+                <ChakraLink
                     color="teal.500"
                     as={NextLink}
                     href={`/applications/${application.application_id}`}
                   >
-                    {application.company}
+                  {application.job_title}
                   </ChakraLink>
                 </Td>
-                <Td className="small-font">
-                  {application.job_title}
-                </Td>
-                <Td className="small-font">{application.location}</Td>
-                <Td className="hidden md:table-cell small-font">{application.type}</Td>
-                <Td className="hidden md:table-cell small-font">{application.term}</Td>
-                <Td className="hidden md:table-cell small-font">{application.year}</Td>
-                <Td className="hidden lg:table-cell small-font">
+                <Td className="small-font font-medium">{application.location}</Td>
+                <Td className="hidden md:table-cell small-font font-medium">{application.type}</Td>
+                <Td className="hidden md:table-cell small-font font-medium">{application.term}</Td>
+                <Td className="hidden md:table-cell small-font font-medium">{application.year}</Td>
+                <Td className="hidden lg:table-cell small-font font-medium">
                   {new Date(application.updatedAt || '2000-01-02').toLocaleDateString()}  
                 </Td>
-                <Td className="hidden lg:table-cell small-font">
+                <Td className="hidden lg:table-cell small-font font-medium">
                   <ApplicationStatusBadge application={application} isEdit={true}/>
                 </Td>
               </Tr>

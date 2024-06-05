@@ -13,12 +13,15 @@ import {
   LineChart,
   Legend,
   Line,
+  Pie,
+  PieChart,
 } from "recharts";
 import { Box, Card, Flex, Heading } from "@chakra-ui/react";
 import { SummaryStatus, getAnalysisColorScheme } from "@/app/src/utils/Reusables";
 import { Status } from "@prisma/client";
 import axios from "axios";
 
+// fetch data analysis from the server
 const fetchApplicationsSubmitted = async () => {
   const response = await axios.get("/api/analysis");
   if (response.status !== 200) {
@@ -28,6 +31,7 @@ const fetchApplicationsSubmitted = async () => {
 };
 
 const Chart = ({ data }: { data: SummaryStatus }) => {
+  // Define all types of status for the bar chart
   const chartData = [
     { name: "Applied", value: data.applied },
     { name: "Interview", value: data.interview },
@@ -37,13 +41,14 @@ const Chart = ({ data }: { data: SummaryStatus }) => {
   ];
 
   const [lineChartData, setLineChartData] = useState([]);
+  const [pieChartData, setPieChartData] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
       try {
         const applicationsData = await fetchApplicationsSubmitted();
-        setLineChartData(applicationsData);
-        // console.log(applicationsData);
+        setLineChartData(applicationsData.chartDataByMonth);
+        setPieChartData(applicationsData.chartDataByCategory);
       } catch (error) {
         console.error(error);
       }
@@ -54,6 +59,7 @@ const Chart = ({ data }: { data: SummaryStatus }) => {
   return (
     <Card mt="6">
       <Flex  direction={{ base: "column", md: "row" }} justify="center" >
+        
         <Box width={{ base: "100%", md: "50%" }}>
         <Heading as="h3" size="md" noOfLines={1} mb="2" textAlign="center">
           Bar Chart
@@ -62,7 +68,7 @@ const Chart = ({ data }: { data: SummaryStatus }) => {
           <BarChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis />
+            <YAxis tickFormatter={(tick) => Math.floor(tick).toString()}/>
             <Tooltip />
             <Bar dataKey="value" barSize={60}>
               {chartData.map((entry, index) => (
@@ -87,7 +93,7 @@ const Chart = ({ data }: { data: SummaryStatus }) => {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
-            <YAxis />
+            <YAxis tickFormatter={(tick) => Math.floor(tick).toString()}/>
             <Tooltip />
             <Legend />
             <Line type="monotone" dataKey="value" stroke="#8884d8" />
@@ -95,6 +101,30 @@ const Chart = ({ data }: { data: SummaryStatus }) => {
         </ResponsiveContainer>
         </Box>
         
+        <Box width={{ base: "100%", md: "33%" }}>
+          <Heading as="h3" size="md" noOfLines={1} mb="2" mt="4" textAlign="center">
+            Applications by Category
+          </Heading>
+          <ResponsiveContainer width="90%" height={350}>
+            <PieChart>
+              <Pie
+                data={pieChartData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                fill="#8884d8"
+                label
+              >
+                {pieChartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </Box>
       </Flex>
     </Card>
   );

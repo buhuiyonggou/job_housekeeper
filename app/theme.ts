@@ -6,8 +6,9 @@ const config: ThemeConfig = {
 };
 
 const activeLabelStyles = {
-  transform: "scale(0.85) translateY(-24px)"
+  transform: "scale(0.85) translateY(-24px)",
 };
+
 const breakpoints = {
   base: "0em", // 0px
   sm: "30em", // ~480px. em is a relative unit and is dependant on the font size.
@@ -41,6 +42,27 @@ const theme = extendTheme({
     body: "var(--font-rubik)",
   },
   breakpoints,
+  styles: {
+    global: (props: any) => ({
+      body: {
+        position: "relative",
+        _before: {
+          content: '""',
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundImage: props.colorMode === 'dark' ? "url('/app-bg-dark.png')" : "",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+          backgroundSize: "cover",
+          opacity: 0.6, 
+          zIndex: -1,
+        },
+      },
+    }),
+  },
   components: {
     Form: {
       variants: {
@@ -48,11 +70,11 @@ const theme = extendTheme({
           container: {
             _focusWithin: {
               label: {
-                ...activeLabelStyles
-              }
+                ...activeLabelStyles,
+              },
             },
             "input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, textarea:not(:placeholder-shown) ~ label": {
-              ...activeLabelStyles
+              ...activeLabelStyles,
             },
             label: {
               top: 0,
@@ -63,13 +85,14 @@ const theme = extendTheme({
               mx: 3,
               px: 1,
               my: 2,
-              transformOrigin: "left top"
-            }
-          }
-        }
-      }
-    }
-  }
+              transformOrigin: "left top",
+            },
+          },
+        },
+      },
+    },
+  },
 });
 
 export default theme;
+

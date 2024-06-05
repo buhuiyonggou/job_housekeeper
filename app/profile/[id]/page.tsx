@@ -8,9 +8,9 @@ import {
   Input,
   Textarea,
   VStack,
-  useToast,
   HStack,
   Flex,
+  Skeleton,
 } from "@chakra-ui/react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import axios from "axios";
@@ -41,9 +41,9 @@ const Profile = () => {
   const [user, setUserState] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const route = useRouter();
-  const toast = useToast();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -54,6 +54,8 @@ const Profile = () => {
         reset(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -69,25 +71,9 @@ const Profile = () => {
       });
       setUserState(response.data);
       dispatch(setUser(response.data)); // Update the user in Redux state
-      toast({
-        title: "Profile updated.",
-        description: "Your profile has been updated successfully.",
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
-      setIsEditing(false);
       route.push(`/profile/${response.data.id}`);
     } catch (error) {
       console.error("Error updating profile:", error);
-      toast({
-        title: "Error updating profile.",
-        description:
-          "There was an error updating your profile. Please try again.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
     } finally {
       setIsSubmitting(false);
     }
@@ -102,100 +88,114 @@ const Profile = () => {
     <Box maxW="xl" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md">
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={2}>
-          {user && (
-            <Controller
-              name="image"
-              control={control}
-              render={({ field }) => (
-                <ImageUploader
-                  editStatus={isEditing}
-                  user={user}
-                  onImageUpload={(url) => field.onChange(url)}
-                  onUploadError={(error) => console.error(error)}
+          {loading ? (
+            <>
+              <Skeleton height="150px" width="150px" borderRadius="full" />
+              <Skeleton height="40px" width="100%" />
+              <Skeleton height="40px" width="100%" />
+              <Skeleton height="40px" width="100%" />
+              <Skeleton height="100px" width="100%" />
+              <Skeleton height="40px" width="100%" />
+              <Skeleton height="40px" width="100%" />
+            </>
+          ) : (
+            <>
+              {user && (
+                <Controller
+                  name="image"
+                  control={control}
+                  render={({ field }) => (
+                    <ImageUploader
+                      editStatus={isEditing}
+                      user={user}
+                      onImageUpload={(url) => field.onChange(url)}
+                      onUploadError={(error) => console.error(error)}
+                    />
+                  )}
                 />
               )}
-            />
+
+              <FormControl>
+                <HStack alignItems="center" m="2">
+                  <FaUser color="gray.500" />
+                  <FormLabel m={0} ml={2}>
+                    Name
+                  </FormLabel>
+                </HStack>
+                <Input
+                  {...register("name")}
+                  placeholder="Name"
+                  disabled={!isEditing}
+                />
+              </FormControl>
+
+              <FormControl>
+                <HStack alignItems="center" m="2">
+                  <AtSignIcon color="gray.500" />
+                  <FormLabel m={0} ml={1}>
+                    Email
+                  </FormLabel>
+                </HStack>
+                <Input {...register("email")} placeholder="Email" disabled />
+              </FormControl>
+
+              <FormControl>
+                <HStack alignItems="center" m="2">
+                  <FaGenderless color="gray.500" />
+                  <FormLabel m={0} ml={1}>
+                    Gender
+                  </FormLabel>
+                </HStack>
+                <Input
+                  {...register("gender")}
+                  placeholder="Gender"
+                  disabled={!isEditing}
+                />
+              </FormControl>
+
+              <FormControl>
+                <HStack alignItems="center" m="2">
+                  <InfoIcon color="gray.500" />
+                  <FormLabel m={0} ml={1}>
+                    Description
+                  </FormLabel>
+                </HStack>
+                <Textarea
+                  {...register("description")}
+                  placeholder="Description"
+                  disabled={!isEditing}
+                />
+              </FormControl>
+
+              <FormControl>
+                <HStack alignItems="center" m="2">
+                  <FaLinkedin color="gray.500" />
+                  <FormLabel m={0} ml={1}>
+                    LinkedIn
+                  </FormLabel>
+                </HStack>
+                <Input
+                  {...register("linkedin")}
+                  placeholder="LinkedIn URL"
+                  disabled={!isEditing}
+                />
+              </FormControl>
+
+              <FormControl>
+                <HStack alignItems="center" m="2">
+                  <FaGlobe color="gray.500" />
+                  <FormLabel m={0} ml={1}>
+                    Personal Site
+                  </FormLabel>
+                </HStack>
+                <Input
+                  {...register("personal_site")}
+                  placeholder="Personal Site URL"
+                  disabled={!isEditing}
+                />
+              </FormControl>
+            </>
           )}
-
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <FaUser color="gray.500" />
-              <FormLabel m={0} ml={2}>
-                Name
-              </FormLabel>
-            </HStack>
-            <Input
-              {...register("name")}
-              placeholder="Name"
-              disabled={!isEditing}
-            />
-          </FormControl>
-
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <AtSignIcon color="gray.500" />
-              <FormLabel m={0} ml={1}>
-                Email
-              </FormLabel>
-            </HStack>
-            <Input {...register("email")} placeholder="Email" disabled />
-          </FormControl>
-
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <FaGenderless color="gray.500" />
-              <FormLabel m={0} ml={1}>
-                Gender
-              </FormLabel>
-            </HStack>
-            <Input
-              {...register("gender")}
-              placeholder="Gender"
-              disabled={!isEditing}
-            />
-          </FormControl>
-
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <InfoIcon color="gray.500" />
-              <FormLabel m={0} ml={1}>
-                Description
-              </FormLabel>
-            </HStack>
-            <Textarea
-              {...register("description")}
-              placeholder="Description"
-              disabled={!isEditing}
-            />
-          </FormControl>
-
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <FaLinkedin color="gray.500" />
-              <FormLabel m={0} ml={1}>
-                LinkedIn
-              </FormLabel>
-            </HStack>
-            <Input
-              {...register("linkedin")}
-              placeholder="LinkedIn URL"
-              disabled={!isEditing}
-            />
-          </FormControl>
-
-          <FormControl>
-            <HStack alignItems="center" m="2">
-              <FaGlobe color="gray.500" />
-              <FormLabel m={0} ml={1}>
-                Personal Site
-              </FormLabel>
-            </HStack>
-            <Input
-              {...register("personal_site")}
-              placeholder="Personal Site URL"
-              disabled={!isEditing}
-            />
-          </FormControl>
 
           <Flex
             display="flex"
@@ -241,3 +241,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

@@ -14,9 +14,9 @@ import Link from "../components/Link";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import React, { useEffect } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../../lib/userSlice';
-import { RootState } from '../../lib/store';
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../lib/userSlice";
+import { RootState } from "../../lib/store";
 
 export const AuthStatus = () => {
   const { status, data: session } = useSession();
@@ -26,7 +26,8 @@ export const AuthStatus = () => {
 
   useEffect(() => {
     if (status === "authenticated") {
-      axios.get("/api/users/me")
+      axios
+        .get("/api/users/me")
         .then((response) => {
           dispatch(setUser(response.data));
           console.log("User fetched successfully:", response.data);
@@ -45,27 +46,30 @@ export const AuthStatus = () => {
 
   return (
     <Box>
-      {!session ? (<Link href="/api/auth/signin">Sign in</Link>): (<Menu>
-        <MenuButton as={Box} display="flex" alignItems="center">
-          <Avatar
-            src={user?.image || undefined}
-            name={user?.name || "User"}
-            size="sm"
-          />
-          <ChevronDownIcon />
-        </MenuButton>
-        <MenuList>
-          <MenuItem>
-            <Link href={`/profile/${session?.user?.id}`}>
-              <Text size="sm">{session?.user?.email}</Text>
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link href="/api/auth/signout">Sign out</Link>
-          </MenuItem>
-        </MenuList>
-      </Menu>)}
-      
+      {!session ? (
+        <Link href="/api/auth/signin">Sign in</Link>
+      ) : (
+        <Menu>
+          <MenuButton as={Box} display="flex" alignItems="center">
+            <Avatar
+              src={user?.image || undefined}
+              name={user?.name || "User"}
+              size="sm"
+            />
+            <ChevronDownIcon />
+          </MenuButton>
+          <MenuList>
+            <MenuItem color='tomato'>
+              <Link href={`/profile/${session?.user?.id}`}>
+                <Text size="sm">{session?.user?.email}</Text>
+              </Link>
+            </MenuItem>
+            <MenuItem color='gray.500'>
+              <Link href="/api/auth/signout">Sign out</Link>
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      )}
     </Box>
   );
 };

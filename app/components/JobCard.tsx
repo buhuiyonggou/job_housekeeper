@@ -70,7 +70,7 @@ const JobCard = ({ job, isCollected }: Props) => {
               variant="outline"
               onClick={handleSaveJob}
             >
-              Save to Collection
+              Save Job
             </Button>
           )
         )}
