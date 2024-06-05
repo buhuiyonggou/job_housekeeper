@@ -16,29 +16,20 @@ import JobCard from "../app/components/JobCard";
 import JobFilter from "../app/components/JobFilter";
 import { Job, JobFilters } from "../app/src/utils/Reusables";
 import FeatureIntroduction from "./components/FeatureIntroduction";
-import {JobCardSkeleton} from "../app/components/JobCardSkeleton";
+import { JobCardSkeleton } from "../app/components/JobCardSkeleton";
 
 const Home = () => {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [filters, setFilters] = useState<JobFilters>({
     // Default filters, fill query and location will enable search jobs on page load
     query: "Software Developer",
-    location: "",
+    location: "British Columbia, Canada",
     distance: 50,
     remoteOnly: false,
     datePosted: "month",
     employmentTypes: "",
   });
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchJobs(filters, getRandomIndex());
-  }, [filters]);
-
-  // used to explore jobs by random index
-  const getRandomIndex = () => {
-    return Math.floor(Math.random() * 10);
-  };
 
   const fetchJobs = async (filters: JobFilters, pageIndex: number) => {
     const options = {
@@ -78,6 +69,15 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    fetchJobs(filters, getRandomIndex());
+  }, [filters]);
+
+  // used to explore jobs by random index
+  const getRandomIndex = () => {
+    return Math.floor(Math.random() * 10);
+  };
+
   const handleSearch = (newFilters: JobFilters) => {
     setFilters(newFilters);
   };
@@ -108,19 +108,44 @@ const Home = () => {
               Use Search Engine to Explore Posting Jobs
             </Heading>
           ) : (
-            <Flex justify="flex-end" mt="4">
-              <Button onClick={handleExploreMore} mt="2" mr="10" colorScheme="blue">
+            <Flex
+              direction={{ base: "row", md: "column" }}
+              justify="space-between"
+              mt="4"
+              alignItems="center"
+              gap={{ base: 2, md: 4 }}
+            >
+              <Heading
+                as="h4"
+                size="md"
+                textAlign={{ base: "left", md: "center" }}
+                display={{ base: "none", md: "block" }}
+              >
+                Click job title or providers to find the recruiter
+              </Heading>
+              <Button
+                onClick={handleExploreMore}
+                mt={{ base: 0, md: 2 }}
+                mr={{ base: 2, md: 0 }}
+                colorScheme="blue"
+              >
                 Explore More
               </Button>
             </Flex>
           )}
 
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt={{ base: 4, md: 8 }}>
-            {loading ? (
-              Array.from({ length: 6 }).map((_, index) => <JobCardSkeleton key={index} />)
-            ) : (
-              jobs.map((job, index) => <JobCard key={`${job.id}-${index}`} job={job} />)
-            )}
+          <SimpleGrid
+            columns={{ base: 1, md: 2 }}
+            spacing={4}
+            mt={{ base: 4, md: 8 }}
+          >
+            {loading
+              ? Array.from({ length: 6 }).map((_, index) => (
+                  <JobCardSkeleton key={index} />
+                ))
+              : jobs.map((job, index) => (
+                  <JobCard key={`${job.id}-${index}`} job={job} />
+                ))}
           </SimpleGrid>
         </GridItem>
       </Grid>
@@ -129,4 +154,3 @@ const Home = () => {
 };
 
 export default Home;
-

@@ -64,7 +64,7 @@ const authOptions: NextAuthOptions = {
   },
   events: {
     async signIn(message) {
-      console.log("User signed in", message);
+      // console.log("User signed in", message);
     },
   },
 };

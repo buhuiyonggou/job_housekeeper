@@ -3,31 +3,41 @@ import React from 'react';
 
 const ApplicationFormSkeleton = () => {
   return (
-    <div className='max-w-xl'>
-    <Box padding="6" boxShadow="lg" bg="white">
-      <Skeleton height="20px" mb="4" />
-      <Flex direction={{ base: 'column', md: 'row' }} gap="4">
-        <Skeleton height="40px" width="full" />
-        <Skeleton height="40px" width="full" />
+    <Box maxW={{ base: '100%', md: '50%' }} mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md">
+      <Skeleton height="40px" mb="6" />
+
+      <Flex alignItems="center" width="100%" mb="4">
+        <Skeleton height="30px" width="100%" />
       </Flex>
-      <Skeleton mt="4" noOfLines={4} height="40px" />
-      <Skeleton mt="4" noOfLines={4} height="100px" />
-      <SimpleGrid columns={{ base: 1, md: 2 }} gap="4" mt="4">
-        <Skeleton height="40px" />
-        <Skeleton height="40px" />
+
+      <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} width="100%" mb="4">
+        <Skeleton height="40px" width="100%" />
+        <Skeleton height="40px" width="100%" />
       </SimpleGrid>
-      <SimpleGrid columns={3} gap="4" mt="4">
-        <Skeleton height="40px" />
-        <Skeleton height="40px" />
-        <Skeleton height="40px" />
+
+      <Skeleton height="40px" width="100%" mb="4" />
+
+      <Skeleton height="100px" width="100%" mb="4" />
+
+      <Skeleton height="40px" width="100%" mb="4" />
+
+      <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} width="100%" mb="4">
+        <Skeleton height="40px" width="100%" />
+        <Skeleton height="40px" width="100%" />
       </SimpleGrid>
-      <Flex justifyContent="space-between" mt="4">
-        <SkeletonCircle size="10" />
-        <Skeleton height="40px" width="20%" />
-        <SkeletonCircle size="10" />
+
+      <SimpleGrid columns={{ base: 1, md: 3 }} gap={6} width="100%" mb="4">
+        <Skeleton height="40px" width="100%" />
+        <Skeleton height="40px" width="100%" />
+        <Skeleton height="40px" width="100%" />
+      </SimpleGrid>
+
+      <Flex justifyContent="space-evenly" mt="4" direction={{ base: "column", md: "row" }}>
+        <Skeleton height="40px" width={{ base: "100%", md: "auto" }} mb={{ base: "4", md: "0" }} />
+        <Skeleton height="40px" width={{ base: "100%", md: "auto" }} mb={{ base: "4", md: "0" }} />
+        <Skeleton height="40px" width={{ base: "100%", md: "auto" }} />
       </Flex>
     </Box>
-    </div>
   );
 };
 

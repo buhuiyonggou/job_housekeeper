@@ -8,7 +8,6 @@ import {
   FormHelperText,
   SimpleGrid,
   Spacer,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import { Callout } from "@radix-ui/themes";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
@@ -64,7 +63,6 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
   const onSubmit: SubmitHandler<ApplicationFormData> = async (data) => {
     try {
       setIsSubmitting(true);
-      // check if application exists
       if (application) {
         await axios.patch(`/api/applications/${application.application_id}`, data);
       } else {
@@ -87,7 +85,7 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
   };
 
   return (
-    <div className="max-w-xl">
+    <Box maxW={{base: "100%", md: "50%"}} mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md">
       {error && (
         <Callout.Root className="mb-5">
           <Callout.Text color="red" className="mb-5">
@@ -104,7 +102,7 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
               htmlFor=""
               className="font-sans text-2xl font-bold"
             >
-              New Application
+              New Application Form
             </label>
             <Spacer />
             {(editStatus && application) && (
@@ -114,14 +112,7 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
             )}
           </Flex>
 
-          <Box
-            display="flex"
-            flexDirection={{ base: "column", md: "row" }}
-            justifyContent="space-around"
-            gap="8"
-            width="100%"
-            mb="3"
-          >
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} width="100%">
             <FloatInput
               id="company"
               label="Company Name"
@@ -130,7 +121,6 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
               validationRules={{ required: "Company name is required" }}
               error={errors.company}
             />
-
             <FormControl
               variant="floating"
               id="category"
@@ -151,7 +141,7 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
               <FormHelperText>Select the category of job</FormHelperText>
               <FormErrorMessage>{errors.category?.message}</FormErrorMessage>
             </FormControl>
-          </Box>
+          </SimpleGrid>
 
           <FloatInput
             id="job_title"
@@ -181,15 +171,7 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
             error={errors.track_link}
           />
 
-          <Box
-            display="flex"
-            flexDirection={{ base: "column", md: "row" }}
-            alignItems="center"
-            justifyContent="space-around"
-            gap="8"
-            width="100%"
-            mb="3"
-          >
+          <SimpleGrid columns={{ base: 1, md: 2 }} gap={6} width="100%">
             <FloatInput
               id="position_code"
               label="Position Code"
@@ -197,7 +179,6 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
               register={register}
               error={errors.position_code}
             />
-
             <FloatInput
               id="location"
               label="Location"
@@ -206,14 +187,14 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
               validationRules={{ required: "Location is required" }}
               error={errors.location}
             />
-          </Box>
+          </SimpleGrid>
 
-          <SimpleGrid columns={{ base: 1, md: 3 }} gap={5} width="100%" mb="3">
+          <SimpleGrid columns={{ base: 1, md: 3 }} gap={6} width="100%"   alignItems="center" 
+  justifyContent="center">
             <FormControl
               variant="floating"
               id="type"
               isInvalid={errors.type ? true : false}
-              className="flex flex-col items-center justify-center"
             >
               <Controller
                 name="type"
@@ -239,7 +220,6 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
               variant="floating"
               id="term"
               isInvalid={errors.term ? true : false}
-              className="flex flex-col items-center justify-center"
             >
               <Controller
                 name="term"
@@ -260,21 +240,16 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
               <FormHelperText>Select your job term</FormHelperText>
               <FormErrorMessage>{errors.term?.message}</FormErrorMessage>
             </FormControl>
-
             <FormControl
               variant="floating"
               id="year"
               isInvalid={errors.year ? true : false}
-              as="fieldset"
-              className="flex flex-col items-center justify-center"
+              textAlign="center"
             >
               <Controller
                 name="year"
                 control={control}
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <DateSelector
                     selectedYear={value}
                     onDateChange={(year) => onChange(year)}
@@ -289,7 +264,7 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
         <Flex
           display="flex"
           alignItems="center"
-          justifyContent="space-between"
+          justifyContent="space-evenly"
           gap="3"
           direction={{ base: "column", md: "row" }}
         >
@@ -322,9 +297,10 @@ const ApplicationForm = ({ application, editStatus }: Props) => {
           </Button>
         </Flex>
       </form>
-    </div>
+    </Box>
   );
 };
 
 export default ApplicationForm;
+
 
