@@ -27,7 +27,7 @@ const Collection = () => {
   }, []);
 
   if (loading) {
-    return <CollectionSkeleton/>;
+    return <CollectionSkeleton />;
   }
 
   if (collections.length === 0) {
@@ -39,7 +39,7 @@ const Collection = () => {
   }
 
   return (
-    <Box>
+    <Box p={4}>
       <Heading as="h1" size="xl" textAlign="center" mb="8">
         Your Job Collections
       </Heading>
