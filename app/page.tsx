@@ -23,13 +23,14 @@ const Home = () => {
   const [filters, setFilters] = useState<JobFilters>({
     // Default filters, fill query and location will enable search jobs on page load
     query: "Software Developer",
-    location: "British Columbia, Canada",
+    location: "Vancouver, BC, Canada",
     distance: 50,
     remoteOnly: false,
     datePosted: "month",
     employmentTypes: "",
   });
   const [loading, setLoading] = useState(true);
+  const [pageIndex, setPageIndex] = useState<number>(0);
 
   const fetchJobs = async (filters: JobFilters, pageIndex: number) => {
     const options = {
@@ -70,7 +71,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchJobs(filters, getRandomIndex());
+    fetchJobs(filters, pageIndex);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   // used to explore jobs by random index
@@ -80,9 +82,11 @@ const Home = () => {
 
   const handleSearch = (newFilters: JobFilters) => {
     setFilters(newFilters);
+    setPageIndex(getRandomIndex());
   };
 
   const handleExploreMore = () => {
+    setPageIndex(getRandomIndex());
     fetchJobs(filters, getRandomIndex());
   };
 

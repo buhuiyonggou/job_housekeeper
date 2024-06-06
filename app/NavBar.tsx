@@ -34,7 +34,7 @@ const NavBar = () => {
   const toast = useToast();
 
   useEffect(() => {
-    if (status === "authenticated" && session) {
+    if (status === "authenticated") {
       axios
         .get("/api/users/me")
         .then((response) => {
@@ -51,7 +51,7 @@ const NavBar = () => {
           });
         });
     }
-  }, [status, session, dispatch, toast]);
+  }, [status, dispatch, toast]);
 
   return (
     <Box
