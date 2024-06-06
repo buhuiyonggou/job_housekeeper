@@ -23,17 +23,17 @@ screenshot-5
 
 ## Environment Requirements
 To run this project, you need the following environment variables:
-- `DATABASE_URL`
-- `NEXTAUTH_SECRET`
-- `GOOGLE_CLIENT_ID`
-- `GOOGLE_CLIENT_SECRET`
-- `GITHUB_ID`
-- `GITHUB_SECRET`
-- `AUTH_EMAIL_USER`
-- `AUTH_EMAIL_PASS`
-- `UPLOADTHING_SECRET`
-- `UPLOADTHING_APP_ID`
-- `NEXT_PUBLIC_RAPIDAPI_KEY`
+- `DATABASE_URL` -- prisma database url
+- `NEXTAUTH_SECRET`-- nextAuth secret
+- `GOOGLE_CLIENT_ID`-- google signin id
+- `GOOGLE_CLIENT_SECRET`- google signin secret
+- `GITHUB_ID` -- github signin id
+- `GITHUB_SECRET` -- github signin secret
+- `AUTH_EMAIL_USER` -- nextAuth credential user
+- `AUTH_EMAIL_PASS` -- nextAuth credential password
+- `UPLOADTHING_SECRET`-- uploadingthings lib secret
+- `UPLOADTHING_APP_ID`-- uploadingthings id
+- `NEXT_PUBLIC_RAPIDAPI_KEY`-- X-RapidAPI key
 
 ## Getting Started
 First, install the necessary dependencies:
