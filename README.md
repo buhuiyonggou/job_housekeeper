@@ -9,6 +9,7 @@ Job Housekeeper is a comprehensive job application management system designed to
 
 ## Website
 Visit the live application: [Job Housekeeper](https://job-housekeeper.vercel.app/)
+
 screenshot-1
 ![screenshot1](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/87437f07-847d-4cd9-8d39-8f30f9162105)
 screenshot-2
