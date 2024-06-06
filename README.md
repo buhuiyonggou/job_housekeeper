@@ -13,10 +13,12 @@ Visit the live application: [Job Housekeeper](https://job-housekeeper.vercel.app
 screenshot-1
 ![screenshot1](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/87437f07-847d-4cd9-8d39-8f30f9162105)
 screenshot-2
-![screenshot2](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/48d3b752-c73a-4b56-a736-c4b80bf8f2a2)
+![sceenshot5](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/eeb25c42-c0c6-4f38-b591-4050fd41f23e)
 screenshot-3
-![screenshot3](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/f16352eb-1998-4827-8246-67495c981782)
+![screenshot2](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/48d3b752-c73a-4b56-a736-c4b80bf8f2a2)
 screenshot-4
+![screenshot3](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/f16352eb-1998-4827-8246-67495c981782)
+screenshot-5
 ![screenshot4](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/97168a14-4c3b-4f53-a242-ba349f3a6eff)
 
 ## Environment Requirements
