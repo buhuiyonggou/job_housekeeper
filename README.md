@@ -1,11 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Job Housekeeper
+
+## Project Goal
+Job Housekeeper is a comprehensive job application management system designed to help users find job opportunities from various platforms, manage their job applications, and analyze their history records. This project serves as a practical implementation of a full-stack Next.js web application.
+
+## Key Skills and Tools
+- **Skills**: TypeScript, Next.js, React, PostgreSQL
+- **Tools**: Prisma, Chakra UI, Tailwind CSS, NextAuth, Uploadthing, Zod, Nodemailer
+
+## Website
+Visit the live application: [Job Housekeeper](https://job-housekeeper.vercel.app/)
+screenshot-1
+![screenshot1](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/87437f07-847d-4cd9-8d39-8f30f9162105)
+screenshot-2
+![screenshot2](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/48d3b752-c73a-4b56-a736-c4b80bf8f2a2)
+screenshot-3
+![screenshot3](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/f16352eb-1998-4827-8246-67495c981782)
+screenshot-4
+![screenshot4](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/97168a14-4c3b-4f53-a242-ba349f3a6eff)
+
+## Environment Requirements
+To run this project, you need the following environment variables:
+- `DATABASE_URL`
+- `NEXTAUTH_SECRET`
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `GITHUB_ID`
+- `GITHUB_SECRET`
+- `AUTH_EMAIL_USER`
+- `AUTH_EMAIL_PASS`
+- `UPLOADTHING_SECRET`
+- `UPLOADTHING_APP_ID`
+- `NEXT_PUBLIC_RAPIDAPI_KEY`
 
 ## Getting Started
-
-First, run the development server:
-
+First, install the necessary dependencies:
 ```bash
+npm install
 npm run dev
+npm run build
 # or
 yarn dev
 # or
@@ -13,24 +45,8 @@ pnpm dev
 # or
 bun dev
 ```
+## Further Plans
+- Deep Analysis of application competitiveness using AI tools.
+- Job posting notifications from favorite companies.
+- Auto-notification when a company reaches out.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
