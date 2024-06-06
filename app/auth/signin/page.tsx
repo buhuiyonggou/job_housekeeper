@@ -101,7 +101,7 @@ export default function SignIn() {
           borderRadius="lg"
           boxShadow="2xl"
           textAlign="center"
-          className="bg-gray-100/[0.6]"
+          className="bg-gray-300/[0.2]"
           width={"70%"}
         >
           <Heading as="h1" size="lg" mb={4}>

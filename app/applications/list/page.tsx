@@ -73,7 +73,7 @@ const Applications = ({ searchParams }: Props) => {
     : undefined;
 
   return (
-    <Flex direction="column" gap="3">
+    <Flex direction="column" gap="3" p={3}>
       <Flex
         direction={{ base: "column", md: "row" }}
         gap={6}
