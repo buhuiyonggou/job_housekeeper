@@ -14,8 +14,8 @@ const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
     GithubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
+      clientId: process.env.GITHUB_ID || "",
+      clientSecret: process.env.GITHUB_SECRET || "",
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -35,10 +35,12 @@ const authOptions: NextAuthOptions = {
         }
 
         const password = user.password || "";
-        if (user && bcrypt.compareSync(credentials.password, password)) {
+        const isValidPassword = await bcrypt.compare(credentials.password, password);
+        if (isValidPassword) {
           return { id: user.id, email: user.email };
+        } else {
+          return null;
         }
-        return null;
       },
     }),
   ],
@@ -51,14 +53,12 @@ const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // console.log("JWT callback: setting user ID", user.id);
         token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
-        // console.log("Session callback: setting user ID", token.id);
         session.user.id = token.id as string;
       }
       return session;
@@ -66,11 +66,12 @@ const authOptions: NextAuthOptions = {
   },
   events: {
     async signIn(message) {
-      // console.log("User signed in", message);
+      console.log("User signed in", message);
     },
   },
-  debug: false
+  debug: process.env.NODE_ENV === "development",
 };
 
 export default authOptions;
+
 
