@@ -15,8 +15,8 @@ const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
     }),
     GitHubProvider({
-      clientId: process.env.GITHUB_ID||"",
-      clientSecret: process.env.GITHUB_SECRET|| "",
+      clientId: process.env.GITHUB_ID || "",
+      clientSecret: process.env.GITHUB_SECRET || "",
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -27,27 +27,26 @@ const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials) return null;
         console.log("Checking user credentials:", credentials);
-      
+
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
-      
+
         console.log("User found:", user);
-      
+
         if (!user) {
           console.error("User not found");
           return null;
         }
-      
+
         const password = user.password || "";
         if (user && bcrypt.compareSync(credentials.password, password)) {
           return { id: user.id, email: user.email };
         }
-      
+
         console.error("Password mismatch");
         return null;
-      }
-      
+      },
     }),
   ],
   pages: {

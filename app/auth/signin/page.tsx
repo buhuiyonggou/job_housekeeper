@@ -18,6 +18,7 @@ import {
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import Link from "../../components/Link";
 
+
 export default function SignIn() {
   // change the state type later
   const [providers, setProviders] = useState<any>(null);
@@ -46,14 +47,15 @@ export default function SignIn() {
       });
       return;
     }
-
+  
     try {
       const result = await signIn("credentials", {
         redirect: false,
         email,
         password,
+        callbackUrl: "/applications/list", // Redirect to the applications list page after signing in
       });
-
+  
       if (result?.error) {
         toast({
           title: "Sign in failed",
@@ -67,9 +69,9 @@ export default function SignIn() {
           status: "success",
           duration: 3000,
         });
-
-        // Reload the page and navigate to /applications/list
-        window.location.href = "/applications/list";
+  
+        // // Navigate to the callback URL
+        window.location.href = result?.url || "/applications/list";
       }
     } catch (error: any) {
       console.error("Failed to sign in:", error);
