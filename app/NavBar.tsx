@@ -34,6 +34,7 @@ const NavBar = () => {
   const toast = useToast();
 
   useEffect(() => {
+    console.log("Session status:", status);
     if (status === "authenticated") {
       axios
         .get("/api/users/me")

@@ -471,12 +471,12 @@ COPY public."Session" ("sessionToken", "userId", expires, "createdAt", "updatedA
 --
 
 COPY public."User" (id, email, name, image, "createdAt", "emailVerified", "updatedAt", password, description, gender, linkedin, personal_site) FROM stdin;
-clwr7ztgl0000xzx1pxqgt0z2	test@gmail.com	Nina	https://utfs.io/f/e973cca5-a573-4941-940d-779a3e284a7f-20h4e.jpg	2024-05-29 02:41:35.973	\N	2024-06-02 07:02:26.473	$2b$10$t.324ay0uDrdqtDo5hutyeJta5qh7aI3j4Gj8V.qgHUAWB0uoMgra	New description changed!	Male		
 clwssq0gm0000qgi4fc7y6tju	buhuiyonggou331@gmail.com	Anonymous	/public/default_portrait.jpg	2024-05-30 05:09:36.598	\N	2024-05-30 05:09:36.598	$2b$10$IVlGTY3ySm7NnjSoIJ6xL.tHJ55ZgbvqLbCPArzCQWPoFiQkqin6u	\N	\N	\N	\N
 clwu599i2000010jw6jm2pxfj	maruko@gmail.com	Anonymous	/public/default_portrait.jpg	2024-05-31 03:48:16.347	\N	2024-05-31 03:48:16.347	$2b$10$7zRrLGKL/IM.nFFASrxl2.YUVAABz87MTkIqe6wWSa.1hRHDkRfA.	\N	\N	\N	\N
 clwpxqhdz0000euxyux4gizzt	yangli4944@gmail.com	Yang Li	https://utfs.io/f/52706ae4-6044-4a2b-ac28-91a1e9c7fb34-ho64me.jpg	2024-05-28 05:06:38.088	\N	2024-06-05 16:24:57.137	$2b$10$ZauzSxlwvCsa0Zg.0d7PhO1f0F2/gWSIYT8UJa/oXP5koELNWRw9.	rock band cry			
 clwvrtd0b0000q89sscpppwu3	test2@gmail.com	Sakiko-dark	https://utfs.io/f/dffc6396-df17-468d-925a-de7f3b7803e1-f1mwz4.png	2024-06-01 07:07:31.739	\N	2024-06-05 17:43:15.067	$2b$10$yApp17g8aMYPwC2uIfzXueNsRJmU.QezE6nSePutr1evb257gckMm	sakiko	Female		
 clx3vtd3d0000rfnfeitq3sbx	nagisa4944@gmail.com	nagisa ku	https://lh3.googleusercontent.com/a/ACg8ocIoTlWWZYbNUE8yeY3yycP3H47M1_uef8Rv2XLDtx9Rm22Zg4I=s96-c	2024-06-06 23:21:39.721	\N	2024-06-06 23:21:39.721	\N	\N	\N	\N	\N
+clwr7ztgl0000xzx1pxqgt0z2	test@gmail.com	Nina	https://utfs.io/f/2e5f5457-417d-4230-8089-98e82fc5cc3b-e9uqzr.webp	2024-05-29 02:41:35.973	\N	2024-06-07 01:05:09.184	$2b$10$t.324ay0uDrdqtDo5hutyeJta5qh7aI3j4Gj8V.qgHUAWB0uoMgra	New description changed!	Male		
 \.
 
 
