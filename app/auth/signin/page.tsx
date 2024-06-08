@@ -87,7 +87,6 @@ export default function SignIn() {
   const cancelSignIn = () => {
     setEmail("");
     setPassword("");
-    router.push("/auth/signin");
   };
 
   return (
