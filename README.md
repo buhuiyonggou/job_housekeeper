@@ -11,7 +11,7 @@ Job Housekeeper is a comprehensive job application management system designed to
 Visit the live application: [Job Housekeeper](https://job-housekeeper.vercel.app/)
 
 We provide test account for users to access current data.
-- User: ***test2@gmail.com*** || ***test@gmail.com***
+- User: ***test@gmail.com***
 - Password: ***l13793068***
 
 screenshot-1
