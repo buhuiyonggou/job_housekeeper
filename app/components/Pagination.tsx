@@ -26,7 +26,7 @@ const Pagination = ({ TotalItems, PageSize, CurrentPage }: Props) => {
 
   const totalPages = Math.ceil(TotalItems / PageSize);
   console.log("TotalPages: ", totalPages);
-  if (totalPages === 1) return null;
+  if (totalPages <= 1) return null;
 
   const changePage = (page: number) => {
     // like a string builder

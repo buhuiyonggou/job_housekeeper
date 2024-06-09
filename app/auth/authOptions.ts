@@ -26,13 +26,11 @@ const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials) return null;
-        console.log("Checking user credentials:", credentials);
+        // console.log("Checking user credentials:", credentials);
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
-
-        console.log("User found:", user);
 
         if (!user) {
           console.error("User not found");
@@ -71,7 +69,7 @@ const authOptions: NextAuthOptions = {
   },
   events: {
     async signIn(message) {
-      console.log("User signed in", message);
+      // console.log("User signed in", message);
     },
   },
   debug: false,
