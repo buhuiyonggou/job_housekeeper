@@ -161,6 +161,7 @@ const JobFilter = ({ onSearch, defaultValues }: JobFilterProps) => {
                       value={type.toLowerCase()}
                       name="employmentTypes"
                       size={{ base: "sm", md: "md" }}
+                      defaultChecked={type.toLowerCase() === "intern"}
                     >
                       <ResponsiveText>{type}</ResponsiveText>
                     </Checkbox>

@@ -56,6 +56,7 @@
     "redux": "^5.0.1",
     "uploadcare-widget": "^3.21.2",
     "uploadthing": "^6.12.0",
+    "use-debounce": "^10.0.1",
     "uuidv4": "^6.2.13",
     "zod": "^3.22.4"
   },

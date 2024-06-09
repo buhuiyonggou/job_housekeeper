@@ -8,7 +8,6 @@ import { fonts } from "./fonts";
 import { Providers } from "./Providers";
 import { ApplicationProvider } from "./ApplicationProvider";
 import AuthProvider from "./auth/AuthenProvider";
-import Footer from "./footer";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -32,7 +31,6 @@ export default function RootLayout({
                 <NavBar />
                 <div className="content-container">
                   <main className="main-content">{children}</main>
-                  <Footer />
                 </div>
               </ApplicationProvider>
             </Providers>

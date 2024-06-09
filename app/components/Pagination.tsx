@@ -5,31 +5,46 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { Button, Flex, Text } from "@chakra-ui/react";
+import {Flex, Text } from "@chakra-ui/react";
+import {Button} from "@radix-ui/themes";
 import React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   TotalItems: number;
   PageSize: number;
   CurrentPage: number;
-  onPageChange: (page: number) => void;
 }
 
-const Pagination = ({ TotalItems, PageSize, CurrentPage, onPageChange }: Props) => {
-  const totalPages = Math.ceil(TotalItems / PageSize);
+const Pagination = ({ TotalItems, PageSize, CurrentPage }: Props) => {
+  console.log("CurrentPage: ", CurrentPage), 
+  console.log("PageSize: ", PageSize); 
+  console.log("TotalItems: ", TotalItems);
+  
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  if (totalPages <= 1) return null;
+  const totalPages = Math.ceil(TotalItems / PageSize);
+  console.log("TotalPages: ", totalPages);
+  if (totalPages === 1) return null;
+
+  const changePage = (page: number) => {
+    // like a string builder
+    const params = new URLSearchParams(searchParams?.toString() || "" );
+    params.set("page", page.toString());
+    router.push("?" + params.toString());
+  };
 
   return (
     <Flex align="center" gap="2">
-      <Text size="1">
+      <Text size="2" fontSize="small">
         Page {CurrentPage} of {totalPages}
       </Text>
       <Button
         color="gray"
         variant="soft"
         disabled={CurrentPage === 1}
-        onClick={() => onPageChange(1)}
+        onClick={() => changePage(1)}
       >
         <DoubleArrowLeftIcon />
       </Button>
@@ -37,7 +52,7 @@ const Pagination = ({ TotalItems, PageSize, CurrentPage, onPageChange }: Props) 
         color="gray"
         variant="soft"
         disabled={CurrentPage === 1}
-        onClick={() => onPageChange(CurrentPage - 1)}
+        onClick={() => changePage(CurrentPage - 1)}
       >
         <ChevronLeftIcon />
       </Button>
@@ -45,7 +60,7 @@ const Pagination = ({ TotalItems, PageSize, CurrentPage, onPageChange }: Props) 
         color="gray"
         variant="soft"
         disabled={CurrentPage === totalPages}
-        onClick={() => onPageChange(CurrentPage + 1)}
+        onClick={() => changePage(CurrentPage + 1)}
       >
         <ChevronRightIcon />
       </Button>
@@ -53,7 +68,7 @@ const Pagination = ({ TotalItems, PageSize, CurrentPage, onPageChange }: Props) 
         color="gray"
         variant="soft"
         disabled={CurrentPage === totalPages}
-        onClick={() => onPageChange(totalPages)}
+        onClick={() => changePage(totalPages)}
       >
         <DoubleArrowRightIcon />
       </Button>

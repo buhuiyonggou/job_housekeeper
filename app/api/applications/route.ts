@@ -4,13 +4,13 @@ import prisma from "@/prisma/client";
 import { Status } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { pageSize } from "../../src/utils/constants";
+import { pageSize } from "@/app/src/utils/constants";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const body = await request.json();
 
@@ -43,25 +43,28 @@ export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { searchParams } = req.nextUrl;
-  const query = searchParams.get('query') || '';
-  const page = parseInt(searchParams.get('page') || '1');
-  const status = searchParams.get('status');
-  const orderBy = searchParams.get('orderBy');
+  // console.log(
+  //   "Received search parameters:",
+  //   searchParams
+  // );
+  const query = searchParams.get("query") || "";
+  const page = parseInt(searchParams.get("page") || "1");
+  const status = searchParams.get("status");
+  const orderBy = searchParams.get("orderBy");
 
   const statuses = Object.values(Status);
-  const statusFilter = statuses.includes(status as Status) ? status as Status : undefined;
+  const statusFilter = statuses.includes(status as Status)
+    ? (status as Status)
+    : undefined;
 
   const where: any = {
     AND: [
       {
-        OR: [
-          { assignedToUserId: session.user.id },
-          { assignedToUserId: null },
-        ],
+        OR: [{ assignedToUserId: session.user.id }, { assignedToUserId: null }],
       },
       statusFilter ? { status: statusFilter } : {},
     ],
@@ -70,23 +73,22 @@ export async function GET(req: NextRequest) {
   if (query) {
     where.AND.push({
       OR: [
-        { company: { contains: query, mode: 'insensitive' } },
-        { location: { contains: query, mode: 'insensitive' } },
-        { job_title: { contains: query, mode: 'insensitive' } },
+        { company: { contains: query, mode: "insensitive" } },
+        { location: { contains: query, mode: "insensitive" } },
+        { job_title: { contains: query, mode: "insensitive" } },
       ],
     });
   }
 
   const applications = await prisma.application.findMany({
     where,
-    orderBy: orderBy ? { [orderBy]: 'asc' } : undefined,
+    orderBy: orderBy ? { [orderBy]: "asc" } : undefined,
     skip: (page - 1) * pageSize,
     take: pageSize,
   });
-
-  // Count the total number of applications belongs to current user
+  // Count the total number of applications belonging to the current user
   const appsCount = await prisma.application.count({
-    where: {  
+    where: {
       AND: [
         {
           OR: [

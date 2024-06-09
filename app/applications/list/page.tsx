@@ -1,5 +1,5 @@
 "use client";
-import { Box, Flex, Spacer, useToast } from "@chakra-ui/react";
+import { Flex, Spacer, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AddApplication from "./AddApplication";
@@ -9,7 +9,6 @@ import Pagination from "@/app/components/Pagination";
 import SearchBar from "@/app/components/SearchBar";
 import ApplicationStatusFilter from "./ApplicationStatusFilter";
 import { pageSize } from "../../src/utils/constants";
-import { useRouter, useSearchParams } from "next/navigation";
 import ListLoading from "./loading";
 
 interface Props {
@@ -21,8 +20,6 @@ const Applications = ({ searchParams }: Props) => {
   const [appsCount, setAppsCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
-  const changeSearchParams = useSearchParams();
-  const router = useRouter();
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -48,18 +45,6 @@ const Applications = ({ searchParams }: Props) => {
 
     fetchApplications();
   }, [searchParams, toast]);
-
-  const handlePageChange = (page: number) => {
-    const totalPages = Math.ceil(appsCount / pageSize);
-    // Don't update if the page is out of range
-    if (page < 1 || page > totalPages) {
-      return;
-    }
-
-    const params = new URLSearchParams(changeSearchParams || undefined);
-    params.set("page", page.toString());
-    router.push("?" + params.toString());
-  };
 
   if (isLoading) {
     return <ListLoading />;
@@ -92,7 +77,6 @@ const Applications = ({ searchParams }: Props) => {
         TotalItems={appsCount}
         PageSize={pageSize}
         CurrentPage={page}
-        onPageChange={handlePageChange}
       />
     </Flex>
   );

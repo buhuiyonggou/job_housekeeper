@@ -40,7 +40,7 @@ const NavBar = () => {
         .get("/api/users/me")
         .then((response) => {
           dispatch(setUser(response.data));
-          console.log("User fetched successfully:", response.data);
+          // console.log("User fetched successfully:", response.data);
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
