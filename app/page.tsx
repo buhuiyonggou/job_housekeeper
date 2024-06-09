@@ -25,7 +25,7 @@ const Home = () => {
   const [filters, setFilters] = useState<JobFilters>({
     // Default filters, fill query and location will enable search jobs on page load
     query: "Software Developer",
-    location: "",
+    location: "Vancouver, BC, Canada",
     distance: 50,
     remoteOnly: false,
     datePosted: "month",
