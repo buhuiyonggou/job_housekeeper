@@ -1,85 +1,71 @@
-"use client";
-import { Flex, Spacer, useToast } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { Flex, Spacer } from "@chakra-ui/react";
 import AddApplication from "./AddApplication";
 import { Status } from "@prisma/client";
-import ApplicationTable, { searchParamsProps } from "./ApplicationTable";
+import prisma from "@/prisma/client";
+import ApplicationTable, { columnName, searchParamsProps } from "./ApplicationTable";
 import Pagination from "@/app/components/Pagination";
 import SearchBar from "@/app/components/SearchBar";
 import ApplicationStatusFilter from "./ApplicationStatusFilter";
 import { pageSize } from "../../src/utils/constants";
-import ListLoading from "./loading";
+import { Prisma } from "@prisma/client";
 
 interface Props {
   searchParams: searchParamsProps;
 }
 
-const Applications = ({ searchParams }: Props) => {
-  const [applications, setApplications] = useState([]);
-  const [appsCount, setAppsCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const toast = useToast();
-
-  useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const { data } = await axios.get("/api/applications", {
-          params: searchParams,
-        });
-        setApplications(data.applications);
-        setAppsCount(data.appsCount);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch applications", error);
-        toast({
-          title: "Error",
-          description: "Failed to fetch applications.",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-        setIsLoading(false);
-      }
-    };
-
-    fetchApplications();
-  }, [searchParams, toast]);
-
-  if (isLoading) {
-    return <ListLoading />;
-  }
-
-  const query = searchParams?.query || "";
-  const page = parseInt(searchParams.page) || 1;
+const Applications = async ({ searchParams }: Props) => {
   const statuses = Object.values(Status);
   const status = statuses.includes(searchParams.status as Status)
     ? searchParams.status
     : undefined;
 
+  const page = parseInt(searchParams.page) || 1;
+  const query = searchParams.query || "";
+  const where: Prisma.ApplicationWhereInput = {
+    AND: [
+      status ? { status } : {},
+      query
+        ? {
+            OR: [
+              { company: { contains: query, mode: "insensitive" as Prisma.QueryMode } },
+              { job_title: { contains: query, mode: "insensitive" as Prisma.QueryMode } },
+              { location: { contains: query, mode: "insensitive" as Prisma.QueryMode } },
+            ],
+          }
+        : {},
+    ],
+  };
+
+  const orderBy = columnName.includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: "asc" }
+    : undefined;
+
+  const applications = await prisma.application.findMany({
+    where,
+    orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  const appsCount = await prisma.application.count({ where });
+
   return (
     <Flex direction="column" gap="3" p={3}>
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        gap={6}
-        alignItems="baseline"
-      >
+      <Flex direction={{ base: "column", md: "row" }} gap={6} alignItems="baseline">
         <ApplicationStatusFilter />
         <AddApplication />
         <SearchBar placeholder="Search applications..." />
       </Flex>
       <Spacer />
-      <ApplicationTable
-        applications={applications}
-        searchParams={searchParams}
-      />
-      <Pagination
-        TotalItems={appsCount}
-        PageSize={pageSize}
-        CurrentPage={page}
-      />
+      <ApplicationTable applications={applications} searchParams={searchParams} />
+      <Pagination TotalItems={appsCount} PageSize={pageSize} CurrentPage={page} />
     </Flex>
   );
 };
 
 export default Applications;
+
+export const metadata = {
+  title: "Manage your applications | Application List",
+  description: "All Applications Page",
+};
