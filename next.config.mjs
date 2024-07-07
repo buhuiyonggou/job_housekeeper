@@ -4,6 +4,9 @@ const nextConfig = {
     domains: ["utfs.io"],
   },
   transpilePackages: ['@acme/ui', 'lodash-es'],
+  experimental: {
+    serverActions: true,
+  }
 };
 
 export default nextConfig;

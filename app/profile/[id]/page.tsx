@@ -10,10 +10,12 @@ import {
   VStack,
   HStack,
   Flex,
+  Switch,
   Skeleton,
 } from "@chakra-ui/react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import {useRouter} from "next/navigation"
 import { AtSignIcon, InfoIcon } from "@chakra-ui/icons";
 import { FaUser, FaGenderless, FaLinkedin, FaGlobe } from "react-icons/fa";
 import ImageUploader from "../../components/ImageUploader";
@@ -41,8 +43,10 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isSwitchOn, setIsSwitchOn] = useState<boolean>(false);
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -70,6 +74,7 @@ const Profile = () => {
       });
       setUserState(response.data);
       setIsEditing(false);
+      setIsSwitchOn(false);
       dispatch(setUser(response.data)); // Update the user in Redux state
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -78,14 +83,34 @@ const Profile = () => {
     }
   };
 
-  const handleReset = () => {
-    reset();
-    setIsEditing(false);
+  const handleSwitchChange = () => {
+    if (isSwitchOn) {
+      reset();
+      setIsEditing(false);
+    } else {
+      setIsEditing(true);
+    }
+    setIsSwitchOn(!isSwitchOn);
   };
+
+  // function navigate to resume page
+  const goToResume = () => {
+    router.push("/my-resume");
+  }
 
   return (
     <Box maxW="xl" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md">
       <form onSubmit={handleSubmit(onSubmit)}>
+      <FormControl display="flex" alignItems="center" mb={4}>
+          <FormLabel htmlFor="edit-switch" mb="0">
+            Edit Profile
+          </FormLabel>
+          <Switch
+            id="edit-switch"
+            isChecked={isSwitchOn}
+            onChange={handleSwitchChange}
+          />
+        </FormControl>
         <VStack spacing={2}>
           {loading ? (
             <>
@@ -205,32 +230,22 @@ const Profile = () => {
             alignItems={{ base: "stretch", md: "center" }}
           >
             <Button
-              type="button"
-              colorScheme="blue"
-              onClick={() => setIsEditing(true)}
-              isDisabled={isEditing}
-              width={{ base: "100%", md: "25%" }}
-              mb={{ base: "4", md: "0" }}
-            >
-              Edit
-            </Button>
-            <Button
               type="submit"
               colorScheme="teal"
               isDisabled={!isEditing || isSubmitting}
-              width={{ base: "100%", md: "25%" }}
+              width={{ base: "100%", md: "30%" }}
               mb={{ base: "4", md: "0" }}
             >
               Update
             </Button>
             <Button
               type="button"
-              colorScheme="gray"
-              onClick={handleReset}
-              isDisabled={!isEditing}
-              width={{ base: "100%", md: "25%" }}
+              colorScheme="blue"
+              onClick={goToResume}
+              isDisabled={isEditing}
+              width={{ base: "100%", md: "30%" }}
             >
-              Cancel
+              Review Resume
             </Button>
           </Flex>
         </VStack>

@@ -25,7 +25,6 @@ const Pagination = ({ TotalItems, PageSize, CurrentPage }: Props) => {
   const searchParams = useSearchParams();
 
   const totalPages = Math.ceil(TotalItems / PageSize);
-  console.log("TotalPages: ", totalPages);
   if (totalPages <= 1) return null;
 
   const changePage = (page: number) => {

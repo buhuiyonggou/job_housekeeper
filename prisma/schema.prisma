@@ -31,6 +31,7 @@ model User {
   linkedin             String?
   personal_site        String?
   image                String?
+  resume               String?
   password             String? // only for database authentication
   accounts             Account[]
   sessions             Session[]
