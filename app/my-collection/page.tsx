@@ -1,55 +1,42 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { SimpleGrid, Box, Heading } from "@chakra-ui/react";
-import axios from "axios";
+import { fetchUserCollections } from "../src/utils/fetchUserCollections";
+import { Box, Heading, SimpleGrid, Image } from "@chakra-ui/react";
 import JobCard from "../components/JobCard";
 import { Job } from "../src/utils/Reusables";
-import CollectionSkeleton from "./loading";
 
-const Collection = () => {
-  const [collections, setCollections] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        const response = await axios.get("/api/collection");
-        setCollections(response.data);
-        // console.log(response.data);
-      } catch (error) {
-        console.error("Failed to fetch collections:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCollections();
-  }, []);
-
-  if (loading) {
-    return <CollectionSkeleton />;
-  }
-
-  if (collections.length === 0) {
-    return (
-      <Box display="flex" justifyContent="center">
-        No collections found.
-      </Box>
-    );
-  }
+export default async function Collection() {
+  const collections = await fetchUserCollections();
 
   return (
     <Box p={4}>
       <Heading as="h1" size="xl" textAlign="center" mb="8">
         Your Job Collections
       </Heading>
-      <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} spacing={6}>
-        {collections.map((job) => (
-          <JobCard job={job} isCollected={true} key={job.id} />
-        ))}
-      </SimpleGrid>
+      <Box overflowY="scroll">
+        {!collections ? (
+         <Box textAlign="center">
+         <Image
+           src="empty_collection.jpg"
+           alt="Empty Collection"
+           boxSize={{ base: "150px", md: "250px" }}
+           mx="auto"
+         />
+         <Heading as="h4" size="md" mt={4}>
+           No collections found.
+         </Heading>
+       </Box>
+        ) : (
+          <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} spacing={6}>
+            {collections?.map((job) => (
+              <JobCard job={job as Job} isCollected={true} key={job.id} />
+            ))}
+          </SimpleGrid>
+        )}
+      </Box>
     </Box>
   );
-};
+}
 
-export default Collection;
+export const metadata = {
+  title: "Your Job Collections | Job List",
+  description: "User's job collections page",
+};

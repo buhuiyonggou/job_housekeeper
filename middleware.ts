@@ -13,6 +13,6 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ["/applications/new", "/applications/:id+/edit", "/applications/:id+", "/analysis"],
+  matcher: ["/applications/new", "/applications/:id+/edit", "/applications/:id+", "/analysis", "/my-collection"],
 };
 

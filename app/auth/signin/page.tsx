@@ -1,7 +1,6 @@
 "use client";
 import { getProviders, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   Box,
   Button,
@@ -27,7 +26,6 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const toast = useToast();
   const handleClick = () => setShow(!show);
-  const router = useRouter();
 
   useEffect(() => {
     (async () => {

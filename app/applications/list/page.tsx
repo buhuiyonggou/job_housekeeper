@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth/next";
-import { Flex, Spacer, useToast } from "@chakra-ui/react";
+import { Flex, Spacer } from "@chakra-ui/react";
 import AddApplication from "./AddApplication";
 import { Status, Prisma } from "@prisma/client";
 import prisma from "@/prisma/client";
@@ -11,7 +11,6 @@ import Pagination from "@/app/components/Pagination";
 import SearchBar from "@/app/components/SearchBar";
 import ApplicationStatusFilter from "./ApplicationStatusFilter";
 import { pageSize } from "../../src/utils/constants";
-import { useRouter } from "next/navigation";
 import authOptions from "@/app/auth/authOptions";
 
 interface Props {
