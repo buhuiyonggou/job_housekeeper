@@ -7,6 +7,7 @@ import { MdDashboard, MdWifiFind } from "react-icons/md";
 import { AiFillFolder } from "react-icons/ai";
 import { MdWork } from "react-icons/md";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { FaRobot } from "react-icons/fa";
 import {
   Box,
   Container,
@@ -113,6 +114,11 @@ const NavLinks = ({ isMobile }: { isMobile: boolean }) => {
       href: "/my-collection",
       icon: <MdWork size="32px" />,
     },
+    {
+      label: "Resume Diagnose",
+      href: "/resumeDiagnose",
+      icon: <FaRobot size="32px" />,
+    }
   ];
 
   return (

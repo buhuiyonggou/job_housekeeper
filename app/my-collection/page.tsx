@@ -12,7 +12,7 @@ export default async function Collection() {
         Your Job Collections
       </Heading>
       <Box overflowY="scroll">
-        {!collections ? (
+        {!collections || collections.length === 0? (
          <Box textAlign="center">
          <Image
            src="empty_collection.jpg"
