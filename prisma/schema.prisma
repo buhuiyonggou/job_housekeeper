@@ -21,6 +21,26 @@ model PasswordResetToken {
   @@index([userId])
 }
 
+model Message {
+  id        Int             @id @default(autoincrement())
+  content   String
+  sentTime  DateTime        @default(now())
+  sender    String
+  direction String
+  thread    MessageThread   @relation(fields: [threadId], references: [id])
+  threadId  Int
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+model MessageThread {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String // Should reference User.id
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
 model User {
   id                   String               @id @default(cuid())
   name                 String?              @default("Anonymous")
@@ -38,6 +58,7 @@ model User {
   assignedApplications Application[]
   passwordResetTokens  PasswordResetToken[]
   jobCollections       Job_Collection[]
+  messageThreads       MessageThread[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

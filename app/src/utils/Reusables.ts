@@ -1,4 +1,5 @@
 import { Status } from "@prisma/client"
+import { MessageDirection } from "@chatscope/chat-ui-kit-react/src/types/unions";
 
 export interface SummaryStatus {
     applied: number;
@@ -17,6 +18,7 @@ export interface User {
   linkedin?: string;
   personal_site?: string;
   image?: string;
+  resume?: string;
 }
 
 export interface Job {
@@ -44,6 +46,14 @@ export interface JobFilters {
   remoteOnly: boolean
   datePosted: string
   employmentTypes: string
+}
+
+export interface MessageObject {
+  message: string;
+  sentTime: string;
+  sender: string;
+  direction: MessageDirection;
+  position?: "single" | "first" | "normal" | "last";
 }
 
 export const statusOptions: Record<Status, { label: string; color: string }> = {
@@ -75,3 +85,4 @@ export function getAnalysisColorScheme(status: Status) {
 export function getStatusColorScheme(status: Status) {
     return statusOptions[status]?.color || "white";
   }
+
