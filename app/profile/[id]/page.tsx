@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import axios from "axios";
-import {useRouter} from "next/navigation"
+import { useRouter } from "next/navigation";
 import { AtSignIcon, InfoIcon } from "@chakra-ui/icons";
 import { FaUser, FaGenderless, FaLinkedin, FaGlobe } from "react-icons/fa";
 import ImageUploader from "../../components/ImageUploader";
@@ -64,7 +64,6 @@ const Profile = () => {
     fetchUser();
   }, [reset]);
 
-
   const onSubmit: SubmitHandler<UserFormData> = async (data) => {
     try {
       setIsSubmitting(true);
@@ -95,22 +94,12 @@ const Profile = () => {
 
   // function navigate to resume page
   const goToResume = () => {
-    router.push("/my-resume");
-  }
+    router.push("/resumeDiagnose");
+  };
 
   return (
     <Box maxW="xl" mx="auto" mt={5} p={5} borderWidth={1} borderRadius="md">
       <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl display="flex" alignItems="center" mb={4}>
-          <FormLabel htmlFor="edit-switch" mb="0">
-            Edit Profile
-          </FormLabel>
-          <Switch
-            id="edit-switch"
-            isChecked={isSwitchOn}
-            onChange={handleSwitchChange}
-          />
-        </FormControl>
         <VStack spacing={2}>
           {loading ? (
             <>
@@ -138,7 +127,22 @@ const Profile = () => {
                   )}
                 />
               )}
-
+              <Flex justifyContent="center" alignItems="center">
+                <FormControl
+                  display="flex"
+                  alignItems="center"
+                  alignSelf="center"
+                >
+                  <FormLabel htmlFor="edit-switch" mb="0">
+                    Edit Profile
+                  </FormLabel>
+                  <Switch
+                    id="edit-switch"
+                    isChecked={isSwitchOn}
+                    onChange={handleSwitchChange}
+                  />
+                </FormControl>
+              </Flex>
               <FormControl>
                 <HStack alignItems="center" m="2">
                   <FaUser color="gray.500" />
@@ -255,5 +259,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-

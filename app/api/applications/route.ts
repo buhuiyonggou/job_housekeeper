@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       category: body.category,
       job_title: body.job_title,
       job_info: body.job_info,
-      track_link: body?.track_link,
+      track_link: body.track_link,
       position_code: body.position_code,
       type: body.type,
       term: body.term,
@@ -47,10 +47,7 @@ export async function GET(req: NextRequest) {
   }
 
   const { searchParams } = req.nextUrl;
-  // console.log(
-  //   "Received search parameters:",
-  //   searchParams
-  // );
+
   const query = searchParams.get("query") || "";
   const page = parseInt(searchParams.get("page") || "1");
   const status = searchParams.get("status");

@@ -42,7 +42,7 @@ export async function processMessageToChatGPT(chatMessages: MessageObject[]): Pr
 
     const chatGptMessage: MessageObject = {
       message: data.choices[0].message.content,
-      sentTime: new Date().toLocaleTimeString(),
+      sentTime: new Date().toISOString(),
       sender: "ChatGPT",
       direction: "incoming" as MessageDirection,
     };

@@ -10,7 +10,6 @@ import {
   useToast,
   Input,
   Heading,
-  Text,
 } from "@chakra-ui/react";
 import ResumeSkeleton from "../loading";
 import { uploadFile, getFile } from "../../src/utils/firebaseStorage";
@@ -149,9 +148,9 @@ const Resume = () => {
           boxShadow="md"
           position="relative"
         >
-          <Text textAlign="center" m={4}>
-            You don't have a resume yet
-          </Text>
+          <Heading as='h5' size='sm' textAlign="center" mt={4}>
+            No resume uploaded yet.
+          </Heading>
           <Image
             src={fallbackImage.src}
             alt="Empty Resume"

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
   MainContainer,
@@ -12,40 +12,75 @@ import {
 import diagnostician from "../../src/assets/Small_Kyubey_profile.jpg";
 import { Box, Flex, Heading, Button } from "@chakra-ui/react";
 import axios from "axios";
-import { User } from "@prisma/client";
+import { User, MessageThread, Message as MG } from "@prisma/client";
 import ArchivedThreads from "./ArchivedThreads";
+import { processMessageToChatGPT } from "../../src/utils/processMessageToChatGPT";
 import { MessageDirection } from "@chatscope/chat-ui-kit-react/src/types/unions";
 import { MessageObject } from "@/app/src/utils/Reusables";
-import { processMessageToChatGPT } from "@/app/src/utils/processMessageToChatGPT";
+import { useRouter } from "next/navigation";
 
-function ChatGPTBox() {
+function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
+  const [user, setUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<MessageObject[]>([]);
-  const [user, setUser] = useState<User>();
   const [isTyping, setIsTyping] = useState(false);
+  const [threads, setThreads] = useState<MessageThread[]>([]);
+  const [currentThreadId, setCurrentThreadId] = useState<number>();
+  const [lastSavedMessageTime, setLastSavedMessageTime] = useState<string>('');
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserAndSetInitialMessage = async () => {
       try {
-        // Fetch the current user
         const currentUser = await axios.get("/api/users/me");
-        setUser(currentUser.data);
-
-        // Initial message from ChatGPT
-        // setMessages([initialMessage]);
+        if (currentUser.data) {
+          setUser(currentUser.data);
+        } else {
+          router.push("/auth/signin");
+        }
       } catch (error) {
         console.error("Error fetching user:", error);
       }
     };
-
     fetchUserAndSetInitialMessage();
-  }, []);
+  }, [router]);
 
-  // handleSend function to send the message to the ChatGPT API
+  useEffect(() => {
+    const fetchMessageThreads = async () => {
+      try {
+        const response = await axios.get("/api/chat", {
+          params: { userId: user?.id },
+        });
+
+        if (response.data && response.data.length > 0) {
+          const sortedThreads = response.data.sort(
+            (a: MessageThread, b: MessageThread) => b.id - a.id
+          );
+          setThreads(sortedThreads);
+          const threadMessages = sortedThreads[0].messages.map((msg: MG) => ({
+            message: msg.content,
+            sentTime: new Date(msg.sentTime).toISOString(),
+            sender: msg.sender,
+            direction: msg.direction,
+          }));
+          setMessages(threadMessages);
+          setLastSavedMessageTime(threadMessages[threadMessages.length - 1].sentTime);
+          setCurrentThreadId(sortedThreads[0].id);
+        }
+      } catch (error) {
+        console.error("Error fetching message threads:", error);
+      }
+    };
+
+    if (user) {
+      fetchMessageThreads();
+    }
+  }, [user]);
+
   const handleSend = async (message: string) => {
     const newMessage: MessageObject = {
       message: message,
-      sentTime: new Date().toLocaleTimeString(),
-      sender: "user",
+      sentTime: new Date().toISOString(),
+      sender: user!.id,
       direction: "outgoing" as MessageDirection,
     };
 
@@ -64,62 +99,79 @@ function ChatGPTBox() {
       setIsTyping(false);
     }
   };
-  const handleCreateThread = async () => {
-    console.log("Creating new thread");
-  };
-  // Archive the current message thread to api
+
   const handleArchiveMessageThread = async () => {
+    if (currentThreadId) {
+      const newMessages = messages.filter(msg => new Date(msg.sentTime) > new Date(lastSavedMessageTime));
+      try {
+        await axios.patch(`/api/chat/${currentThreadId}`, {
+          threadId: currentThreadId,
+          messages: newMessages,
+          userId: user?.id,
+        });
+        if (newMessages.length > 0) {
+          setLastSavedMessageTime(newMessages[newMessages.length - 1].sentTime);
+        }
+      } catch (error) {
+        console.error("Error updating message thread:", error);
+      }
+    }
+  };
+
+  const handleNewThread = async () => {
     try {
-      await axios.post("/api/chat", {
-        messages: messages,
-        userId: user?.id,
+      const newThread = await axios.post("/api/chat", {
+        message: initialMessage,
       });
-      //   setMessages([initialMessage]);
+      setMessages([initialMessage]);
+      setThreads([newThread.data, ...threads]);
+      setCurrentThreadId(newThread.data.id);
+      setLastSavedMessageTime(initialMessage.sentTime);
     } catch (error) {
       console.error("Error archiving message thread:", error);
     }
   };
 
   return (
-    <Flex direction="column" height="100%" mt={6}>
-      <Flex
-        justify="space-between"
-        alignItems="center"
-        direction={{ base: "column", xl: "row" }}
-        width="100%"
-        p={3}
-      >
+    <Flex direction="column" height= {{base:"40%", md:"70$", lg:"100%"}} mt={6}>
+      <Flex direction="column" width="100%" p={3}>
         <Box flex="1" textAlign="center">
           <Heading as="h4" size="md" textAlign="center">
             Welcome to Resume Diagnose
           </Heading>
         </Box>
-        <Flex>
-          <Button
-            colorScheme="blue"
-            variant="outline"
-            size="sm"
-            onClick={handleCreateThread}
-            mt={{ base: 3 }}
-            mb={2}
-          >
-            New Thread
-          </Button>
+        <Flex
+          flex="1"
+          justifyContent="space-evenly"
+          width={{ base: "100%", md:"50%", lg: "60%" }}
+          alignSelf="center"
+          mt={3}
+        >
           <Button
             colorScheme="red"
             variant="outline"
             size="sm"
             onClick={handleArchiveMessageThread}
             mt={{ base: 3 }}
-            mb={2}
+            m={2}
           >
-            Archive Chat
+            Archive Thread
+          </Button>
+          <Button
+            colorScheme="blue"
+            variant="outline"
+            size="sm"
+            onClick={handleNewThread}
+            mt={{ base: 3 }}
+            m={2}
+          >
+            New Thread
           </Button>
         </Flex>
       </Flex>
-      <Box className="chat-container" flex="1">
+      <Box className="chat-container" flex="1" height={{base:"120vh", md:"100vh", lg:"80vh"}}>
         <MainContainer>
-          <ChatContainer>
+          <ChatContainer style={{ height: '100%' }}>
             <MessageList
               scrollBehavior="smooth"
               typingIndicator={
@@ -128,38 +180,40 @@ function ChatGPTBox() {
                 ) : null
               }
             >
-              {messages.map((message, index) => {
-                return (
-                  <Message
-                    key={index}
-                    model={{
-                      message: message.message,
-                      sentTime: message.sentTime,
-                      sender: message.sender,
-                      direction: message.direction,
-                      position: message.position || "single",
-                    }}
-                  >
-                    <Message.Header
-                      sender={
-                        message.sender === "ChatGPT"
-                          ? "Diagnostician"
-                          : message.sender
-                      }
-                      sentTime={message.sentTime}
-                    />
-                    <Avatar
-                      src={
-                        message.sender === "ChatGPT"
-                          ? diagnostician.src // ChatGPT's avatar
-                          : user?.image! // user's avatar
-                      }
-                      size="md"
-                      name={message.sender}
-                    />
-                  </Message>
-                );
-              })}
+              {messages && messages.length > 0
+                ? messages.map((message, index) => {
+                    return (
+                      <Message
+                        key={index}
+                        model={{
+                          message: message.message,
+                          sentTime: message.sentTime,
+                          sender: message.sender,
+                          direction: message.direction,
+                          position: message.position || "single",
+                        }}
+                      >
+                        <Message.Header
+                          sender={
+                            message.sender === "ChatGPT"
+                              ? "Diagnostician"
+                              : message.sender
+                          }
+                          sentTime={message.sentTime}
+                        />
+                        <Avatar
+                          src={
+                            message.sender === "ChatGPT"
+                              ? diagnostician.src
+                              : user?.image!
+                          }
+                          size="md"
+                          name={message.sender}
+                        />
+                      </Message>
+                    );
+                  })
+                : null}
             </MessageList>
             <MessageInput placeholder="Type a message..." onSend={handleSend} />
           </ChatContainer>
