@@ -18,7 +18,7 @@ const ResumeDiagnose = () => {
       >
         <Resume />
       </Box>
-      <Box flex="1" p={5}>
+      <Box flex="1" p={5} >
         <ChatGPTBox initialMessage = {initialMessage}/>
       </Box>
     </Flex>

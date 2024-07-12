@@ -12,20 +12,20 @@ import {
 import diagnostician from "../../src/assets/Small_Kyubey_profile.jpg";
 import { Box, Flex, Heading, Button } from "@chakra-ui/react";
 import axios from "axios";
-import { User, MessageThread, Message as MG } from "@prisma/client";
+import { User, Message as MG } from "@prisma/client";
 import ArchivedThreads from "./ArchivedThreads";
 import { processMessageToChatGPT } from "../../src/utils/processMessageToChatGPT";
 import { MessageDirection } from "@chatscope/chat-ui-kit-react/src/types/unions";
-import { MessageObject } from "@/app/src/utils/Reusables";
+import { MessageObject, ThreadsWithMessages } from "@/app/src/utils/Reusables";
 import { useRouter } from "next/navigation";
 
 function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
   const [user, setUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<MessageObject[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [threads, setThreads] = useState<MessageThread[]>([]);
-  const [currentThreadId, setCurrentThreadId] = useState<number>();
-  const [lastSavedMessageTime, setLastSavedMessageTime] = useState<string>('');
+  const [threads, setThreads] = useState<ThreadsWithMessages[]>([]);
+  const [currentThreadId, setCurrentThreadId] = useState<number | null>(null);
+  const [lastSavedMessageTime, setLastSavedMessageTime] = useState<string>("");
   const router = useRouter();
 
   useEffect(() => {
@@ -53,17 +53,26 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
 
         if (response.data && response.data.length > 0) {
           const sortedThreads = response.data.sort(
-            (a: MessageThread, b: MessageThread) => b.id - a.id
+            (a: ThreadsWithMessages, b: ThreadsWithMessages) => b.id - a.id
           );
           setThreads(sortedThreads);
+
           const threadMessages = sortedThreads[0].messages.map((msg: MG) => ({
             message: msg.content,
             sentTime: new Date(msg.sentTime).toISOString(),
             sender: msg.sender,
             direction: msg.direction,
           }));
+          // Sort the messages by sentTime
+          threadMessages.sort(
+            (a: MessageObject, b: MessageObject) =>
+              new Date(a.sentTime).getTime() - new Date(b.sentTime).getTime()
+          );
           setMessages(threadMessages);
-          setLastSavedMessageTime(threadMessages[threadMessages.length - 1].sentTime);
+
+          setLastSavedMessageTime(
+            threadMessages[threadMessages.length - 1].sentTime
+          );
           setCurrentThreadId(sortedThreads[0].id);
         }
       } catch (error) {
@@ -102,7 +111,9 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
 
   const handleArchiveMessageThread = async () => {
     if (currentThreadId) {
-      const newMessages = messages.filter(msg => new Date(msg.sentTime) > new Date(lastSavedMessageTime));
+      const newMessages = messages.filter(
+        (msg) => new Date(msg.sentTime) > new Date(lastSavedMessageTime)
+      );
       try {
         await axios.patch(`/api/chat/${currentThreadId}`, {
           threadId: currentThreadId,
@@ -124,7 +135,7 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
         message: initialMessage,
       });
       setMessages([initialMessage]);
-      setThreads([newThread.data, ...threads]);
+      //   setThreads([newThread.data, ...threads]);
       setCurrentThreadId(newThread.data.id);
       setLastSavedMessageTime(initialMessage.sentTime);
     } catch (error) {
@@ -133,9 +144,9 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
   };
 
   return (
-    <Flex direction="column" height= {{base:"40%", md:"70$", lg:"100%"}} mt={6}>
+    <Flex direction="column" height="130%" mt={6}>
       <Flex direction="column" width="100%" p={3}>
-        <Box flex="1" textAlign="center">
+        <Box flex="1" textAlign="center" >
           <Heading as="h4" size="md" textAlign="center">
             Welcome to Resume Diagnose
           </Heading>
@@ -143,7 +154,7 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
         <Flex
           flex="1"
           justifyContent="space-evenly"
-          width={{ base: "100%", md:"50%", lg: "60%" }}
+          width={{ base: "100%", md: "50%", lg: "60%" }}
           alignSelf="center"
           mt={3}
         >
@@ -155,7 +166,7 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
             mt={{ base: 3 }}
             m={2}
           >
-            Archive Thread
+            Save Thread
           </Button>
           <Button
             colorScheme="blue"
@@ -169,9 +180,9 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
           </Button>
         </Flex>
       </Flex>
-      <Box className="chat-container" flex="1" height={{base:"120vh", md:"100vh", lg:"80vh"}}>
+      <Box className="chat-container" flex="1" height="70vh">
         <MainContainer>
-          <ChatContainer style={{ height: '100%' }}>
+          <ChatContainer style={{ height: "100%" }}>
             <MessageList
               scrollBehavior="smooth"
               typingIndicator={
@@ -196,10 +207,10 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
                         <Message.Header
                           sender={
                             message.sender === "ChatGPT"
-                              ? "Diagnostician"
+                              ? "AI consultant"
                               : message.sender
                           }
-                          sentTime={message.sentTime}
+                          sentTime={message.sentTime.split(".")[0]}
                         />
                         <Avatar
                           src={
@@ -219,7 +230,12 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
           </ChatContainer>
         </MainContainer>
       </Box>
-      {user && <ArchivedThreads currentUser={user} />}
+      {user && (
+        <ArchivedThreads
+          currentUser={user}
+          threads={threads}
+        />
+      )}
     </Flex>
   );
 }

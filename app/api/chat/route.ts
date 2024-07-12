@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   const userId = req.nextUrl.searchParams.get("userId");
 
   if (!userId || userId !== session.user.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized for user mismatch" }, { status: 401 });
   }
 
   try {

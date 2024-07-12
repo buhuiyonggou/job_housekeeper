@@ -1,4 +1,4 @@
-import { Status } from "@prisma/client"
+import { Status, Message } from "@prisma/client"
 import { MessageDirection } from "@chatscope/chat-ui-kit-react/src/types/unions";
 
 export interface SummaryStatus {
@@ -50,11 +50,24 @@ export interface JobFilters {
 
 export interface MessageObject {
   message: string;
-  sentTime: string;
+  sentTime: string
   sender: string;
   direction: MessageDirection;
   position?: "single" | "first" | "normal" | "last";
 }
+
+export interface ThreadsWithMessages {
+  id: number;
+  userId: string;
+  messages: {
+    content: string;
+    sentTime: Date;
+    sender: string;
+    direction: MessageDirection;
+  }[];
+  createdAt: Date;
+  updatedAt: Date;
+  }
 
 export const statusOptions: Record<Status, { label: string; color: string }> = {
     Applied: { label: "Applied", color: "yellow" },
