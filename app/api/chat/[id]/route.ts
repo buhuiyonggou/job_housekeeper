@@ -48,36 +48,37 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
   }
 }
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function DELETE(req: NextRequest, res: NextResponse) {
     const session = await getServerSession(authOptions);
     
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    const userId = req.nextUrl.searchParams.get("userId");
-    const threadId = req.nextUrl.searchParams.get("threadId");
+    const body = await req.json();
+    const { userId } = body;
+    const threadId = req.nextUrl.pathname.split("/").pop();
 
-    if (!userId || userId !== session.user.id) {
-        return NextResponse.json({ error: "Unauthorized for user mismatch" }, { status: 401 });
+    if (!threadId) {
+        return NextResponse.json({ error: "Thread ID is required" }, { status: 400 });
+    }
+    
+    if (userId !== session.user.id) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
     try {
-        const messageThreads = await prisma.messageThread.findMany({
-        where: {
-            userId: session.user.id,
-            id: threadId ? parseInt(threadId) : undefined,
-        },
-        include: {
-            messages: true,
-        },
+        const deletedThread = await prisma.messageThread.delete({
+            where: {
+                id: parseInt(threadId),
+            },
         });
-        return NextResponse.json(messageThreads);
+        return NextResponse.json(deletedThread);
     } catch (error) {
-        console.error("Error fetching messages:", error);
+        console.error("Error deleting thread:", error);
         return NextResponse.json(
-        { error: "Error fetching messages" },
-        { status: 500 }
+            { error: "Error deleting thread" },
+            { status: 500 }
         );
     }
 }

@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from "react";
-import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import { fetchThreads } from "@/app/src/utils/fetchThreads";
+import { MessageObject } from "@/app/src/utils/Reusables";
+import { Box, Button, Flex, Heading, useToast } from "@chakra-ui/react";
 import {
-  MainContainer,
-  ChatContainer,
-  MessageList,
-  Message,
-  MessageInput,
-  TypingIndicator,
-  Avatar,
+    Avatar,
+    ChatContainer,
+    MainContainer,
+    Message,
+    MessageInput,
+    MessageList,
+    TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
-import diagnostician from "../../src/assets/Small_Kyubey_profile.jpg";
-import { Box, Flex, Heading, Button } from "@chakra-ui/react";
-import axios from "axios";
-import { User, Message as MG } from "@prisma/client";
-import ArchivedThreads from "./ArchivedThreads";
-import { processMessageToChatGPT } from "../../src/utils/processMessageToChatGPT";
 import { MessageDirection } from "@chatscope/chat-ui-kit-react/src/types/unions";
-import { MessageObject, ThreadsWithMessages } from "@/app/src/utils/Reusables";
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import { Message as MG, User } from "@prisma/client";
+import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import diagnostician from "../../src/assets/Small_Kyubey_profile.jpg";
+import { processMessageToChatGPT } from "../../src/utils/processMessageToChatGPT";
+import ArchivedThreads from "./ArchivedThreads";
 
 function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
   const [user, setUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<MessageObject[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [threads, setThreads] = useState<ThreadsWithMessages[]>([]);
   const [currentThreadId, setCurrentThreadId] = useState<number | null>(null);
   const [lastSavedMessageTime, setLastSavedMessageTime] = useState<string>("");
+  const toast = useToast();
   const router = useRouter();
 
   useEffect(() => {
@@ -47,33 +48,29 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
   useEffect(() => {
     const fetchMessageThreads = async () => {
       try {
-        const response = await axios.get("/api/chat", {
-          params: { userId: user?.id },
-        });
+        if (user) {
+          const fetchedThreads = await fetchThreads(user.id);
 
-        if (response.data && response.data.length > 0) {
-          const sortedThreads = response.data.sort(
-            (a: ThreadsWithMessages, b: ThreadsWithMessages) => b.id - a.id
-          );
-          setThreads(sortedThreads);
+          if (fetchedThreads.length > 0) {
+            const sortedThreads = fetchedThreads;
+            const threadMessages = sortedThreads[0].messages.map((msg: MG) => ({
+              message: msg.content,
+              sentTime: new Date(msg.sentTime).toISOString(),
+              sender: msg.sender,
+              direction: msg.direction,
+            }));
+            // Sort the messages by sentTime
+            threadMessages.sort(
+              (a: MessageObject, b: MessageObject) =>
+                new Date(a.sentTime).getTime() - new Date(b.sentTime).getTime()
+            );
+            setMessages(threadMessages);
 
-          const threadMessages = sortedThreads[0].messages.map((msg: MG) => ({
-            message: msg.content,
-            sentTime: new Date(msg.sentTime).toISOString(),
-            sender: msg.sender,
-            direction: msg.direction,
-          }));
-          // Sort the messages by sentTime
-          threadMessages.sort(
-            (a: MessageObject, b: MessageObject) =>
-              new Date(a.sentTime).getTime() - new Date(b.sentTime).getTime()
-          );
-          setMessages(threadMessages);
-
-          setLastSavedMessageTime(
-            threadMessages[threadMessages.length - 1].sentTime
-          );
-          setCurrentThreadId(sortedThreads[0].id);
+            setLastSavedMessageTime(
+              threadMessages[threadMessages.length - 1].sentTime
+            );
+            setCurrentThreadId(sortedThreads[0].id);
+          }
         }
       } catch (error) {
         console.error("Error fetching message threads:", error);
@@ -107,6 +104,15 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
       console.error("Error sending message to ChatGPT:", error);
       setIsTyping(false);
     }
+  };
+
+  const handleClickAttach = () => {
+    toast({
+      title: "File attachment is not available in this 3.5 version.",
+      status: "warning",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   const handleArchiveMessageThread = async () => {
@@ -146,9 +152,9 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
   return (
     <Flex direction="column" height="130%" mt={6}>
       <Flex direction="column" width="100%" p={3}>
-        <Box flex="1" textAlign="center" >
+        <Box flex="1" textAlign="center">
           <Heading as="h4" size="md" textAlign="center">
-            Welcome to Resume Diagnose
+            Consult AI to diagnose your resume
           </Heading>
         </Box>
         <Flex
@@ -226,15 +232,16 @@ function ChatGPTBox({ initialMessage }: { initialMessage: MessageObject }) {
                   })
                 : null}
             </MessageList>
-            <MessageInput placeholder="Type a message..." onSend={handleSend} />
+            <MessageInput
+              placeholder="Type a message..."
+              onSend={handleSend}
+              onAttachClick={handleClickAttach}
+            />
           </ChatContainer>
         </MainContainer>
       </Box>
       {user && (
-        <ArchivedThreads
-          currentUser={user}
-          threads={threads}
-        />
+        <ArchivedThreads currentUser={user} currentThreadId={currentThreadId} />
       )}
     </Flex>
   );
