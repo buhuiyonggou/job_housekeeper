@@ -5,10 +5,10 @@ Job Housekeeper is a comprehensive job application management system designed to
 
 You can:
 
-1.Trace your job applications
-2.Analyze your application history, by time, category, and status
-3.Management your resume
-4.Consult AI for suggestions
+- Trace your job applications
+- Analyze your application history, by time, category, and status
+- Management your resume
+- Consult AI for suggestions
 
 ## Key Skills and Tools
 - **Skills**: TypeScript, Next.js, React, PostgreSQL
