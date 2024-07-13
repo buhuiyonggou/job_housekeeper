@@ -17,9 +17,6 @@ interface Props {
 }
 
 const Pagination = ({ TotalItems, PageSize, CurrentPage }: Props) => {
-  console.log("CurrentPage: ", CurrentPage), 
-  console.log("PageSize: ", PageSize); 
-  console.log("TotalItems: ", TotalItems);
   
   const router = useRouter();
   const searchParams = useSearchParams();

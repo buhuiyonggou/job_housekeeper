@@ -45,7 +45,7 @@ export interface JobFilters {
   distance: number
   remoteOnly: boolean
   datePosted: string
-  employmentTypes: string
+  employmentTypes: string[]
 }
 
 export interface MessageObject {
