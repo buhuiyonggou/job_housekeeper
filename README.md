@@ -2,10 +2,18 @@
 
 ## Project Goal
 Job Housekeeper is a comprehensive job application management system designed to help users find job opportunities from various platforms, manage their job applications, and analyze their history records. This project serves as a practical implementation of a full-stack Next.js web application.
+You can:
+1.Trace your job applications
+2.Analyze your application history, by time, category, and status
+3.Management your resume
+4.Consult AI for suggestions
 
 ## Key Skills and Tools
 - **Skills**: TypeScript, Next.js, React, PostgreSQL
-- **Tools**: Prisma, Chakra UI, Tailwind CSS, NextAuth, Uploadthing, Zod, Nodemailer
+- **Tools**: Prisma, Chakra UI, Tailwind CSS, NextAuth, OpenAI(ChatGPT3.5 turbo), Firebase, Uploadthing, Zod, Nodemailer
+
+## Update 12th,July
+- **Skills**:Update chatbox design, enabling archive chat history
 
 ## Website
 Visit the live application: [Job Housekeeper](https://job-housekeeper.vercel.app/)
@@ -24,6 +32,8 @@ screenshot-4
 ![screenshot3](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/f16352eb-1998-4827-8246-67495c981782)
 screenshot-5
 ![screenshot4](https://github.com/buhuiyonggou/job_housekeeper/assets/105371317/97168a14-4c3b-4f53-a242-ba349f3a6eff)
+screenshot-6
+![image](https://github.com/user-attachments/assets/bc92ef0b-433b-4a39-8349-6b4c580951ea)
 
 ## Environment Requirements
 To run this project, you need the following environment variables:
@@ -38,6 +48,8 @@ To run this project, you need the following environment variables:
 - `UPLOADTHING_SECRET`-- uploadingthings lib secret
 - `UPLOADTHING_APP_ID`-- uploadingthings id
 - `NEXT_PUBLIC_RAPIDAPI_KEY`-- X-RapidAPI key
+- `NEXT_PUBLIC_OPENAI_API_KEY`-- OpenAI3.5 key
+- `Firebase setup`
 
 ## Getting Started
 First, install the necessary dependencies:
