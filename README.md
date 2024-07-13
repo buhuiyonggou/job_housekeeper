@@ -2,7 +2,9 @@
 
 ## Project Goal
 Job Housekeeper is a comprehensive job application management system designed to help users find job opportunities from various platforms, manage their job applications, and analyze their history records. This project serves as a practical implementation of a full-stack Next.js web application.
+
 You can:
+
 1.Trace your job applications
 2.Analyze your application history, by time, category, and status
 3.Management your resume
