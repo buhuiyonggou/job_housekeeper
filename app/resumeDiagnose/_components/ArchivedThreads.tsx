@@ -51,7 +51,7 @@ const ArchivedThreads = ({
       }
     };
     fetchMessageThreads();
-  }, [currentUser, ThreadsExceptCurrent]);
+  }, [currentUser, currentThreadId, ThreadsExceptCurrent]);
 
   const handleDeleteThread = async () => {
     if (threadToDelete) {
